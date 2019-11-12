@@ -1,0 +1,13 @@
+[package]
+name = "gurufocus_api"
+version = "0.1.0"
+authors = ["Mark Beinker <mwb@quantlink.de>"]
+edition = "2018"
+description = "A rust adapter to the GuruFocus API, a provider of financial data."
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+reqwest = "0.9.22"
+serde_json = "1.0"
+chrono = "0.4.9"
+serde = "1.0"
