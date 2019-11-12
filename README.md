@@ -1,7 +1,8 @@
 # GuruFocus API
 
 This project provides a set of functions to receive data from the 
-the guru focus website via the [GuruFocus API](https://www.gurufocus.com/api.php). This project is licenses oder Apache 2.0 or MIT license (see files LICENSE-Apache2.0 and LICENSE-MIT).
+the guru focus website via the [GuruFocus API](https://www.gurufocus.com/api.php). This project 
+is licensed under Apache 2.0 or MIT license (see files LICENSE-Apache2.0 and LICENSE-MIT).
 
 # Usage
 Please note that you need at least a premium account to use this API. There a couple of 
