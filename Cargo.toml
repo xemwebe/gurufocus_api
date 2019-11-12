@@ -1,11 +1,12 @@
 [package]
 name = "gurufocus_api"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Mark Beinker <mwb@quantlink.de>"]
 edition = "2018"
 description = "A rust adapter to the GuruFocus API, a provider of financial data."
 license = "MIT OR Apache-2.0"
-link = "https://github.com/xemwebe/gurufocus_api"
+repository = "https://github.com/xemwebe/gurufocus_api"
+readme = "README.md"
 
 [dependencies]
 reqwest = "0.9.22"
