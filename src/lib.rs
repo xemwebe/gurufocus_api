@@ -38,11 +38,13 @@ extern crate serde_json;
 use reqwest::StatusCode;
 use serde_json::Value;
 
-
-
 /// Special types for dealing with Gurus.
 pub mod gurus;
 pub use gurus::*;
+
+/// Special types for dealing with Stocks.
+pub mod stock;
+pub use stock::*;
 
 /// Container for connection parameters to gurufocus server.
 pub struct GuruFocusConnector {
