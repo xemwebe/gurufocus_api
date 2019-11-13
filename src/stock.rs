@@ -1,5 +1,8 @@
 use serde::Deserialize;
 
+pub use crate::strnum::FloatOrString;
+pub use crate::strnum::string_or_num;
+
 /// Container for basic data for a single stock
 #[derive(Deserialize, Debug)]
 pub struct Stock {
@@ -24,34 +27,41 @@ pub struct Stock {
 pub struct Quote {
     /// Currency of quoted stock price
     #[serde(rename = "Currency")]
-    currency: String,
+    pub currency: String,
     /// Current day's price change
     #[serde(rename = "Day\'s Change")]
-    todays_change: String,
+    #[serde(deserialize_with = "string_or_num")]
+    pub todays_change: FloatOrString,
     /// Current day's trading volume
     #[serde(rename = "Day\'s Volume")]
-    todays_volume: i32,
+    #[serde(deserialize_with = "string_or_num")]
+    pub todays_volume: FloatOrString,
     /// Exchange's symbol
     #[serde(rename = "Exchange")]
-    exchange: String,
+    pub exchange: String,
     /// Last quoted price
-    #[serde(rename = "price")]    
-    price: String,
+    #[serde(rename = "Price")]    
+    #[serde(deserialize_with = "string_or_num")]
+    pub price: FloatOrString,
     /// Last price change
     #[serde(rename = "Price Change")]
-    price_change: String,
+    #[serde(deserialize_with = "string_or_num")]
+    pub price_change: FloatOrString,
     /// Time of last price update
     #[serde(rename = "Price Updated Time")]
-    update_time: String,
+    pub update_time: String,
     /// Stock ticker symbol
     #[serde(rename = "Symbol")]
-    symbol: String,
+    pub symbol: String,
     /// Today's highest price
-    high: String,
+    #[serde(deserialize_with = "string_or_num")]
+    pub high: FloatOrString,
     /// Today's lowest price
-    low: String,
+    #[serde(deserialize_with = "string_or_num")]
+    pub low: FloatOrString,
     /// Today's opening price
-    open: String,
+    #[serde(deserialize_with = "string_or_num")]
+    pub open: FloatOrString,
     /// Timestamp
-    timestamp: i32,
+    pub timestamp: i32,
 }

@@ -47,6 +47,10 @@ pub use gurus::*;
 pub mod stock;
 pub use stock::*;
 
+
+/// Module for special string / number derserializer
+pub mod strnum;
+
 /// Container for connection parameters to gurufocus server.
 pub struct GuruFocusConnector {
     url: &'static str,
