@@ -27,8 +27,12 @@ processing. The `serde_json::Value` types can be deserialized
 into more meaningful data structures, as is demonstrated in the `gurulist` example. 
 
 
-The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. It is planed to implement
-write custom containers with specialized deserialization, but this is still work in progress.
+The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. This is dealt
+with by introducing a new struct `FloatOrString` containing a float value, but which can
+be read from either a string or float automatically. The drawback is that `.val` as to be 
+added to the variable name of a specific data structure. I.e., to access the quoted price
+in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.val` instead
+of `q.price`. 
  
 Please note that the library is not yet stable and that the user interface is still subject to change.
 However, feedback regarding the usability and suggestions for improving the interface are welcome.
