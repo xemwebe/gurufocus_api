@@ -25,10 +25,11 @@
 //! processing. The `serde_json::Value` types can be deserialized 
 //! into more meaningful data structures, as is demonstrated in the `gurulist` example. 
 //! 
-//! Please note that the GuruFocus API provides sometimes numerical data as strings rather 
-//! than numbers. Currently, these strings will not be transformed into numbers, though this is 
-//! planned for a future release. Therefore, although the basic API wrapper will not changes, the
-//! custom types like `Guru` are subject to such changes.
+//! The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. It is planed to implement
+//! write custom containers with specialized deserialization, but this is still work in progress.
+//! 
+//! Please note that the library is not yet stable and that the user interface is still subject to change.
+//! However, feedback regarding the usability and suggestions for improving the interface are welcome.
 
 
 extern crate chrono;
@@ -76,8 +77,8 @@ impl GuruFocusConnector {
     }
 
     /// Returns the current quote data of a comma separated list of symbols given as argument
-    pub fn get_quotes(&self, stocks: &str) -> Result<Value, String> {
-        let args = format!("stock/{}/quote", stocks);
+    pub fn get_quotes(&self, stocks: &[&str]) -> Result<Value, String> {
+        let args = format!("stock/{}/quote", compact_list(&stocks));
         self.send_request(args.as_str())
     }
 
@@ -112,13 +113,13 @@ impl GuruFocusConnector {
 
     /// Returns list of gurus stock picks using list of guru ids since a given start date. 
     pub fn get_guru_picks(&self, gurus: &[&str], start_date: chrono::DateTime<chrono::Utc>) -> Result<Value, String> {
-        let args = format!("guru/{}/picks/{}", GuruFocusConnector::compact_list(&gurus), start_date.format("%F"));
+        let args = format!("guru/{}/picks/{}", compact_list(&gurus), start_date.format("%F"));
         self.send_request(args.as_str())
     }
 
     /// Returns list of aggregated guru portfolios given a slice of guru ids 
     pub fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, String> {
-        let args = format!("guru/{}/aggregated", GuruFocusConnector::compact_list(&gurus));
+        let args = format!("guru/{}/aggregated", compact_list(&gurus));
         self.send_request(args.as_str())
     }
 
@@ -161,6 +162,7 @@ impl GuruFocusConnector {
         self.send_request(args.as_str())
     }
 
+
     /// Send request to gurufocus server and transform response to JSON value
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
@@ -174,23 +176,41 @@ impl GuruFocusConnector {
                 Ok(json) => Ok(json),
                 err => Err(format!("Parsing json failed: {:?}", err)),
             },
+            StatusCode::FORBIDDEN => match resp.json() {
+                Ok(json) => Err(format!("Access forbidden, {}.", get_error(json))),
+                _ => Err(format!("Access forbidden.")),
+            },
             err => Err(format!("Received bad response from server: {}", err)),
         }
     }
+}
 
-    /// Compact list as input to url
-    fn compact_list(a: &[&str]) -> String {
-        if a.len() == 0 { 
-            return String::new();
-        }
-        let mut it = a.iter();
-        let mut res = format!("{}", it.next().unwrap());
-        for n in it {
-            res.push_str(&format!(",{}", n));
-        }
-        res        
+
+/// Extract error message from JSON returned by the GuruFocus server
+fn get_error(err: serde_json::Value) -> String 
+{ 
+    match err {
+        Value::Object(map)  => {
+            match &map["error"] {
+                Value::String(msg) => msg.to_string(),
+                val => format!("error was '{}'.", val)
+                }
+        }, 
+        val => format!("response was '{}'", val),
     }
+}
 
+/// Compact list as input to url
+fn compact_list(a: &[&str]) -> String {
+    if a.len() == 0 { 
+        return String::new();
+    }
+    let mut it = a.iter();
+    let mut res = format!("{}", it.next().unwrap());
+    for n in it {
+        res.push_str(&format!(",{}", n));
+    }
+    res        
 }
 
 #[cfg(test)]
@@ -199,8 +219,8 @@ mod tests {
 
     #[test]
     fn test_compact_list() {
-        assert_eq!(GuruFocusConnector::compact_list(&["1","2","3"]), "1,2,3");
-        assert_eq!(GuruFocusConnector::compact_list(&[]), "");
-        assert_eq!(GuruFocusConnector::compact_list(&["3"]), "3");
+        assert_eq!(compact_list(&["1","2","3"]), "1,2,3");
+        assert_eq!(compact_list(&[]), "");
+        assert_eq!(compact_list(&["3"]), "3");
     }
 }

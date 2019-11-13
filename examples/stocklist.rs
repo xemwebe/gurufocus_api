@@ -10,5 +10,5 @@ fn main() {
     let exchange = "OSL";
     let stocks = gf_connect.get_listed_stocks(exchange).unwrap();
     let stocks: StockList = serde_json::from_value(stocks).unwrap();
-    println!("{:#?}", stocks);
+    println!("List of all stocks listed at the Oslo stock exchange (OSL) in Norway\n{:#?}", stocks);
 }
