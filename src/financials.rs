@@ -1,6 +1,4 @@
 use serde::Deserialize;
-use serde_json::Value;
-use std::collections::HashMap;
 
 /// Structure holding the history of financial data for a single stock.
 #[derive(Deserialize, Debug)]
@@ -24,9 +22,9 @@ pub struct PeriodData {
     pub per_share_data_array: PerShareData,
     pub cashflow_statement: CashFlowStatement,
     pub income_statement: IncomeStatement,
-    pub valuation_ratios: HashMap<String, Value>,
-    pub common_size_ratios: HashMap<String, Value>,
-    pub valuation_and_quality: HashMap<String, Value>,
+    pub valuation_ratios: ValuationRatios,
+    pub common_size_ratios: CommonSizeRatios,
+    pub valuation_and_quality: ValuationAndQuality,
     pub preliminary: Vec<String>,
 }
 
@@ -335,4 +333,172 @@ pub struct IncomeStatement {
     pub cost_of_goods_sold: Vec<String>,
     #[serde(rename = "Gain on Sale of Security")]
     pub gain_on_sale_of_security: Vec<String>,
+}
+
+
+/// Container for holding valuation ratios
+#[derive(Deserialize, Debug)]
+pub struct ValuationRatios {
+    #[serde(rename = "Dividend Yield %")]
+    pub dividend_yield: Vec<String>,
+    #[serde(rename = "Price-to-Free-Cash-Flow")]
+    pub price_to_free_cash_flow: Vec<String>,
+    #[serde(rename = "Price-to-Operating-Cash-Flow")]
+    pub price_to_operation_cash_flow: Vec<String>,
+    #[serde(rename = "EV-to-EBIT")]
+    pub ev_to_ebit: Vec<String>,
+    #[serde(rename = "Forward Rate of Return (Yacktman) %")]
+    pub forward_rate_of_return: Vec<String>,
+    #[serde(rename = "PE Ratio")]
+    pub pe_ratio: Vec<String>,
+    #[serde(rename = "PEG Ratio")]
+    pub peg_ratio: Vec<String>,
+    #[serde(rename = "PB Ratio")]
+    pub pb_ratio: Vec<String>,
+    #[serde(rename = "EV-to-EBITDA")]
+    pub ev_to_ebitda: Vec<String>,
+    #[serde(rename = "Price-to-Owner-Earnings")]
+    pub price_to_owner_earnings: Vec<String>,
+    #[serde(rename = "Price-to-Tangible-Book")]
+    pub price_to_tangible_book: Vec<String>,
+    #[serde(rename = "Earnings Yield (Joel Greenblatt) %")]
+    pub earnings_yield: Vec<String>,
+    #[serde(rename = "Shiller PE Ratio")]
+    pub shiller_pe_ratio: Vec<String>,
+    #[serde(rename = "EV-to-Revenue")]
+    pub ev_to_revenue: Vec<String>,
+    #[serde(rename = "PS Ratio")]
+    pub ps_ratio: Vec<String>,
+}
+
+/// Container for holding common size ratios
+#[derive(Deserialize, Debug)]
+pub struct CommonSizeRatios {
+    #[serde(rename = "Net Margin %")]
+    pub net_margin_pct: Vec<String>,
+    #[serde(rename = "Gross-Profit-to-Asset %")]
+    pub gross_profit_to_asset_pct: Vec<String>,
+    #[serde(rename = "Return-on-Tangible-Asset")]
+    pub return_on_tangible_asset: Vec<String>,
+    #[serde(rename = "ROIC %")]
+    pub roic_pct: Vec<String>,
+    #[serde(rename = "Return-on-Tangible-Equity")]
+    pub return_on_tangible_equity: Vec<String>,
+    #[serde(rename = "Asset Turnover")]
+    pub asset_turnover: Vec<String>,
+    #[serde(rename = "COGS-to-Revenue")]
+    pub cogs_to_revenue: Vec<String>,
+    #[serde(rename = "Dividend Payout Ratio")]
+    pub dividend_payout_ratio: Vec<String>,
+    #[serde(rename = "Debt-to-Equity")]
+    pub debt_to_equity: Vec<String>,
+    #[serde(rename = "Operating Margin %")]
+    pub operating_margin_pct: Vec<String>,
+    #[serde(rename = "Days Inventory")]
+    pub days_inventory: Vec<String>,
+    #[serde(rename = "FCF Margin %")]
+    pub fcf_margin_pct: Vec<String>,
+    #[serde(rename = "WACC %")]
+    pub wacc_pct: Vec<String>,
+    #[serde(rename = "Debt-to-Asset")]
+    pub debt_to_asset: Vec<String>,
+    #[serde(rename = "Inventory-to-Revenue")]
+    pub inventory_to_revenue: Vec<String>,
+    #[serde(rename = "Days Sales Outstanding")]
+    pub days_sales_outstanding: Vec<String>,
+    #[serde(rename = "Cash Conversion Cycle")]
+    pub cash_conversion_cycle: Vec<String>,
+    #[serde(rename = "Gross Margin %")]
+    pub gross_margin_pct: Vec<String>,
+    #[serde(rename = "ROA %")]
+    pub roa_pct: Vec<String>,
+    #[serde(rename = "Inventory Turnover")]
+    pub inventory_turnover: Vec<String>,
+    #[serde(rename = "ROE % Adjusted to Book Value")]
+    pub roe_pct_adjusted_to_book_value: Vec<String>,
+    #[serde(rename = "ROC (Joel Greenblatt) %")]
+    pub roc_pct: Vec<String>,
+    #[serde(rename = "Days Payable")]
+    pub days_payable: Vec<String>,
+    #[serde(rename = "ROE %")]
+    pub roe_pct: Vec<String>,
+    #[serde(rename = "Effective Interest Rate on Debt %")]
+    pub effective_interest_rate_on_debt_pct: Vec<String>,
+    #[serde(rename = "Equity-to-Asset")]
+    pub equity_to_asset: Vec<String>,
+}
+
+/// Container for holding valuation and quality figures
+#[derive(Deserialize, Debug)]
+pub struct ValuationAndQuality {
+    #[serde(rename = "Scaled Net Operating Assets")]
+    pub scaled_net_operating_assets: Vec<String>,
+    #[serde(rename = "Beneish M-Score")]
+    pub beneish_m_score: Vec<String>,
+    #[serde(rename = "Current Ratio")]
+    pub current_ratio: Vec<String>,
+    #[serde(rename = "Market Cap")]
+    pub market_cap: Vec<String>,
+    #[serde(rename = "Median PS Value")]
+    pub median_ps_value: Vec<String>,
+    #[serde(rename = "Number of Shareholders")]
+    pub number_of_shareholders: Vec<String>,
+    #[serde(rename = "Graham Number")]
+    pub graham_number: Vec<String>,
+    #[serde(rename = "Restated Filing Date")]
+    pub restated_filing_date: Vec<String>,
+    #[serde(rename = "Buyback Yield %")]
+    pub buyback_yield_pct: Vec<String>,
+    #[serde(rename = "Intrinsic Value: Projected FCF")]
+    pub intrinsic_value_projected_fcf: Vec<String>,
+    #[serde(rename = "Month End Stock Price")]
+    pub month_end_stock_price: Vec<String>,
+    #[serde(rename = "Net Cash per Share")]
+    pub net_cash_per_share: Vec<String>,
+    #[serde(rename = "Earnings Power Value (EPV)")]
+    pub earnings_power_value: Vec<String>,
+    #[serde(rename = "Net Current Asset Value")]
+    pub net_current_asset_value: Vec<String>,
+    #[serde(rename = "Median PB Value")]
+    pub median_pb_value: Vec<String>,
+    #[serde(rename = "Peter Lynch Fair Value")]
+    pub peter_lynch_fair_value: Vec<String>,
+    #[serde(rename = "Shares Outstanding (EOP)")]
+    pub shares_outstanding: Vec<String>,
+    #[serde(rename = "YoY Rev. per Sh. Growth")]
+    pub yoy_rev_per_sh_growth: Vec<String>,
+    #[serde(rename = "Interest Coverage")]
+    pub interest_coverage: Vec<String>,
+    #[serde(rename = "Number of Employees")]
+    pub number_of_employees: Vec<String>,
+    #[serde(rename = "Lowest Stock Price")]
+    pub lowest_stock_price: Vec<String>,
+    #[serde(rename = "Shares Buyback Ratio %")]
+    pub shares_buyback_ratio_pct: Vec<String>,
+    #[serde(rename = "Sloan Ratio %")]
+    pub sloan_ratio_pct: Vec<String>,
+    #[serde(rename = "Piotroski F-Score")]
+    pub pitroski_f_score: Vec<String>,
+    #[serde(rename = "Altman Z-Score")]
+    pub altman_z_score: Vec<String>,
+    #[serde(rename = "Filing Date")]
+    pub filing_date: Vec<String>,
+    #[serde(rename = "Beta")]
+    pub beta: Vec<String>,
+    #[serde(rename = "Net-Net Working Capital")]
+    pub net_net_working_capital: Vec<String>,
+    #[serde(rename = "YoY EPS Growth")]
+    pub yoy_eps_growth: Vec<String>,
+    #[serde(rename = "5-Year EBITDA Growth Rate")]
+    pub five_year_ebitda_growth_rate: Vec<String>,
+    #[serde(rename = "Shares Outstanding (Basic Average)")]
+    pub shares_outstanding_basic_average: Vec<String>,
+    #[serde(rename = "Enterprise Value")]
+    pub enterprice_value: Vec<String>,
+    #[serde(rename = "Quick Ratio")]
+    pub quick_ratio: Vec<String>,
+    #[serde(rename = "YoY EBITDA Growth")]
+    pub yoy_ebitda_growth: Vec<String>,
+    #[serde(rename = "Highest Stock Price")]
+    pub highest_stock_price: Vec<String>,
 }

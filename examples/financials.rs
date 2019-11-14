@@ -8,8 +8,5 @@ fn main() {
 
     let financials: gfapi::FinancialData = serde_json::from_value(financials).unwrap();
     println!("Financial data of Amazon:");
-    //println!("{:#?}", financials);
-    for key in financials.financials.annuals.valuation_ratios.keys() {
-        println!("{}", key)
-    }
+    println!("{:?}", financials);
 }
