@@ -27,9 +27,9 @@
 //!
 //! The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. This is dealt
 //! with by introducing a new struct `FloatOrString` containing a float value, but which can
-//! be read from either a string or float automatically. The drawback is that `.val` as to be
+//! be read from either a string or float automatically. The drawback is that `.0` as to be
 //! added to the variable name of a specific data structure. I.e., to access the quoted price
-//! in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.val` instead
+//! in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.0` instead
 //! of `q.price`.
 //!
 //! Please note that the library is not yet stable and that the user interface is still subject to change.

@@ -6,9 +6,7 @@ use serde::de::{self, Visitor};
 use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, Deserialize)]
-pub struct FloatOrString {
-    pub val: f64,
-}
+pub struct FloatOrString(f64);
 
 // The `string_or_num` function uses this impl to instantiate a `FloatOrString` if
 // the input file contains a string and not a number.
@@ -17,10 +15,10 @@ impl FromStr for FloatOrString {
 
     fn from_str(s: &str) -> Result<FloatOrString, Self::Err> {
         if s == "" {
-            Ok(FloatOrString { val: 0.0 })
+            Ok(FloatOrString { 0: 0.0 })
         } else {
             match s.parse::<f64>() {
-                Ok(num) => Ok(FloatOrString { val: num }),
+                Ok(num) => Ok(FloatOrString { 0: num }),
                 Err(e) => Err(e),
             }
         }
@@ -29,19 +27,19 @@ impl FromStr for FloatOrString {
 
 impl From<u64> for FloatOrString {
     fn from(val: u64) -> FloatOrString {
-        FloatOrString { val: val as f64 }
+        FloatOrString { 0: val as f64 }
     }
 }
 
 impl From<i64> for FloatOrString {
     fn from(val: i64) -> FloatOrString {
-        FloatOrString { val: val as f64 }
+        FloatOrString { 0: val as f64 }
     }
 }
 
 impl From<f64> for FloatOrString {
     fn from(val: f64) -> FloatOrString {
-        FloatOrString { val: val }
+        FloatOrString { 0: val }
     }
 }
 
@@ -125,8 +123,18 @@ mod tests {
         let json: serde_json::Value =
             serde_json::from_str("{\"x\":\"2.1\",\"y\":3,\"z\":3.4}").unwrap();
         let d_num: DoubleNum = serde_json::from_value(json).unwrap();
-        assert_eq!(d_num.x.val, 2.1);
-        assert_eq!(d_num.y.val, 3.0);
-        assert_eq!(d_num.z.val, 3.4);
+        assert_eq!(d_num.x.0, 2.1);
+        assert_eq!(d_num.y.0, 3.0);
+        assert_eq!(d_num.z.0, 3.4);
+    }
+
+    #[test]
+    fn convert_vec_on_str_num() {
+        let json: serde_json::Value =
+                    serde_json::from_str("[\"2.1\",3,3.4]").unwrap();
+        let v: Vec<FloatOrString> = serde_json::from_value(json).unwrap();
+        assert_eq!(v[0].0, 2.1);
+        assert_eq!(v[1].0, 3.0);
+        assert_eq!(v[2].0, 3.4);
     }
 }
