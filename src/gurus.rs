@@ -1,8 +1,8 @@
-use std::collections::HashMap;
 use serde::Deserialize;
+use std::collections::HashMap;
 
-pub use crate::strnum::FloatOrString;
 pub use crate::strnum::string_or_num;
+pub use crate::strnum::FloatOrString;
 
 /// Structure holding basic data for a single Guru.
 #[derive(Deserialize, Debug)]
@@ -32,9 +32,8 @@ pub struct Guru {
 #[derive(Deserialize, Debug)]
 pub struct Gurus {
     /// Map holding the list of Gurus per country.
-    pub all: HashMap<String, Vec<Guru> >,
+    pub all: HashMap<String, Vec<Guru>>,
     /// For each personal list of Gurus (e.g. default and custom list),
     /// a vector of Guru IDs is stored.
-    pub my:  HashMap<String, Vec<String> >
+    pub my: HashMap<String, Vec<String>>,
 }
-

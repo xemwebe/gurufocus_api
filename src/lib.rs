@@ -1,17 +1,17 @@
 //! # GuruFocus API
-//! 
-//! This project provides a set of functions to receive data from the 
+//!
+//! This project provides a set of functions to receive data from the
 //! the guru focus website via the [GuruFocus API](https://www.gurufocus.com/api.php).
-//! 
+//!
 //! # Usage
-//! Please note that you need at least a premium account to use this API. There a couple of 
+//! Please note that you need at least a premium account to use this API. There a couple of
 //! examples demonstrating how to use the API in your own rust projects. To run this example,
 //! you first need to define an environment variable holding the user Token you got from
 //! GuruFocus:
 //! ```bash
 //! export GURUFOCUS_TOKEN='<your user token>'
 //! ```
-//! 
+//!
 //! The examples can be executed via the command
 //! ```dummy
 //! cargo test --example <name of example>
@@ -20,21 +20,20 @@
 //! without the `.rs` extension
 //! Please note that running any of the examples increases your API access counter by at least 1.
 //!
-//! The GuruFocus API provides all data in JSON format, and the basic API functions currently 
+//! The GuruFocus API provides all data in JSON format, and the basic API functions currently
 //! will just return these JSON structures as `serde_json::Value` types without any further
-//! processing. The `serde_json::Value` types can be deserialized 
-//! into more meaningful data structures, as is demonstrated in the `gurulist` example. 
-//! 
+//! processing. The `serde_json::Value` types can be deserialized
+//! into more meaningful data structures, as is demonstrated in the `gurulist` example.
+//!
 //! The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. This is dealt
 //! with by introducing a new struct `FloatOrString` containing a float value, but which can
-//! be read from either a string or float automatically. The drawback is that `.val` as to be 
+//! be read from either a string or float automatically. The drawback is that `.val` as to be
 //! added to the variable name of a specific data structure. I.e., to access the quoted price
 //! in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.val` instead
-//! of `q.price`. 
-//! 
+//! of `q.price`.
+//!
 //! Please note that the library is not yet stable and that the user interface is still subject to change.
 //! However, feedback regarding the usability and suggestions for improving the interface are welcome.
-
 
 extern crate chrono;
 extern crate reqwest;
@@ -47,10 +46,13 @@ use serde_json::Value;
 pub mod gurus;
 pub use gurus::*;
 
-/// Special types for dealing with Stocks.
+/// Special types for dealing with stocks.
 pub mod stock;
 pub use stock::*;
 
+/// Special types for dealing with financial data.
+pub mod financials;
+pub use financials::*;
 
 /// Module for special string / number derserializer
 pub mod strnum;
@@ -62,10 +64,10 @@ pub struct GuruFocusConnector {
 }
 
 impl GuruFocusConnector {
-        /// Constructor for a new instance of GuruFocusConnector.
-        /// token is the user token you get from gurufocus if you subscribe for 
-        /// a premium or premium plus account.
-        pub fn new(token: String) -> GuruFocusConnector {
+    /// Constructor for a new instance of GuruFocusConnector.
+    /// token is the user token you get from gurufocus if you subscribe for
+    /// a premium or premium plus account.
+    pub fn new(token: String) -> GuruFocusConnector {
         GuruFocusConnector {
             url: "https://api.gurufocus.com/public/user/",
             user_token: token,
@@ -119,19 +121,27 @@ impl GuruFocusConnector {
         self.send_request("gurulist")
     }
 
-    /// Returns list of gurus stock picks using list of guru ids since a given start date. 
-    pub fn get_guru_picks(&self, gurus: &[&str], start_date: chrono::DateTime<chrono::Utc>) -> Result<Value, String> {
-        let args = format!("guru/{}/picks/{}", compact_list(&gurus), start_date.format("%F"));
+    /// Returns list of gurus stock picks using list of guru ids since a given start date.
+    pub fn get_guru_picks(
+        &self,
+        gurus: &[&str],
+        start_date: chrono::DateTime<chrono::Utc>,
+    ) -> Result<Value, String> {
+        let args = format!(
+            "guru/{}/picks/{}",
+            compact_list(&gurus),
+            start_date.format("%F")
+        );
         self.send_request(args.as_str())
     }
 
-    /// Returns list of aggregated guru portfolios given a slice of guru ids 
+    /// Returns list of aggregated guru portfolios given a slice of guru ids
     pub fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, String> {
         let args = format!("guru/{}/aggregated", compact_list(&gurus));
         self.send_request(args.as_str())
     }
 
-    /// Returns list of supported exchanges 
+    /// Returns list of supported exchanges
     pub fn get_exchanges(&self) -> Result<Value, String> {
         self.send_request("exchange_list")
     }
@@ -170,7 +180,6 @@ impl GuruFocusConnector {
         self.send_request(args.as_str())
     }
 
-
     /// Send request to gurufocus server and transform response to JSON value
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
@@ -193,24 +202,20 @@ impl GuruFocusConnector {
     }
 }
 
-
 /// Extract error message from JSON returned by the GuruFocus server
-fn get_error(err: serde_json::Value) -> String 
-{ 
+fn get_error(err: serde_json::Value) -> String {
     match err {
-        Value::Object(map)  => {
-            match &map["error"] {
-                Value::String(msg) => msg.to_string(),
-                val => format!("error was '{}'.", val)
-                }
-        }, 
+        Value::Object(map) => match &map["error"] {
+            Value::String(msg) => msg.to_string(),
+            val => format!("error was '{}'.", val),
+        },
         val => format!("response was '{}'", val),
     }
 }
 
 /// Compact list as input to url
 fn compact_list(a: &[&str]) -> String {
-    if a.len() == 0 { 
+    if a.len() == 0 {
         return String::new();
     }
     let mut it = a.iter();
@@ -218,7 +223,7 @@ fn compact_list(a: &[&str]) -> String {
     for n in it {
         res.push_str(&format!(",{}", n));
     }
-    res        
+    res
 }
 
 #[cfg(test)]
@@ -227,7 +232,7 @@ mod tests {
 
     #[test]
     fn test_compact_list() {
-        assert_eq!(compact_list(&["1","2","3"]), "1,2,3");
+        assert_eq!(compact_list(&["1", "2", "3"]), "1,2,3");
         assert_eq!(compact_list(&[]), "");
         assert_eq!(compact_list(&["3"]), "3");
     }

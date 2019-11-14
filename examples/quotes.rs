@@ -1,11 +1,11 @@
-use std::env;
 use gurufocus_api as gfapi;
+use std::env;
 
 type QuoteList = Vec<gfapi::Quote>;
 
 fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
-    let gf_connect =  gfapi::GuruFocusConnector::new(token);
+    let gf_connect = gfapi::GuruFocusConnector::new(token);
     let ticker = ["NAS:AAPL", "FRA:APC", "LTS:0JQ4"];
     let prices = gf_connect.get_quotes(&ticker).unwrap();
 
