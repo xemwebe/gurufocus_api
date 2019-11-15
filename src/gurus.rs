@@ -1,7 +1,6 @@
 use serde::Deserialize;
 use std::collections::HashMap;
 
-pub use crate::strnum::string_or_num;
 pub use crate::strnum::FloatOrString;
 
 /// Structure holding basic data for a single Guru.
@@ -16,13 +15,10 @@ pub struct Guru {
     /// The organisation the Guru is working for.
     pub company: String,
     /// The number of stock holdings tracked by GuruFocus.
-    #[serde(deserialize_with = "string_or_num")]
     pub num_of_stocks: FloatOrString,
     /// Total investment value in million US$.
-    #[serde(deserialize_with = "string_or_num")]
     pub value: FloatOrString,
     /// Turnover rate in %.
-    #[serde(deserialize_with = "string_or_num")]
     pub turnover: FloatOrString,
     /// Date of latest update of this data.
     pub latest_update: String,

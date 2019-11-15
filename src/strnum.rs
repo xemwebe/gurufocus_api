@@ -5,48 +5,14 @@ use std::str::FromStr;
 use serde::de::{self, Visitor};
 use serde::{Deserialize, Deserializer};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug)]
 pub struct FloatOrString(f64);
 
-// The `string_or_num` function uses this impl to instantiate a `FloatOrString` if
-// the input file contains a string and not a number.
-impl FromStr for FloatOrString {
-    type Err = <f64 as FromStr>::Err;
-
-    fn from_str(s: &str) -> Result<FloatOrString, Self::Err> {
-        if s == "" {
-            Ok(FloatOrString { 0: 0.0 })
-        } else {
-            match s.parse::<f64>() {
-                Ok(num) => Ok(FloatOrString { 0: num }),
-                Err(e) => Err(e),
-            }
-        }
-    }
-}
-
-impl From<u64> for FloatOrString {
-    fn from(val: u64) -> FloatOrString {
-        FloatOrString { 0: val as f64 }
-    }
-}
-
-impl From<i64> for FloatOrString {
-    fn from(val: i64) -> FloatOrString {
-        FloatOrString { 0: val as f64 }
-    }
-}
-
-impl From<f64> for FloatOrString {
-    fn from(val: f64) -> FloatOrString {
-        FloatOrString { 0: val }
-    }
-}
-
-pub fn string_or_num<'de, D>(deserializer: D) -> Result<FloatOrString, D::Error>
-where
-    D: Deserializer<'de>,
-{
+impl<'de> Deserialize<'de> for FloatOrString {
+    fn deserialize<D>(deserializer: D) -> Result<FloatOrString, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
     // This is a Visitor that forwards string types to T's `FromStr` impl and
     // forwards number types to T's `Deserialize` impl. The `PhantomData` is to
     // keep the compiler from complaining about T being an unused generic type
@@ -98,7 +64,54 @@ where
     }
 
     deserializer.deserialize_any(StringOrNum(PhantomData))
+
+
+    }
 }
+
+// The `string_or_num` function uses this impl to instantiate a `FloatOrString` if
+// the input file contains a string and not a number.
+impl FromStr for FloatOrString {
+    type Err = <f64 as FromStr>::Err;
+
+    fn from_str(s: &str) -> Result<FloatOrString, Self::Err> {
+        if s == "" {
+            Ok(FloatOrString { 0: 0.0 })
+        } else {
+            match s.parse::<f64>() {
+                Ok(num) => Ok(FloatOrString { 0: num }),
+                // If string can not be parsed, set value to NaN
+                _ => Ok(FloatOrString { 0: std::f64::NAN }),
+            }
+        }
+    }
+}
+
+impl From<u64> for FloatOrString {
+    fn from(val: u64) -> FloatOrString {
+        FloatOrString { 0: val as f64 }
+    }
+}
+
+impl From<i64> for FloatOrString {
+    fn from(val: i64) -> FloatOrString {
+        FloatOrString { 0: val as f64 }
+    }
+}
+
+impl From<f64> for FloatOrString {
+    fn from(val: f64) -> FloatOrString {
+        FloatOrString { 0: val }
+    }
+}
+
+// Manual implementation of Display trait for nice printouts
+impl fmt::Display for FloatOrString {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -106,11 +119,8 @@ mod tests {
 
     #[derive(Deserialize, Debug)]
     struct DoubleNum {
-        #[serde(deserialize_with = "string_or_num")]
         x: FloatOrString,
-        #[serde(deserialize_with = "string_or_num")]
         y: FloatOrString,
-        #[serde(deserialize_with = "string_or_num")]
         z: FloatOrString,
     }
 
@@ -136,5 +146,12 @@ mod tests {
         assert_eq!(v[0].0, 2.1);
         assert_eq!(v[1].0, 3.0);
         assert_eq!(v[2].0, 3.4);
+    }
+
+    #[test]
+    fn print_str_num() {
+        let str_num = FloatOrString{ 0: 2.3 };
+        let num_as_str = format!("{}", str_num);
+        assert_eq!(num_as_str, "2.3");
     }
 }
