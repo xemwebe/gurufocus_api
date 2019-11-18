@@ -132,7 +132,7 @@ impl GuruFocusConnector {
     pub fn get_guru_picks(
         &self,
         gurus: &[&str],
-        start_date: chrono::DateTime<chrono::Utc>,
+        start_date: chrono::NaiveDate,
     ) -> Result<Value, String> {
         let args = format!(
             "guru/{}/picks/{}",
@@ -182,7 +182,7 @@ impl GuruFocusConnector {
     }
 
     /// Returns list of all stocks with updated fundamental data within a week of the given date
-    pub fn get_updated_stocks(&self, date: chrono::DateTime<chrono::Utc>) -> Result<Value, String> {
+    pub fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, String> {
         let args = format!("funda_updated/{}", date);
         self.send_request(args.as_str())
     }
