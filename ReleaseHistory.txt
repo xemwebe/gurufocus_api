@@ -1,0 +1,7 @@
+Version 0.2.0 (since major update since 0.1.5)
+* One example for each API function, ordered by the section number as they appear in the GuruFocus 
+  documentation https://www.gurufocus.com/api.php. However, proper deserializing into proper structs
+  is a TODO.
+* Errors will show more information on the cause of the error as given by GuruFocus
+* Dates use now chrono::NaiveDate, since the GuroFocus API does not provide any time zone information
+
