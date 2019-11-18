@@ -190,7 +190,6 @@ impl GuruFocusConnector {
     /// Send request to gurufocus server and transform response to JSON value
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
-        println!("{}", url);
         let resp = reqwest::get(url.as_str());
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
@@ -209,7 +208,10 @@ impl GuruFocusConnector {
                 Ok(json) => Err(format!("Not found, {}.", get_error(json))),
                 _ => Err(format!("Access forbidden.")),
             },
-            err => Err(format!("Received bad response from server: {}", err)),
+            err => match resp.json() {
+                Ok(json) => Err(format!("Unspecified error, {}.", get_error(json))),
+                _ => Err(format!("Received bad response from server: {}", err)),
+            }
         }
     }
 }

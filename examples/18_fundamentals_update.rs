@@ -1,12 +1,10 @@
 extern crate chrono;
 
 use gurufocus_api as gfapi;
-use std::collections::HashMap;
-use serde_json::Value;
 use std::env;
 use chrono::{Utc,NaiveDate,Datelike};
 
-type GuruPicks = HashMap<String, HashMap<String, Value>>;
+type UpdatedStocks = Vec<String>;
 
 fn get_days_from_month(year: i32, month: u32) -> u32 {
     NaiveDate::from_ymd(
@@ -46,13 +44,11 @@ fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
     let gf_connect = gfapi::GuruFocusConnector::new(token);
 
-    // Buffett, Soros and Klarman
-    let gurus = ["7","16","28"];
     let now = Utc::now().naive_local().date();
-    let three_months_ago = month_before(now, 3);
-    let trades = gf_connect.get_guru_picks(&gurus, three_months_ago).unwrap();
+    let one_months_ago = month_before(now, 6);
+    let stocks = gf_connect.get_updated_stocks(one_months_ago).unwrap();
 
-    let trades: GuruPicks = serde_json::from_value(trades).unwrap();
+    let stocks: UpdatedStocks = serde_json::from_value(stocks).unwrap();
     println!(
-        "List of trades by a set of gurus (Warren Buffett, George Soros, and Seth Klarman) since {}\n{:#?}", three_months_ago, trades);
+        "List of stocks with updated fundamental data since {}\n{:#?}", one_months_ago, stocks);
 }
