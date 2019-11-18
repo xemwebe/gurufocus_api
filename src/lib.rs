@@ -118,6 +118,11 @@ impl GuruFocusConnector {
         self.send_request(args.as_str())
     }
 
+    /// Returns real-time insider trades for symbol given as argument
+    pub fn get_insider_trades(&self, stock: &str) -> Result<Value, String> {
+        let args = format!("stock/{}/insider", stock);
+        self.send_request(args.as_str())
+    }
     /// Returns lists of all and personalized gurus
     pub fn get_gurus(&self) -> Result<Value, String> {
         self.send_request("gurulist")
@@ -155,7 +160,7 @@ impl GuruFocusConnector {
     }
 
     /// Returns list of latest insider trades ordered by insider transctions time
-    pub fn get_insider_trades(&self) -> Result<Value, String> {
+    pub fn get_insider_updates(&self) -> Result<Value, String> {
         self.send_request("insider_updates")
     }
 
@@ -185,6 +190,7 @@ impl GuruFocusConnector {
     /// Send request to gurufocus server and transform response to JSON value
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
+        println!("{}", url);
         let resp = reqwest::get(url.as_str());
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
@@ -197,6 +203,10 @@ impl GuruFocusConnector {
             },
             StatusCode::FORBIDDEN => match resp.json() {
                 Ok(json) => Err(format!("Access forbidden, {}.", get_error(json))),
+                _ => Err(format!("Access forbidden.")),
+            },
+            StatusCode::NOT_FOUND => match resp.json() {
+                Ok(json) => Err(format!("Not found, {}.", get_error(json))),
                 _ => Err(format!("Access forbidden.")),
             },
             err => Err(format!("Received bad response from server: {}", err)),
