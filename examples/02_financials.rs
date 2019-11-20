@@ -9,7 +9,7 @@ fn main() {
     let financials: gfapi::FinancialData = serde_json::from_value(financials).unwrap();
     println!("Annual development of Amazon's Enterprice value\nFY\tEV\n==================");
     let periods = &financials.financials.annuals.fiscal_year;
-    let vq = &financials.financials.annuals.valuation_and_quality; 
+    let vq = &financials.financials.annuals.valuation_and_quality;
     for (i, p) in periods.iter().enumerate() {
         println!("{}\t{}", p, vq.enterprice_value[i]);
     }

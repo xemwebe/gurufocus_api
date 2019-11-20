@@ -157,7 +157,6 @@ pub struct BalanceSheet {
     pub notes_receivable: Vec<FloatOrString>,
 }
 
-
 /// Structure holding the per share data
 #[derive(Deserialize, Debug)]
 pub struct PerShareData {
@@ -266,8 +265,6 @@ pub struct CashFlowStatement {
     pub repurchase_of_stock: Vec<FloatOrString>,
 }
 
-
-
 /// Structure holding the income statement data.
 #[derive(Deserialize, Debug)]
 pub struct IncomeStatement {
@@ -336,7 +333,6 @@ pub struct IncomeStatement {
     #[serde(rename = "Gain on Sale of Security")]
     pub gain_on_sale_of_security: Vec<FloatOrString>,
 }
-
 
 /// Container for holding valuation ratios
 #[derive(Deserialize, Debug)]

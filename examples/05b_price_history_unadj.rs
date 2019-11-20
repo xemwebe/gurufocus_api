@@ -11,6 +11,5 @@ fn main() {
     let prices = gf_connect.get_unadj_price_hist(stock).unwrap();
 
     let prices: PriceHistory = serde_json::from_value(prices).unwrap();
-    println!(
-        "Unadjusted Price history for Walt Disney\n{:#?}", prices);
+    println!("Unadjusted Price history for Walt Disney\n{:#?}", prices);
 }

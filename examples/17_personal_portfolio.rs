@@ -1,6 +1,6 @@
 use gurufocus_api as gfapi;
-use std::collections::HashMap;
 use serde_json::Value;
+use std::collections::HashMap;
 use std::env;
 
 type PersonalPortfolios = Vec<HashMap<String, Value>>;
@@ -11,6 +11,5 @@ fn main() {
     let portfolios = gf_connect.get_personal_portfolio().unwrap();
 
     let portfolios: PersonalPortfolios = serde_json::from_value(portfolios).unwrap();
-    println!(
-        "Personal portfolios overview\n{:#?}", portfolios);
+    println!("Personal portfolios overview\n{:#?}", portfolios);
 }

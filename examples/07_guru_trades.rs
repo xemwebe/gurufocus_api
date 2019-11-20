@@ -1,6 +1,6 @@
 use gurufocus_api as gfapi;
-use std::collections::HashMap;
 use serde_json::Value;
+use std::collections::HashMap;
 use std::env;
 
 type GuruTrades = HashMap<String, HashMap<String, Value>>;
@@ -13,6 +13,5 @@ fn main() {
     let trades = gf_connect.get_guru_trades(stock).unwrap();
 
     let trades: GuruTrades = serde_json::from_value(trades).unwrap();
-    println!(
-        "List of real time guru trades in Walmart\n{:#?}", trades);
+    println!("List of real time guru trades in Walmart\n{:#?}", trades);
 }

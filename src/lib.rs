@@ -30,7 +30,7 @@
 //! be read from either a string or float automatically. The drawback is that `.0` as to be
 //! added to the variable name of a specific data structure. I.e., to access the quoted price
 //! in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.0` instead
-//! of `q.price`. In a few cases, the string contains not a number, but an error message, like 
+//! of `q.price`. In a few cases, the string contains not a number, but an error message, like
 //! "Negative Tangible Equity". In such cases, if the string can not be parsed to a number, the
 //! value is set to `NAN`.
 //!
@@ -55,6 +55,10 @@ pub use stock::*;
 /// Special types for dealing with financial data.
 pub mod financials;
 pub use financials::*;
+
+/// Special types for key ratios.
+pub mod keyratios;
+pub use keyratios::*;
 
 /// Module for special string / number derserializer
 pub mod strnum;
@@ -191,6 +195,7 @@ impl GuruFocusConnector {
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
         let resp = reqwest::get(url.as_str());
+        println!("\nurl: {}", url);
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
         }
@@ -211,7 +216,7 @@ impl GuruFocusConnector {
             err => match resp.json() {
                 Ok(json) => Err(format!("Unspecified error, {}.", get_error(json))),
                 _ => Err(format!("Received bad response from server: {}", err)),
-            }
+            },
         }
     }
 }

@@ -13,59 +13,57 @@ impl<'de> Deserialize<'de> for FloatOrString {
     where
         D: Deserializer<'de>,
     {
-    // This is a Visitor that forwards string types to T's `FromStr` impl and
-    // forwards number types to T's `Deserialize` impl. The `PhantomData` is to
-    // keep the compiler from complaining about T being an unused generic type
-    // parameter. We need T in order to know the Value type for the Visitor
-    // impl.
-    struct StringOrNum<T>(PhantomData<fn() -> T>);
+        // This is a Visitor that forwards string types to T's `FromStr` impl and
+        // forwards number types to T's `Deserialize` impl. The `PhantomData` is to
+        // keep the compiler from complaining about T being an unused generic type
+        // parameter. We need T in order to know the Value type for the Visitor
+        // impl.
+        struct StringOrNum<T>(PhantomData<fn() -> T>);
 
-    impl<'de, T> Visitor<'de> for StringOrNum<T>
-    where
-        T: Deserialize<'de>
-            + FromStr<Err = <f64 as FromStr>::Err>
-            + From<u64>
-            + From<i64>
-            + From<f64>,
-    {
-        type Value = T;
-
-        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-            formatter.write_str("string or number")
-        }
-
-        fn visit_str<E>(self, value: &str) -> Result<T, E>
+        impl<'de, T> Visitor<'de> for StringOrNum<T>
         where
-            E: de::Error,
+            T: Deserialize<'de>
+                + FromStr<Err = <f64 as FromStr>::Err>
+                + From<u64>
+                + From<i64>
+                + From<f64>,
         {
-            Ok(FromStr::from_str(value).unwrap())
+            type Value = T;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("string or number")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<T, E>
+            where
+                E: de::Error,
+            {
+                Ok(FromStr::from_str(value).unwrap())
+            }
+
+            fn visit_u64<E>(self, value: u64) -> Result<T, E>
+            where
+                E: de::Error,
+            {
+                Ok(From::from(value))
+            }
+
+            fn visit_i64<E>(self, value: i64) -> Result<T, E>
+            where
+                E: de::Error,
+            {
+                Ok(From::from(value))
+            }
+
+            fn visit_f64<E>(self, value: f64) -> Result<T, E>
+            where
+                E: de::Error,
+            {
+                Ok(From::from(value))
+            }
         }
 
-        fn visit_u64<E>(self, value: u64) -> Result<T, E>
-        where
-            E: de::Error,
-        {
-            Ok(From::from(value))
-        }
-
-        fn visit_i64<E>(self, value: i64) -> Result<T, E>
-        where
-            E: de::Error,
-        {
-            Ok(From::from(value))
-        }
-
-        fn visit_f64<E>(self, value: f64) -> Result<T, E>
-        where
-            E: de::Error,
-        {
-            Ok(From::from(value))
-        }
-    }
-
-    deserializer.deserialize_any(StringOrNum(PhantomData))
-
-
+        deserializer.deserialize_any(StringOrNum(PhantomData))
     }
 }
 
@@ -112,7 +110,6 @@ impl fmt::Display for FloatOrString {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -140,8 +137,7 @@ mod tests {
 
     #[test]
     fn convert_vec_on_str_num() {
-        let json: serde_json::Value =
-                    serde_json::from_str("[\"2.1\",3,3.4]").unwrap();
+        let json: serde_json::Value = serde_json::from_str("[\"2.1\",3,3.4]").unwrap();
         let v: Vec<FloatOrString> = serde_json::from_value(json).unwrap();
         assert_eq!(v[0].0, 2.1);
         assert_eq!(v[1].0, 3.0);
@@ -150,7 +146,7 @@ mod tests {
 
     #[test]
     fn print_str_num() {
-        let str_num = FloatOrString{ 0: 2.3 };
+        let str_num = FloatOrString { 0: 2.3 };
         let num_as_str = format!("{}", str_num);
         assert_eq!(num_as_str, "2.3");
     }
