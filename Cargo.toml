@@ -1,6 +1,6 @@
 [package]
 name = "gurufocus_api"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Mark Beinker <mwb@quantlink.de>"]
 edition = "2018"
 description = "A rust adapter to the GuruFocus API, a provider of financial data."
