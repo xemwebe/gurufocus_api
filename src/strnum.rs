@@ -1,4 +1,5 @@
 use std::fmt;
+use std::default;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
@@ -61,6 +62,13 @@ impl<'de> Deserialize<'de> for FloatOrString {
             {
                 Ok(From::from(value))
             }
+
+            fn visit_unit<E>(self) -> Result<T,E>
+            where
+                E: de::Error,
+            {
+                Ok(From::from(std::f64::NAN))
+            }
         }
 
         deserializer.deserialize_any(StringOrNum(PhantomData))
@@ -107,6 +115,13 @@ impl From<f64> for FloatOrString {
 impl fmt::Display for FloatOrString {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.0)
+    }
+}
+
+/// Implement default instantiation
+impl default::Default for FloatOrString {
+    fn default() -> FloatOrString {
+        FloatOrString{ 0: std::f64::NAN }
     }
 }
 

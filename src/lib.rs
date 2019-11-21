@@ -63,6 +63,9 @@ pub use keyratios::*;
 /// Module for special string / number derserializer
 pub mod strnum;
 
+/// Module for special hex num derserializer
+pub mod hexnum;
+
 /// Container for connection parameters to gurufocus server.
 pub struct GuruFocusConnector {
     url: &'static str,
