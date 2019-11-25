@@ -40,7 +40,7 @@ pub struct GuruTrades {
     /// Array of gurus position in the stock
     holdings : Vec<GuruHoldings>,
     /// Array of recent guru picks in the stock
-    picks: Vec<GuruPicks>
+    picks: Vec<GuruPicks2>
 }
 
 /// Container for the guru holdings
@@ -57,7 +57,7 @@ pub struct GuruHoldings {
 
 /// Container for the guru holdings
 #[derive(Deserialize, Debug)]
-pub struct GuruPicks {
+pub struct GuruPicks2 {
     #[serde(rename = "Avg")]
     pub avg: FloatOrString,
     pub action: String,
@@ -69,4 +69,36 @@ pub struct GuruPicks {
     pub impact: FloatOrString,
     pub price_max: FloatOrString,
     pub price_min: FloatOrString,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GuruPicks {
+    port: Vec<GuruPick>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GuruPick {
+    #[serde(rename = "GuruName")]
+    pub guru_name: String,
+    #[serde(rename = "RecmAction")]
+    pub recm_action: String,
+    #[serde(rename = "RecmDate")]
+    pub recm_date: String,
+    #[serde(rename = "RecmPrice")]
+    pub recm_price: FloatOrString,
+    pub change: FloatOrString,
+    pub comment: String,
+    pub company: String,
+    pub currency: String,
+    pub currency_txt: String,
+    pub price: FloatOrString,
+    pub price_max: FloatOrString,
+    pub price_min: FloatOrString,
+    pub sector: String,
+    pub share_current: FloatOrString,
+    pub symbol: String,
+    pub symbol_ori: String,
+    pub trans_share: FloatOrString,
+    #[serde(rename = "type")]
+    pub transaction_type: String,
 }
