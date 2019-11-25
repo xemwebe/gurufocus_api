@@ -1,3 +1,19 @@
+Version 0.2.3
+* New container for guru trades
+* Bug in insider trades example fixed
+* Ignore ',' as thousands separator in numbers provided as strings
+* New container for insider trades
+
+Version 0.2.2
+* New container for stock summary added
+* New type HexNum added. This was required to represent colors which are hex numbers delivered
+  as of type Number is the hex representation does contain digits only (e.g. 204060), 
+  otherwise as string (e.g. "2a4b6f")
+
+Version 0.2.1
+* New data structure for key ratios
+* Reformatting of some files
+
 Version 0.2.0 (since major update since 0.1.5)
 * One example for each API function, ordered by the section number as they appear in the GuruFocus 
   documentation https://www.gurufocus.com/api.php. However, proper deserializing into proper structs

@@ -60,6 +60,10 @@ pub use financials::*;
 pub mod keyratios;
 pub use keyratios::*;
 
+/// Special types for insider tradingey ratios.
+pub mod insiders;
+pub use insiders::*;
+
 /// Module for special string / number derserializer
 pub mod strnum;
 

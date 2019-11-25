@@ -1,9 +1,8 @@
 use gurufocus_api as gfapi;
-use serde_json::Value;
 use std::collections::HashMap;
 use std::env;
 
-type InsiderTrades = HashMap<String, Vec<Value>>;
+type InsiderTrades = HashMap<String, Vec<gfapi::InsiderTrade>>;
 
 fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();

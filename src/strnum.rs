@@ -84,6 +84,8 @@ impl FromStr for FloatOrString {
         if s == "" {
             Ok(FloatOrString { 0: 0.0 })
         } else {
+            // remove commas as thousands separator
+            let s = s.replace(",","");
             match s.parse::<f64>() {
                 Ok(num) => Ok(FloatOrString { 0: num }),
                 // If string can not be parsed, set value to NaN
