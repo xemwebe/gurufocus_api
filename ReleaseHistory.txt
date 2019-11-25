@@ -3,6 +3,8 @@ Version 0.2.3
 * Bug in insider trades example fixed
 * Ignore ',' as thousands separator in numbers provided as strings
 * New container for insider trades
+* New container for guru picks
+* New guru portfolio container added
 
 Version 0.2.2
 * New container for stock summary added

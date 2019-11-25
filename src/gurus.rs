@@ -73,6 +73,7 @@ pub struct GuruPicks2 {
 
 #[derive(Deserialize, Debug)]
 pub struct GuruPicks {
+    /// Portfolio of guru picks
     port: Vec<GuruPick>,
 }
 
@@ -101,4 +102,52 @@ pub struct GuruPick {
     pub trans_share: FloatOrString,
     #[serde(rename = "type")]
     pub transaction_type: String,
+}
+
+
+#[derive(Deserialize, Debug)]
+pub struct GuruPortfolio {
+    pub summary: GuruPortSummary,
+    pub port: Vec<GuruPosition>,
+}
+
+
+#[derive(Deserialize, Debug)]
+pub struct GuruPortSummary {
+    pub country: String,
+    pub date: String,
+    pub equity: FloatOrString,
+    pub firm: String,
+    pub num_new: FloatOrString,
+    pub number_of_stocks: FloatOrString,
+    pub turnover: FloatOrString,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GuruPosition {
+    #[serde(rename = "13f_date")]
+    pub date_13f: String,
+    #[serde(rename = "52h")]
+    pub num_52h: FloatOrString,
+    #[serde(rename = "52l")]
+    pub num_52l: FloatOrString,
+    pub change: FloatOrString,
+    pub company: String,
+    pub currency: String,
+    pub currency_txt: String,
+    pub exchange: String,
+    pub impact: FloatOrString,
+    pub industry: String,
+    pub mktcap: FloatOrString,
+    pub pct: FloatOrString,
+    pub pe: FloatOrString,
+    pub position: FloatOrString,
+    pub price: FloatOrString,
+    pub sector: String,
+    pub share: FloatOrString,
+    pub symbol: String,
+    pub symbol_ori: String,
+    pub value: FloatOrString,
+    #[serde(rename = "yield")]
+    pub transaction_yield: FloatOrString,
 }
