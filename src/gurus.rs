@@ -33,3 +33,40 @@ pub struct Gurus {
     /// a vector of Guru IDs is stored.
     pub my: HashMap<String, Vec<String>>,
 }
+
+/// Container for the guru holdings
+#[derive(Deserialize, Debug)]
+pub struct GuruTrades {
+    /// Array of gurus position in the stock
+    holdings : Vec<GuruHoldings>,
+    /// Array of recent guru picks in the stock
+    picks: Vec<GuruPicks>
+}
+
+/// Container for the guru holdings
+#[derive(Deserialize, Debug)]
+pub struct GuruHoldings {
+    pub change: FloatOrString,
+    pub current_shares: FloatOrString,
+    pub date: String,
+    pub guru: String,
+    pub guru_id: String,
+    pub perc_assets: FloatOrString,
+    pub perc_shares: FloatOrString,
+}
+
+/// Container for the guru holdings
+#[derive(Deserialize, Debug)]
+pub struct GuruPicks {
+    #[serde(rename = "Avg")]
+    pub avg: FloatOrString,
+    pub action: String,
+    pub comment: String,
+    pub current_shares: FloatOrString,
+    pub date: String,
+    pub guru: String,
+    pub guru_id: String,
+    pub impact: FloatOrString,
+    pub price_max: FloatOrString,
+    pub price_min: FloatOrString,
+}
