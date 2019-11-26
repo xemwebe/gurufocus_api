@@ -64,6 +64,10 @@ pub use keyratios::*;
 pub mod insiders;
 pub use insiders::*;
 
+/// Special types for user portfolio.
+pub mod portfolio;
+pub use portfolio::*;
+
 /// Module for special string / number derserializer
 pub mod strnum;
 
@@ -202,7 +206,6 @@ impl GuruFocusConnector {
     fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
         let resp = reqwest::get(url.as_str());
-        println!("\nurl: {}", url);
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
         }
