@@ -1,9 +1,7 @@
 use gurufocus_api as gfapi;
-use serde_json::Value;
-use std::collections::HashMap;
 use std::env;
 
-type InsiderUpdaters = Vec<HashMap<String, Value>>;
+type InsiderUpdaters = Vec<gfapi::InsiderUpdate>;
 
 fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
