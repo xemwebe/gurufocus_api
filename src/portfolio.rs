@@ -1,6 +1,5 @@
-use serde::Deserialize;
 pub use crate::strnum::FloatOrString;
-
+use serde::Deserialize;
 
 /// Container for a user portfolio
 #[derive(Deserialize, Debug)]

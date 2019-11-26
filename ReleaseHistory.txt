@@ -1,3 +1,15 @@
+Version 0.3.0
+* Container for insider updates added
+* Container for analyst estimates added
+* Container for personal portfolios added
+* All the examples can use specially crafted containers with proper member names instead of 
+  iterating through serde_json::Value types. This justifies the increase of the minor
+  version number instead of only a patch version numbers.
+  For future version, it is planed to replace type `String` by some date type where appropriate.
+  Another additional type might be percentage numbers (currently also `String`). Also, using
+  the adapter in praxis will show if some containers need to be adjusted (e.g. make some
+  container members optional).
+
 Version 0.2.3
 * New container for guru trades
 * Bug in insider trades example fixed

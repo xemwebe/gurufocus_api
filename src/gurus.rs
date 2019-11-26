@@ -38,9 +38,9 @@ pub struct Gurus {
 #[derive(Deserialize, Debug)]
 pub struct GuruTrades {
     /// Array of gurus position in the stock
-    holdings : Vec<GuruHoldings>,
+    holdings: Vec<GuruHoldings>,
     /// Array of recent guru picks in the stock
-    picks: Vec<GuruPicks2>
+    picks: Vec<GuruPicks2>,
 }
 
 /// Container for the guru holdings
@@ -104,13 +104,11 @@ pub struct GuruPick {
     pub transaction_type: String,
 }
 
-
 #[derive(Deserialize, Debug)]
 pub struct GuruPortfolio {
     pub summary: GuruPortSummary,
     pub port: Vec<GuruPosition>,
 }
-
 
 #[derive(Deserialize, Debug)]
 pub struct GuruPortSummary {

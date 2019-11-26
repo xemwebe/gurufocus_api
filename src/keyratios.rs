@@ -997,7 +997,3 @@ pub struct QuarterlyAnalystEstimate {
     pub dividend_estimate: Vec<FloatOrString>,
     pub pettm_estimate: Vec<FloatOrString>,
 }
-
-
-
-

@@ -1,5 +1,5 @@
-use std::fmt;
 use std::default;
+use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
 
@@ -63,7 +63,7 @@ impl<'de> Deserialize<'de> for FloatOrString {
                 Ok(From::from(value))
             }
 
-            fn visit_unit<E>(self) -> Result<T,E>
+            fn visit_unit<E>(self) -> Result<T, E>
             where
                 E: de::Error,
             {
@@ -85,7 +85,7 @@ impl FromStr for FloatOrString {
             Ok(FloatOrString { 0: 0.0 })
         } else {
             // remove commas as thousands separator
-            let s = s.replace(",","");
+            let s = s.replace(",", "");
             match s.parse::<f64>() {
                 Ok(num) => Ok(FloatOrString { 0: num }),
                 // If string can not be parsed, set value to NaN
@@ -123,7 +123,7 @@ impl fmt::Display for FloatOrString {
 /// Implement default instantiation
 impl default::Default for FloatOrString {
     fn default() -> FloatOrString {
-        FloatOrString{ 0: std::f64::NAN }
+        FloatOrString { 0: std::f64::NAN }
     }
 }
 

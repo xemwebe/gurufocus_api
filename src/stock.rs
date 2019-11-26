@@ -1,7 +1,7 @@
+pub use crate::hexnum::HexNum;
+pub use crate::strnum::FloatOrString;
 use serde::Deserialize;
 use std::collections::HashMap;
-pub use crate::strnum::FloatOrString;
-pub use crate::hexnum::HexNum;
 
 /// Container for basic data for a single stock
 #[derive(Deserialize, Debug)]
@@ -59,14 +59,11 @@ pub struct Quote {
     pub timestamp: i64,
 }
 
-
-
 /// Container for summary of basic stock data and valuation ratios
 #[derive(Deserialize, Debug)]
 pub struct StockSummary {
     pub summary: StockSummaryByCat,
 }
-
 
 /// Container for summary of basic stock data by category
 #[derive(Deserialize, Debug)]
@@ -995,7 +992,6 @@ pub struct IndustryCmp {
     pub indu_tot: FloatOrString,
 }
 
-
 /// Description of range of some ratio
 #[derive(Deserialize, Debug)]
 pub struct RatioRange {
@@ -1004,7 +1000,6 @@ pub struct RatioRange {
     pub high: FloatOrString,
     pub low: FloatOrString,
 }
-
 
 /// Details to a specific warning
 #[derive(Deserialize, Debug)]
@@ -1015,7 +1010,6 @@ pub struct WarningDetails {
     pub display: String,
     pub name: String,
 }
-
 
 /// Address and related company information
 #[derive(Deserialize, Debug)]
@@ -1028,7 +1022,6 @@ pub struct CompanyDescription {
     pub website: String,
 }
 
-
 /// Country and exchange information
 #[derive(Deserialize, Debug)]
 pub struct Country {
@@ -1036,7 +1029,6 @@ pub struct Country {
     pub exchange: String,
     pub symbol: String,
 }
-
 
 /// Stock price change information
 #[derive(Deserialize, Debug)]

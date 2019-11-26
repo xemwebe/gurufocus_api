@@ -1,9 +1,9 @@
-use std::fmt;
-use std::str::FromStr;
-use std::default;
-use std::marker::PhantomData;
 use serde::de::{self, Visitor};
 use serde::{Deserialize, Deserializer};
+use std::default;
+use std::fmt;
+use std::marker::PhantomData;
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct HexNum(String);
@@ -22,9 +22,7 @@ impl<'de> Deserialize<'de> for HexNum {
 
         impl<'de, T> Visitor<'de> for HexNum<T>
         where
-            T: Deserialize<'de>
-                + FromStr<Err = <String as FromStr>::Err>
-                + From<u64>
+            T: Deserialize<'de> + FromStr<Err = <String as FromStr>::Err> + From<u64>,
         {
             type Value = T;
 
@@ -53,7 +51,7 @@ impl<'de> Deserialize<'de> for HexNum {
                 Ok(From::from(value as u64))
             }
 
-            fn visit_unit<E>(self) -> Result<T,E>
+            fn visit_unit<E>(self) -> Result<T, E>
             where
                 E: de::Error,
             {
@@ -73,10 +71,11 @@ impl FromStr for HexNum {
     }
 }
 
-
 impl From<u64> for HexNum {
     fn from(val: u64) -> HexNum {
-        HexNum { 0: format!("{}", val) }
+        HexNum {
+            0: format!("{}", val),
+        }
     }
 }
 
@@ -90,7 +89,7 @@ impl fmt::Display for HexNum {
 /// Implement default instantiation
 impl default::Default for HexNum {
     fn default() -> HexNum {
-        HexNum{ 0: "0".to_string() }
+        HexNum { 0: "0".to_string() }
     }
 }
 
