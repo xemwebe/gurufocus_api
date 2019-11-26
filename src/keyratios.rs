@@ -963,3 +963,41 @@ pub struct Fundamental {
     #[serde(rename = "ROIC % (10y High)")]
     pub roic_pct_10y_high: FloatOrString,
 }
+
+/// Container for analyst estimates for all periods
+#[derive(Deserialize, Debug)]
+pub struct AnalystEstimates {
+    pub annual: AnnualAnalystEstimate,
+    pub quarter: QuarterlyAnalystEstimate,
+}
+
+/// Container for analyst estimates for annual periods
+#[derive(Deserialize, Debug)]
+pub struct AnnualAnalystEstimate {
+    pub long_term_growth_rate_mean: FloatOrString,
+    pub date: Vec<String>,
+    pub revenue_estimate: Vec<FloatOrString>,
+    pub eps_nri_estimate: Vec<FloatOrString>,
+    pub per_share_eps_estimate: Vec<FloatOrString>,
+    pub ebit_estimate: Vec<FloatOrString>,
+    pub ebitda_estimate: Vec<FloatOrString>,
+    pub dividend_estimate: Vec<FloatOrString>,
+}
+
+/// Container for analyst estimates for quarterly periods
+#[derive(Deserialize, Debug)]
+pub struct QuarterlyAnalystEstimate {
+    pub long_term_growth_rate_mean: FloatOrString,
+    pub date: Vec<String>,
+    pub revenue_estimate: Vec<FloatOrString>,
+    pub eps_nri_estimate: Vec<FloatOrString>,
+    pub per_share_eps_estimate: Vec<FloatOrString>,
+    pub ebit_estimate: Vec<FloatOrString>,
+    pub ebitda_estimate: Vec<FloatOrString>,
+    pub dividend_estimate: Vec<FloatOrString>,
+    pub pettm_estimate: Vec<FloatOrString>,
+}
+
+
+
+
