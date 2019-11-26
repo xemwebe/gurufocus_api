@@ -1,6 +1,5 @@
 use serde::Deserialize;
 use std::collections::HashMap;
-
 pub use crate::strnum::FloatOrString;
 pub use crate::hexnum::HexNum;
 
@@ -1030,7 +1029,7 @@ pub struct CompanyDescription {
 }
 
 
-/// Address and related company information
+/// Country and exchange information
 #[derive(Deserialize, Debug)]
 pub struct Country {
     pub country: String,
@@ -1039,7 +1038,7 @@ pub struct Country {
 }
 
 
-/// Address and related company information
+/// Stock price change information
 #[derive(Deserialize, Debug)]
 pub struct StockDynamics {
     pub high: FloatOrString,
@@ -1173,4 +1172,16 @@ pub struct IndustryDetails {
     pub supersector: String,
     pub supersectorcode: i64,
     pub symbol: String,
+}
+
+/// Historic dividend data
+#[derive(Deserialize, Debug)]
+pub struct Dividend {
+    pub ex_date: String,
+    pub record_date: String,
+    pub amount: FloatOrString,
+    pub pay_date: String,
+    pub currency: String,
+    #[serde(rename = "type")]
+    pub div_type: String,
 }
