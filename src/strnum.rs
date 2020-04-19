@@ -95,6 +95,12 @@ impl FromStr for FloatOrString {
     }
 }
 
+impl From<FloatOrString> for f64 {
+    fn from(val: FloatOrString) -> f64 {
+        return val.0;
+    }
+}
+
 impl From<u64> for FloatOrString {
     fn from(val: u64) -> FloatOrString {
         FloatOrString { 0: val as f64 }
@@ -167,4 +173,12 @@ mod tests {
         let num_as_str = format!("{}", str_num);
         assert_eq!(num_as_str, "2.3");
     }
+
+    #[test]
+    fn float_string_to_f64() {
+        let str_num = FloatOrString { 0: 2.3 };
+        let num = f64::from(str_num);
+        assert_eq!(num, 2.3);
+    }
+
 }
