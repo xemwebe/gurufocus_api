@@ -2,11 +2,12 @@ use std::default;
 use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
+use std::convert::Into;
 
 use serde::de::{self, Visitor};
 use serde::{Deserialize, Deserializer};
 
-#[derive(Debug)]
+#[derive(Debug,Clone,Copy)]
 pub struct FloatOrString(f64);
 
 impl<'de> Deserialize<'de> for FloatOrString {
@@ -95,9 +96,9 @@ impl FromStr for FloatOrString {
     }
 }
 
-impl From<FloatOrString> for f64 {
-    fn from(val: FloatOrString) -> f64 {
-        return val.0;
+impl Into<f64> for FloatOrString {
+    fn into(self) -> f64 {
+        return self.0;
     }
 }
 
@@ -177,7 +178,7 @@ mod tests {
     #[test]
     fn float_string_to_f64() {
         let str_num = FloatOrString { 0: 2.3 };
-        let num = f64::from(str_num);
+        let num: f64 = str_num.into();
         assert_eq!(num, 2.3);
     }
 
