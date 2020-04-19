@@ -27,14 +27,16 @@ processing. The `serde_json::Value` types can be deserialized
 into more meaningful data structures, as is demonstrated in the `gurulist` example. 
 
 
-The GuruFocus API returns numbers sometimes as numbers, sometimes as strings. This is dealt
-with by introducing a new struct `FloatOrString` containing a float value, but which can
-be read from either a string or float automatically. The drawback is that `.0` as to be 
-added to the variable name of a specific data structure. I.e., to access the quoted price
-in a variable of type Quote, i.e. `q: Quote`, the price can be accessed via `q.price.0` instead
-of `q.price`. In a few cases, the string contains not a number, but an error message, like 
-"Negative Tangible Equity". In such cases, if the string can not be parsed to a number, the
-value is set to `NAN`.
+The GuruFocus API returns numbers sometimes as numbers, sometimes as strings.
+This is dealt with by introducing a new struct `FloatOrString` containing a
+float value, but which can be read from either a string or float automatically.
+The drawback is that `.0` as to be added to the variable name of a specific data
+structure. I.e., to access the quoted price in a variable of type Quote, i.e.
+`q: Quote`, the price can be accessed via `q.price.0` instead of `q.price`, or,
+more generally, converted to `f64` by `f64::from(q.price)`. In a few cases, the
+string contains not a number, but an error message, like "Negative Tangible
+Equity". In such cases, if the string can not be parsed to a number, the value
+is set to `NAN`.
  
 Please note that the library is not yet stable and that the user interface is still subject to change.
 However, feedback regarding the usability and suggestions for improving the interface are welcome.
