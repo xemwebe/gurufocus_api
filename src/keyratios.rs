@@ -106,7 +106,7 @@ pub struct ValuationRatio {
     pub price_to_dcf_earnings_based_10y_low: FloatOrString,
     #[serde(rename = "Earnings Yield %")]
     pub earnings_yield_pct: FloatOrString,
-    #[serde(rename = "Margin of Safty % (DCF Earnings Based)")]
+    #[serde(rename = "Margin of Safety % (DCF Earnings Based)")]
     pub margin_of_safty_pct_dcf_earnings_based: FloatOrString,
     #[serde(rename = "Price-to-Free-Cash-Flow (10y Low)")]
     pub price_to_free_cash_flow_10y_low: FloatOrString,
