@@ -3,12 +3,13 @@ use std::env;
 
 type PriceHistory = Vec<(String, f64)>;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
     let gf_connect = gfapi::GuruFocusConnector::new(token);
 
     let stock = "NYSE:DIS";
-    let prices = gf_connect.get_price_hist(stock).unwrap();
+    let prices = gf_connect.get_price_hist(stock).await.unwrap();
 
     let prices: PriceHistory = serde_json::from_value(prices).unwrap();
     println!("Price history for Walt Disney\n{:#?}", prices);

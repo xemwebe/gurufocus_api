@@ -48,7 +48,7 @@ pub struct ValuationRatio {
     pub pe_ratio_10y_low: FloatOrString,
     #[serde(rename = "PE Ratio (10y High)")]
     pub pe_ratio_10y_high: FloatOrString,
-    #[serde(rename = "DCF (FCF Based)")]
+    #[serde(rename = "Intrinsic Value: DCF (FCF Based)")]
     pub dcf_fcf_based: FloatOrString,
     #[serde(rename = "PE Ratio")]
     pub pe_ratio: FloatOrString,
@@ -398,7 +398,7 @@ pub struct Growth {
     pub _3_year_asset_growth_rate_10y_median: FloatOrString,
     #[serde(rename = "3-Year Total EBITDA Growth Rate (10y High)")]
     pub _3_year_total_ebitda_growth_rate_10y_high: FloatOrString,
-    #[serde(rename = "3-Year EPS w/o NRI Growth Rate (10y Low)")]
+    #[serde(rename = "3-Year EPS without NRI Growth Rate (10y Low)")]
     pub _3_year_eps_w_nri_growth_rate_10y_low: FloatOrString,
     #[serde(rename = "5-Year EBITDA Growth Rate (Per Share)")]
     pub _5_year_ebitda_growth_rate_per_share: FloatOrString,
@@ -426,9 +426,9 @@ pub struct Growth {
     pub _3_year_revenue_growth_rate_per_share: FloatOrString,
     #[serde(rename = "3-Year Total EBITDA Growth Rate (10y Low)")]
     pub _3_year_total_ebitda_growth_rate_10y_low: FloatOrString,
-    #[serde(rename = "3-Year EPS w/o NRI Growth Rate (10y Median)")]
+    #[serde(rename = "3-Year EPS without NRI Growth Rate (10y Median)")]
     pub _3_year_eps_w_nri_growth_rate_10y_median: FloatOrString,
-    #[serde(rename = "3-Year EPS w/o NRI Growth Rate")]
+    #[serde(rename = "3-Year EPS without NRI Growth Rate")]
     pub _3_year_eps_w_nri_growth_rate: FloatOrString,
     #[serde(rename = "1-Year Asset Growth Rate")]
     pub _1_year_asset_growth_rate: FloatOrString,
@@ -454,7 +454,7 @@ pub struct Growth {
     pub _5_year_dividend_growth_rate_per_share: FloatOrString,
     #[serde(rename = "5-Year Total Revenue Growth Rate")]
     pub _5_year_total_revenue_growth_rate: FloatOrString,
-    #[serde(rename = "5-Year EPS w/o NRI Growth Rate")]
+    #[serde(rename = "5-Year EPS without NRI Growth Rate")]
     pub _5_year_eps_w_nri_growth_rate: FloatOrString,
     #[serde(rename = "3-Year Book Growth Rate (10y High)")]
     pub _3_year_book_growth_rate_10y_high: FloatOrString,
@@ -480,7 +480,7 @@ pub struct Growth {
     pub _3_year_dividend_growth_rate_10y_median: FloatOrString,
     #[serde(rename = "1-Year Market Cap Change %")]
     pub _1_year_market_cap_change_pct: FloatOrString,
-    #[serde(rename = "10-Year EPS w/o NRI Growth Rate")]
+    #[serde(rename = "10-Year EPS without NRI Growth Rate")]
     pub _10_year_eps_w_nri_growth_rate: FloatOrString,
     #[serde(rename = "3-Year Dividend Growth Rate (Per Share)")]
     pub _3_year_dividend_growth_rate_per_share: FloatOrString,
@@ -510,7 +510,7 @@ pub struct Growth {
     pub _10_year_fcf_growth_rate_per_share: FloatOrString,
     #[serde(rename = "10-Year Net Income Growth Rate")]
     pub _10_year_net_income_growth_rate: FloatOrString,
-    #[serde(rename = "1-Year EPS w/o NRI Growth Rate")]
+    #[serde(rename = "1-Year EPS without NRI Growth Rate")]
     pub _1_year_eps_wo_nri_growth_rate: FloatOrString,
     #[serde(rename = "3-Year EBITDA Growth Rate (10y High)")]
     pub _3_year_ebitda_growth_rate_10y_high: FloatOrString,
@@ -686,8 +686,10 @@ pub struct Fundamental {
     pub _3_year_average_share_buyback_ratio_10y_median: FloatOrString,
     #[serde(rename = "Altman Z-Score (10y Low)")]
     pub altman_z_score_10y_low: FloatOrString,
-    #[serde(rename = "Warning Signs")]
-    pub warning_signs: FloatOrString,
+    #[serde(rename = "Warning Signs (Medium)")]
+    pub warning_signs_medium: FloatOrString,
+    #[serde(rename = "Warning Signs (Severe)")]
+    pub warning_signs_severe: FloatOrString,
     #[serde(rename = "Current Ratio (10y High)")]
     pub current_ratio_10y_high: FloatOrString,
     #[serde(rename = "Trailing 12-Month EBIT")]
@@ -850,8 +852,6 @@ pub struct Fundamental {
     pub return_on_tangible_asset: FloatOrString,
     #[serde(rename = "Return-on-Tangible-Equity (10y High)")]
     pub return_on_tangible_equity_10y_high: FloatOrString,
-    #[serde(rename = "Number of Median Warning Signs")]
-    pub number_of_median_warning_signs: FloatOrString,
     #[serde(rename = "Quick Ratio (10y Low)")]
     pub quick_ratio_10y_low: FloatOrString,
     #[serde(rename = "Days Payable (10y Median)")]

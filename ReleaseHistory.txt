@@ -1,3 +1,6 @@
+Version 0.4.0
+* Support of async (upgrade to use version 0.10.x of crate reqwest)
+
 Version 0.3.0
 * Container for insider updates added
 * Container for analyst estimates added

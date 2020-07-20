@@ -92,59 +92,59 @@ impl GuruFocusConnector {
     }
 
     /// Returns the full history of financial data for stock symbol given as argument
-    pub fn get_financials(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_financials(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/financials", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns the current key statistic figures for stock symbol given as argument
-    pub fn get_key_ratios(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_key_ratios(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/keyratios", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns the current quote data of a comma separated list of symbols given as argument
-    pub fn get_quotes(&self, stocks: &[&str]) -> Result<Value, String> {
+    pub async fn get_quotes(&self, stocks: &[&str]) -> Result<Value, String> {
         let args = format!("stock/{}/quote", compact_list(&stocks));
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns the history of (adjusted) quoted prices for symbol given as argument
-    pub fn get_price_hist(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_price_hist(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/price", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns the history of (unadjusted) quoted prices for symbol given as argument
-    pub fn get_unadj_price_hist(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_unadj_price_hist(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/unadjusted_price", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns companies current price, valuation rations and ranks for symbol given as argument
-    pub fn get_stock_summary(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_stock_summary(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/summary", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns real-time guru trades and holding data for symbol given as argument
-    pub fn get_guru_trades(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_guru_trades(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/gurus", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns real-time insider trades for symbol given as argument
-    pub fn get_insider_trades(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_insider_trades(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/insider", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
     /// Returns lists of all and personalized gurus
-    pub fn get_gurus(&self) -> Result<Value, String> {
-        self.send_request("gurulist")
+    pub async fn get_gurus(&self) -> Result<Value, String> {
+        self.send_request("gurulist").await
     }
 
     /// Returns list of gurus stock picks using list of guru ids since a given start date.
-    pub fn get_guru_picks(
+    pub async fn get_guru_picks(
         &self,
         gurus: &[&str],
         start_date: chrono::NaiveDate,
@@ -154,76 +154,77 @@ impl GuruFocusConnector {
             compact_list(&gurus),
             start_date.format("%F")
         );
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns list of aggregated guru portfolios given a slice of guru ids
-    pub fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, String> {
+    pub async fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, String> {
         let args = format!("guru/{}/aggregated", compact_list(&gurus));
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns list of supported exchanges
-    pub fn get_exchanges(&self) -> Result<Value, String> {
-        self.send_request("exchange_list")
+    pub async fn get_exchanges(&self) -> Result<Value, String> {
+        self.send_request("exchange_list").await
     }
 
     /// Returns list of all stocks of a particular exchange
-    pub fn get_listed_stocks(&self, exchange: &str) -> Result<Value, String> {
+    pub async fn get_listed_stocks(&self, exchange: &str) -> Result<Value, String> {
         let args = format!("exchange_stocks/{}", exchange);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns list of latest insider trades ordered by insider transctions time
-    pub fn get_insider_updates(&self) -> Result<Value, String> {
-        self.send_request("insider_updates")
+    pub async fn get_insider_updates(&self) -> Result<Value, String> {
+        self.send_request("insider_updates").await
     }
 
     /// Returns 30 years dividend history data of a stock
-    pub fn get_dividend_history(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_dividend_history(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/dividend", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns analyst estimate data of a stock
-    pub fn get_analyst_estimate(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_analyst_estimate(&self, stock: &str) -> Result<Value, String> {
         let args = format!("stock/{}/analyst_estimate ", stock);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Returns list of personal portfolios
-    pub fn get_personal_portfolio(&self) -> Result<Value, String> {
-        self.send_request("portfolio/my_portfolios")
+    pub async fn get_personal_portfolio(&self) -> Result<Value, String> {
+        self.send_request("portfolio/my_portfolios").await
     }
 
     /// Returns list of all stocks with updated fundamental data within a week of the given date
-    pub fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, String> {
+    pub async fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, String> {
         let args = format!("funda_updated/{}", date);
-        self.send_request(args.as_str())
+        self.send_request(args.as_str()).await
     }
 
     /// Send request to gurufocus server and transform response to JSON value
-    fn send_request(&self, args: &str) -> Result<Value, String> {
+    async fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
-        let resp = reqwest::get(url.as_str());
+        println!("{}", url);
+        let resp = reqwest::get(url.as_str()).await;
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
         }
-        let mut resp = resp.unwrap();
+        let resp = resp.unwrap();
         match resp.status() {
-            StatusCode::OK => match resp.json() {
+            StatusCode::OK => match resp.json().await {
                 Ok(json) => Ok(json),
                 err => Err(format!("Parsing json failed: {:?}", err)),
             },
-            StatusCode::FORBIDDEN => match resp.json() {
+            StatusCode::FORBIDDEN => match resp.json().await {
                 Ok(json) => Err(format!("Access forbidden, {}.", get_error(json))),
                 _ => Err(format!("Access forbidden.")),
             },
-            StatusCode::NOT_FOUND => match resp.json() {
+            StatusCode::NOT_FOUND => match resp.json().await {
                 Ok(json) => Err(format!("Not found, {}.", get_error(json))),
                 _ => Err(format!("Access forbidden.")),
             },
-            err => match resp.json() {
+            err => match resp.json().await {
                 Ok(json) => Err(format!("Unspecified error, {}.", get_error(json))),
                 _ => Err(format!("Received bad response from server: {}", err)),
             },

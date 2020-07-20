@@ -1,10 +1,11 @@
 use gurufocus_api as gfapi;
 use std::env;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
     let gf_connect = gfapi::GuruFocusConnector::new(token);
-    let guru_data = gf_connect.get_gurus().unwrap();
+    let guru_data = gf_connect.get_gurus().await.unwrap();
 
     let gurus: gfapi::Gurus = serde_json::from_value(guru_data).unwrap();
     // Print list of gurus

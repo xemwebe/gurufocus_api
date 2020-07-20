@@ -40,13 +40,14 @@ fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
     NaiveDate::from_ymd(year, month, day)
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
     let gf_connect = gfapi::GuruFocusConnector::new(token);
 
     let now = Utc::now().naive_local().date();
     let one_months_ago = month_before(now, 6);
-    let stocks = gf_connect.get_updated_stocks(one_months_ago).unwrap();
+    let stocks = gf_connect.get_updated_stocks(one_months_ago).await.unwrap();
 
     let stocks: UpdatedStocks = serde_json::from_value(stocks).unwrap();
     println!(

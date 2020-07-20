@@ -27,6 +27,7 @@ pub struct PeriodData {
     pub valuation_ratios: ValuationRatios,
     pub common_size_ratios: CommonSizeRatios,
     pub valuation_and_quality: ValuationAndQuality,
+    #[serde(rename = "Preliminary")]
     pub preliminary: Vec<FloatOrString>,
 }
 
@@ -63,7 +64,7 @@ pub struct BalanceSheet {
     pub other_current_liabilities: Vec<FloatOrString>,
     #[serde(rename = "Total Equity")]
     pub total_equity: Vec<FloatOrString>,
-    #[serde(rename = "PensionAndRetirementBenefit")]
+    #[serde(rename = "Pension And Retirement Benefit")]
     pub pension_and_retirement_benefit: Vec<FloatOrString>,
     #[serde(rename = "Retained Earnings")]
     pub retained_earnings: Vec<FloatOrString>,
@@ -149,7 +150,7 @@ pub struct BalanceSheet {
     pub current_accrued_expense: Vec<FloatOrString>,
     #[serde(rename = "Accounts Receivable")]
     pub accounts_receivable: Vec<FloatOrString>,
-    #[serde(rename = "DeferredTaxAndRevenue")]
+    #[serde(rename = "Deferred Tax And Revenue")]
     pub deferred_tax_and_revenue: Vec<FloatOrString>,
     #[serde(rename = "Minority Interest")]
     pub minority_interest: Vec<FloatOrString>,
@@ -198,9 +199,9 @@ pub struct CashFlowStatement {
     #[serde(rename = "Change In Working Capital")]
     pub change_in_working_capital: Vec<FloatOrString>,
     #[serde(rename = "Net Foreign Currency Exchange Gain")]
-    pub net_foreign_currency_exchange_gain: Vec<FloatOrString>,
-    #[serde(rename = "Change In DeferredTax")]
-    pub change_in_deferrred_tax: Vec<FloatOrString>,
+    pub net_foreign_currency_exchange_gain: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Change In Deferred Tax")]
+    pub change_in_deferrred_tax: Option<Vec<FloatOrString>>,
     #[serde(rename = "Net Intangibles Purchase And Sale")]
     pub net_intangibles_purchase_and_sale: Vec<FloatOrString>,
     #[serde(rename = "Free Cash Flow")]
@@ -208,13 +209,13 @@ pub struct CashFlowStatement {
     #[serde(rename = "Purchase Of Business")]
     pub purchase_of_business: Vec<FloatOrString>,
     #[serde(rename = "Cash Flow from Discontinued Operations")]
-    pub cash_flow_from_discontinued_operations: Vec<FloatOrString>,
+    pub cash_flow_from_discontinued_operations: Option<Vec<FloatOrString>>,
     #[serde(rename = "Change In Prepaid Assets")]
     pub change_in_prepaid_assets: Vec<FloatOrString>,
     #[serde(rename = "Cash From Other Investing Activities")]
     pub cash_from_other_investing_activities: Vec<FloatOrString>,
     #[serde(rename = "Net Income")]
-    pub net_income: Vec<FloatOrString>,
+    pub net_income: Option<Vec<FloatOrString>>,
     #[serde(rename = "Cash From Discontinued Investing Activities")]
     pub cash_from_discontinued_investing_activities: Vec<FloatOrString>,
     #[serde(rename = "Cash Flow from Others")]
@@ -246,7 +247,7 @@ pub struct CashFlowStatement {
     #[serde(rename = "Issuance of Stock")]
     pub issuance_of_stock: Vec<FloatOrString>,
     #[serde(rename = "Depreciation, Depletion and Amortization")]
-    pub depreciation_depletion_and_amortization: Vec<FloatOrString>,
+    pub depreciation_depletion_and_amortization: Option<Vec<FloatOrString>>,
     #[serde(rename = "Change In Payables And Accrued Expense")]
     pub change_in_payables_and_accrued_expense: Vec<FloatOrString>,
     #[serde(rename = "Net Change in Cash")]
@@ -281,18 +282,18 @@ pub struct IncomeStatement {
     #[serde(rename = "Operating Income")]
     pub operating_income: Vec<FloatOrString>,
     #[serde(rename = "Write Off")]
-    pub write_off: Vec<FloatOrString>,
+    pub write_off: Option<Vec<FloatOrString>>,
     #[serde(rename = "Gross Margin %")]
     pub gross_margin_pct: Vec<FloatOrString>,
     #[serde(rename = "Gross Profit")]
     pub gross_profit: Vec<FloatOrString>,
     #[serde(rename = "Impairment Of Capital Assets")]
-    pub impairment_of_capital_assets: Vec<FloatOrString>,
+    pub impairment_of_capital_assets: Option<Vec<FloatOrString>>,
     #[serde(rename = "Other Income (Expense)")]
     pub other_income: Vec<FloatOrString>,
     #[serde(rename = "Interest Expense")]
     pub interest_expense: Vec<FloatOrString>,
-    #[serde(rename = "Pre-Tax Income")]
+    #[serde(rename = "Pretax Income")]
     pub pre_tax_income: Vec<FloatOrString>,
     #[serde(rename = "Other Operating Expense")]
     pub other_operating_expense: Vec<FloatOrString>,
@@ -304,8 +305,8 @@ pub struct IncomeStatement {
     pub research_and_development: Vec<FloatOrString>,
     #[serde(rename = "Tax Rate %")]
     pub tax_rate_pct: Vec<FloatOrString>,
-    #[serde(rename = "Restructuring And Mergern Acquisition")]
-    pub restructuring_and_merger_and_acquisition: Vec<FloatOrString>,
+    #[serde(rename = "Restructuring And Merger And Acquisition")]
+    pub restructuring_and_merger_and_acquisition: Option<Vec<FloatOrString>>,
     #[serde(rename = "Net Margin %")]
     pub net_margin: Vec<FloatOrString>,
     #[serde(rename = "EPS (Diluted)")]
@@ -313,7 +314,7 @@ pub struct IncomeStatement {
     #[serde(rename = "Revenue")]
     pub revenue: Vec<FloatOrString>,
     #[serde(rename = "Non Operating Income")]
-    pub non_operating_income: Vec<FloatOrString>,
+    pub non_operating_income: Option<Vec<FloatOrString>>,
     #[serde(rename = "EBITDA")]
     pub ebitda: Vec<FloatOrString>,
     #[serde(rename = "Shares Outstanding (Diluted Average)")]
@@ -331,7 +332,7 @@ pub struct IncomeStatement {
     #[serde(rename = "Cost of Goods Sold")]
     pub cost_of_goods_sold: Vec<FloatOrString>,
     #[serde(rename = "Gain on Sale of Security")]
-    pub gain_on_sale_of_security: Vec<FloatOrString>,
+    pub gain_on_sale_of_security: Option<Vec<FloatOrString>>,
 }
 
 /// Container for holding valuation ratios
@@ -445,7 +446,7 @@ pub struct ValuationAndQuality {
     pub graham_number: Vec<FloatOrString>,
     #[serde(rename = "Restated Filing Date")]
     pub restated_filing_date: Vec<FloatOrString>,
-    #[serde(rename = "Buyback Yield %")]
+    #[serde(rename = "Buyback Yield")]
     pub buyback_yield_pct: Vec<FloatOrString>,
     #[serde(rename = "Intrinsic Value: Projected FCF")]
     pub intrinsic_value_projected_fcf: Vec<FloatOrString>,
@@ -458,7 +459,7 @@ pub struct ValuationAndQuality {
     #[serde(rename = "Net Current Asset Value")]
     pub net_current_asset_value: Vec<FloatOrString>,
     #[serde(rename = "Median PB Value")]
-    pub median_pb_value: Vec<FloatOrString>,
+    pub median_pb_value: Option<Vec<FloatOrString>>,
     #[serde(rename = "Peter Lynch Fair Value")]
     pub peter_lynch_fair_value: Vec<FloatOrString>,
     #[serde(rename = "Shares Outstanding (EOP)")]
@@ -487,15 +488,15 @@ pub struct ValuationAndQuality {
     pub net_net_working_capital: Vec<FloatOrString>,
     #[serde(rename = "YoY EPS Growth")]
     pub yoy_eps_growth: Vec<FloatOrString>,
-    #[serde(rename = "5-Year EBITDA Growth Rate")]
+    #[serde(rename = "5-Year EBITDA Growth Rate (Per Share)")]
     pub five_year_ebitda_growth_rate: Vec<FloatOrString>,
     #[serde(rename = "Shares Outstanding (Basic Average)")]
     pub shares_outstanding_basic_average: Vec<FloatOrString>,
-    #[serde(rename = "Enterprise Value")]
+    #[serde(rename = "Enterprise Value ($M)")]
     pub enterprice_value: Vec<FloatOrString>,
     #[serde(rename = "Quick Ratio")]
     pub quick_ratio: Vec<FloatOrString>,
-    #[serde(rename = "YoY EBITDA Growth")]
+    #[serde(rename = "YoY EBITDA Growth (%)")]
     pub yoy_ebitda_growth: Vec<FloatOrString>,
     #[serde(rename = "Highest Stock Price")]
     pub highest_stock_price: Vec<FloatOrString>,
