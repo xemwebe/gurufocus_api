@@ -283,7 +283,7 @@ pub struct CompanyData {
     pub sector_code: FloatOrString,
     #[serde(rename = "SGA")]
     pub sga: FloatOrString,
-    pub rank_history: FloatOrString,
+    pub rank_history: Option<FloatOrString>,
     pub grossprofit: FloatOrString,
     pub cash: FloatOrString,
     #[serde(rename = "FCFmargin_med_5y")]
@@ -528,9 +528,9 @@ pub struct CompanyData {
     pub pchange_10y: FloatOrString,
     pub grossmargin_growth: FloatOrString,
     pub payout_range: RatioRange,
-    pub rank_value_global: FloatOrString,
+    pub rank_value_global: Option<FloatOrString>,
     pub roic_med: FloatOrString,
-    pub rank_industry: FloatOrString,
+    pub rank_industry: Option<FloatOrString>,
     pub debt2ebitda_low: FloatOrString,
     pub ebit_q1_growth: FloatOrString,
     pub fiscal_year_end: FloatOrString,
@@ -751,7 +751,7 @@ pub struct CompanyData {
     #[serde(rename = "penrilow")]
     pub penrilow: FloatOrString,
     #[serde(rename = "primary_ShareClass")]
-    pub primary_share_class: String,
+    pub primary_share_class: Option<String>,
     pub roe_med_5y: FloatOrString,
     pub volatility: FloatOrString,
     pub num_good_signs: FloatOrString,
@@ -791,7 +791,7 @@ pub struct CompanyData {
     pub rvn_growth_10y: FloatOrString,
     pub cashflow_growth_3y_high: FloatOrString,
     pub pretax_margain_med: FloatOrString,
-    pub rank_absolute: FloatOrString,
+    pub rank_absolute: Option<FloatOrString>,
     pub data_complete: FloatOrString,
     pub exchange: FloatOrString,
     pub projected_pebitda: FloatOrString,
@@ -853,7 +853,7 @@ pub struct CompanyData {
     pub delisted: FloatOrString,
     pub ebit_growth_3y_high: FloatOrString,
     pub p2ncav: FloatOrString,
-    pub rank_quality_global: FloatOrString,
+    pub rank_quality_global: Option<FloatOrString>,
     pub group_code: i64,
     pub total_buyback_1y: FloatOrString,
     pub offlow: FloatOrString,
@@ -1004,7 +1004,7 @@ pub struct RatioRange {
 /// Details to a specific warning
 #[derive(Deserialize, Debug)]
 pub struct WarningDetails {
-    pub category: String,
+    pub category: Option<String>,
     pub degree: String,
     pub details: String,
     pub display: String,
@@ -1016,9 +1016,9 @@ pub struct WarningDetails {
 pub struct CompanyDescription {
     pub address: String,
     pub descrpt: String,
-    pub morn_comp_id: String,
+    pub morn_comp_id: Option<String>,
     pub short_descript: String,
-    pub symbol: String,
+    pub symbol: Option<String>,
     pub website: String,
 }
 
@@ -1039,7 +1039,7 @@ pub struct StockDynamics {
     pub p_change: FloatOrString,
     pub p_pct_change: FloatOrString,
     pub price: FloatOrString,
-    pub stockid: String,
+    pub stockid: Option<String>,
     pub volumn_day: FloatOrString,
 }
 
