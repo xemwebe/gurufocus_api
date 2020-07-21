@@ -4,19 +4,34 @@ pub use crate::strnum::FloatOrString;
 
 /// Structure holding the history of financial data for a single stock.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct FinancialData {
     pub financials: DataPeriods,
 }
 
 /// Structure holding the history of financial for different periods.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct DataPeriods {
+    pub financial_template_parameters: FinancialTemplateParameters,
     pub annuals: PeriodData,
     pub quarterly: PeriodData,
 }
 
+/// Structure parameters for specific financial data template 
+#[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+pub struct FinancialTemplateParameters {
+    pub ind_template: String, 
+    #[serde(rename = "REITs")]
+    pub reits: String,
+    #[serde(rename = "IsDirect")]
+    pub is_direct: String,
+}
+
 /// Structure holding the history of financial for annual or quarterly period.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct PeriodData {
     #[serde(rename = "Fiscal Year")]
     pub fiscal_year: Vec<String>,
@@ -33,6 +48,7 @@ pub struct PeriodData {
 
 /// Structure holding the balance sheet data.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct BalanceSheet {
     #[serde(rename = "Current Deferred Taxes Liabilities")]
     pub current_deferred_taxes_liabilities: Vec<FloatOrString>,
@@ -100,6 +116,8 @@ pub struct BalanceSheet {
     pub inventories_work_in_process: Vec<FloatOrString>,
     #[serde(rename = "Other Long-Term Liabilities")]
     pub other_long_term_liabilities: Vec<FloatOrString>,
+    #[serde(rename = "Total Long-Term Liabilities")]
+    pub total_long_term_liabilities: Vec<FloatOrString>,
     #[serde(rename = "Machinery, Furniture, Equipment")]
     pub machinery_furniture_equipment: Vec<FloatOrString>,
     #[serde(rename = "Cash And Cash Equivalents")]
@@ -118,6 +136,8 @@ pub struct BalanceSheet {
     pub other_current_receivables: Vec<FloatOrString>,
     #[serde(rename = "Other Long Term Assets")]
     pub other_long_term_assets: Vec<FloatOrString>,
+    #[serde(rename = "Total Long-Term Assets")]
+    pub total_long_term_assets: Vec<FloatOrString>,
     #[serde(rename = "Inventories, Raw Materials & Components")]
     pub inventories_raw_materials_and_components: Vec<FloatOrString>,
     #[serde(rename = "Gross Property, Plant and Equipment")]
@@ -160,6 +180,7 @@ pub struct BalanceSheet {
 
 /// Structure holding the per share data
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct PerShareData {
     #[serde(rename = "Owner Earnings per Share (TTM)")]
     pub owner_earnings: Vec<FloatOrString>,
@@ -191,17 +212,24 @@ pub struct PerShareData {
 
 /// Structure holding the cash flow statement data.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct CashFlowStatement {
+    #[serde(rename = "Cash Flow Depreciation, Depletion and Amortization")]
+    pub cash_flow_depreciation_and_amortization: Vec<FloatOrString>,
     #[serde(rename = "Purchase Of Investment")]
     pub purchase_of_investment: Vec<FloatOrString>,
     #[serde(rename = "Change In Receivables")]
     pub change_in_receivables: Vec<FloatOrString>,
     #[serde(rename = "Change In Working Capital")]
     pub change_in_working_capital: Vec<FloatOrString>,
+    #[serde(rename = "Change In Other Working Capital")]
+    pub change_in_other_working_capital: Vec<FloatOrString>,
     #[serde(rename = "Net Foreign Currency Exchange Gain")]
     pub net_foreign_currency_exchange_gain: Option<Vec<FloatOrString>>,
     #[serde(rename = "Change In Deferred Tax")]
     pub change_in_deferrred_tax: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Deferred Tax")]
+    pub deferrred_tax: Option<Vec<FloatOrString>>,
     #[serde(rename = "Net Intangibles Purchase And Sale")]
     pub net_intangibles_purchase_and_sale: Vec<FloatOrString>,
     #[serde(rename = "Free Cash Flow")]
@@ -242,6 +270,8 @@ pub struct CashFlowStatement {
     pub cash_flow_from_operations: Vec<FloatOrString>,
     #[serde(rename = "Asset Impairment Charge")]
     pub asset_impairment_charge: Vec<FloatOrString>,
+    #[serde(rename = "Cash from Discontinued Operating Activities")]
+    pub cash_from_discontinued_operating_activities: Vec<FloatOrString>,
     #[serde(rename = "Sale Of Property, Plant, Equipment")]
     pub sale_of_property_plant_equipment: Vec<FloatOrString>,
     #[serde(rename = "Issuance of Stock")]
@@ -268,6 +298,7 @@ pub struct CashFlowStatement {
 
 /// Structure holding the income statement data.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct IncomeStatement {
     #[serde(rename = "Interest Income")]
     pub interest_income: Vec<FloatOrString>,
@@ -297,6 +328,8 @@ pub struct IncomeStatement {
     pub pre_tax_income: Vec<FloatOrString>,
     #[serde(rename = "Other Operating Expense")]
     pub other_operating_expense: Vec<FloatOrString>,
+    #[serde(rename = "Total Operating Expense")]
+    pub total_operating_expense: Vec<FloatOrString>,
     #[serde(rename = "Preferred Dividends")]
     pub prefferred_dividends: Vec<FloatOrString>,
     #[serde(rename = "Depreciation, Depletion and Amortization")]
@@ -317,6 +350,8 @@ pub struct IncomeStatement {
     pub non_operating_income: Option<Vec<FloatOrString>>,
     #[serde(rename = "EBITDA")]
     pub ebitda: Vec<FloatOrString>,
+    #[serde(rename = "EBIT")]
+    pub ebit: Vec<FloatOrString>,
     #[serde(rename = "Shares Outstanding (Diluted Average)")]
     pub shares_outstanding_diluted_average: Vec<FloatOrString>,
     #[serde(rename = "EPS (Basic)")]
@@ -337,6 +372,7 @@ pub struct IncomeStatement {
 
 /// Container for holding valuation ratios
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct ValuationRatios {
     #[serde(rename = "Dividend Yield %")]
     pub dividend_yield: Vec<FloatOrString>,
@@ -350,6 +386,8 @@ pub struct ValuationRatios {
     pub forward_rate_of_return: Vec<FloatOrString>,
     #[serde(rename = "PE Ratio")]
     pub pe_ratio: Vec<FloatOrString>,
+    #[serde(rename = "PE Ratio without NRI")]
+    pub pe_ratio_without_nri: Vec<FloatOrString>,
     #[serde(rename = "PEG Ratio")]
     pub peg_ratio: Vec<FloatOrString>,
     #[serde(rename = "PB Ratio")]
@@ -372,6 +410,7 @@ pub struct ValuationRatios {
 
 /// Container for holding common size ratios
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct CommonSizeRatios {
     #[serde(rename = "Net Margin %")]
     pub net_margin_pct: Vec<FloatOrString>,
@@ -429,6 +468,7 @@ pub struct CommonSizeRatios {
 
 /// Container for holding valuation and quality figures
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct ValuationAndQuality {
     #[serde(rename = "Scaled Net Operating Assets")]
     pub scaled_net_operating_assets: Vec<FloatOrString>,
@@ -470,6 +510,8 @@ pub struct ValuationAndQuality {
     pub interest_coverage: Vec<FloatOrString>,
     #[serde(rename = "Number of Employees")]
     pub number_of_employees: Vec<FloatOrString>,
+    #[serde(rename = "Forex Rate")]
+    pub forex_rate: Vec<FloatOrString>,
     #[serde(rename = "Lowest Stock Price")]
     pub lowest_stock_price: Vec<FloatOrString>,
     #[serde(rename = "Shares Buyback Ratio %")]

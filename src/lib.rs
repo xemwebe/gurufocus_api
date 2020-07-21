@@ -259,11 +259,31 @@ fn compact_list(a: &[&str]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde::Deserialize;
 
     #[test]
     fn test_compact_list() {
         assert_eq!(compact_list(&["1", "2", "3"]), "1,2,3");
         assert_eq!(compact_list(&[]), "");
         assert_eq!(compact_list(&["3"]), "3");
+    }
+
+    #[derive(Deserialize, Debug)]
+    #[serde(deny_unknown_fields)]
+    struct SimpleStruct {
+        value: i32,
+    }
+
+    #[test]
+    fn deserialize_extra_fields() {
+        let data = r#"
+        {
+            "value": 42,
+            "text": "bla"
+        }"#;
+
+        let s: serde_json::Result<SimpleStruct> = serde_json::from_str(data); 
+        // Fails if json has extra fields
+        assert!(s.is_err());
     }
 }
