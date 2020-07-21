@@ -26,7 +26,7 @@ fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
     let mut day = date.day();
     let mut month = date.month();
     let mut year = date.year();
-    if month <= period + 1 {
+    if month <= period {
         year -= 1;
         month += 12 - period;
     } else {
