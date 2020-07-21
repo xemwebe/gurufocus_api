@@ -521,7 +521,7 @@ pub struct ValuationAndQuality {
     #[serde(rename = "Piotroski F-Score")]
     pub pitroski_f_score: Vec<FloatOrString>,
     #[serde(rename = "Altman Z-Score")]
-    pub altman_z_score: Vec<FloatOrString>,
+    pub altman_z_score: Option<Vec<FloatOrString>>,
     #[serde(rename = "Filing Date")]
     pub filing_date: Vec<FloatOrString>,
     #[serde(rename = "Beta")]
