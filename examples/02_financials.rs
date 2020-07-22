@@ -5,7 +5,7 @@ use std::env;
 async fn enterprice_value_development(ticker: &str, gf_connect: &gfapi::GuruFocusConnector) {
     let financials = gf_connect.get_financials(ticker).await.unwrap();
     let financials: gfapi::FinancialData = serde_json::from_value(financials).unwrap();
-    println!("Annual development of Amazon's Enterprice value\nFY\tEV\n==================");
+    println!("Annual development of {}'s Enterprice value\nFY\tEV\n==================", ticker);
     let periods = &financials.financials.annuals.fiscal_year;
     let vq = &financials.financials.annuals.valuation_and_quality;
     for (i, p) in periods.iter().enumerate() {
@@ -18,11 +18,11 @@ async fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();
     let gf_connect = gfapi::GuruFocusConnector::new(token);
     // non-financial
-    enterprice_value_development("AMZN", &gf_connect);
+    enterprice_value_development("AMZN", &gf_connect).await;
     // bank
-    enterprice_value_development("NYSE:JPM", &gf_connect);
+    enterprice_value_development("NYSE:JPM", &gf_connect).await;
     // insurance
-    enterprice_value_development("AIG", &gf_connect);
+    enterprice_value_development("AIG", &gf_connect).await;
     // REIT
-    enterprice_value_development("GOOD", &gf_connect);
+    enterprice_value_development("GOOD", &gf_connect).await;
 }

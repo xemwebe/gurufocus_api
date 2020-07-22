@@ -269,6 +269,7 @@ mod tests {
     }
 
     #[derive(Deserialize, Debug)]
+    
     #[serde(deny_unknown_fields)]
     struct SimpleStruct {
         value: i32,

@@ -50,6 +50,32 @@ pub struct PeriodData {
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub struct BalanceSheet {
+    // for bank template
+    #[serde(rename = "Money Market Investments")]
+    pub money_market_investments: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Net Loan")]
+    pub net_loan: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Securities & Investments")]
+    pub securities_and_investments: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Other Assets for Banks")]
+    pub other_assets_for_banks: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Other Liabilities for Banks")]
+    pub other_liabilities_for_banks: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Gross Loan")]
+    pub gross_loan: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Unearned Income")]
+    pub unearned_income: Option<Vec<FloatOrString>>,  
+    // for bank template
+    #[serde(rename = "Allowance For Loans And Lease Losses")]
+    pub allowance_for_loans_and_lease_losses: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Balance Statement Cash and cash equivalents")]
+    pub balance_statement_cash_and_cash_equivalents: Option<Vec<FloatOrString>>,  
     #[serde(rename = "Current Deferred Taxes Liabilities")]
     pub current_deferred_taxes_liabilities: Vec<FloatOrString>,
     #[serde(rename = "Investments And Advances")]
