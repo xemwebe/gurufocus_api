@@ -4,6 +4,7 @@ pub use crate::strnum::FloatOrString;
 
 /// Container for the insider trades
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct InsiderTrade {
     pub change: FloatOrString,
     pub cost: FloatOrString,
@@ -19,6 +20,7 @@ pub struct InsiderTrade {
 
 /// Container for latest updates on insider trades
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct InsiderUpdate {
     pub final_share: FloatOrString,
     pub insider: String,

@@ -5,6 +5,7 @@ use std::collections::HashMap;
 
 /// Container for basic data for a single stock
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Stock {
     /// Name of the company
     pub company: String,
@@ -24,6 +25,7 @@ pub struct Stock {
 
 /// Container for single quote data
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Quote {
     /// Currency of quoted stock price
     #[serde(rename = "Currency")]
@@ -61,12 +63,14 @@ pub struct Quote {
 
 /// Container for summary of basic stock data and valuation ratios
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct StockSummary {
     pub summary: StockSummaryByCat,
 }
 
 /// Container for summary of basic stock data by category
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct StockSummaryByCat {
     pub guru: HashMap<String, GuruTransaction>,
     pub insider: HashMap<String, InsiderTransaction>,
@@ -79,6 +83,7 @@ pub struct StockSummaryByCat {
 
 /// Container for transaction done by Gurus
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruTransaction {
     pub buy: i64,
     pub hold: i64,
@@ -89,6 +94,7 @@ pub struct GuruTransaction {
 
 /// Container for transaction done by Insiders
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct InsiderTransaction {
     pub buy: FloatOrString,
     pub sell: FloatOrString,
@@ -97,6 +103,7 @@ pub struct InsiderTransaction {
 
 /// Ratio summary
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct RatioSummary {
     #[serde(rename = "ROE (%)")]
     pub roe_pct: RatioCmp,
@@ -186,6 +193,7 @@ pub struct RatioSummary {
 
 /// Chart
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Chart {
     #[serde(rename = "Graham Number")]
     pub graham_number: FloatOrString,
@@ -205,6 +213,7 @@ pub struct Chart {
 
 /// CompanyData
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct CompanyData {
     pub dayssalesoutstand_low: FloatOrString,
     pub pfcflow: FloatOrString,
@@ -916,6 +925,7 @@ pub struct CompanyData {
 
 /// Estimate summary
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Estimate {
     #[serde(rename = "LongTermGrowthRateMean")]
     pub longtermgrowthratemean: FloatOrString,
@@ -937,6 +947,7 @@ pub struct Estimate {
 
 /// General data for summary
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GeneralData {
     #[serde(rename = "industry")]
     pub industry: String,
@@ -968,6 +979,7 @@ pub struct GeneralData {
 
 /// Ratio comparison
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct RatioCmp {
     pub his: HistoryCmp,
     pub indu: IndustryCmp,
@@ -977,6 +989,7 @@ pub struct RatioCmp {
 
 /// Comparison to historic data
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct HistoryCmp {
     pub high: FloatOrString,
     pub low: FloatOrString,
@@ -986,6 +999,7 @@ pub struct HistoryCmp {
 
 /// Comparison to industry
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct IndustryCmp {
     pub global_rank: FloatOrString,
     pub indu_med: FloatOrString,
@@ -994,6 +1008,7 @@ pub struct IndustryCmp {
 
 /// Description of range of some ratio
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct RatioRange {
     pub color: HexNum,
     pub current: FloatOrString,
@@ -1003,6 +1018,7 @@ pub struct RatioRange {
 
 /// Details to a specific warning
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct WarningDetails {
     pub category: Option<String>,
     pub degree: String,
@@ -1013,6 +1029,7 @@ pub struct WarningDetails {
 
 /// Address and related company information
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct CompanyDescription {
     pub address: String,
     pub descrpt: String,
@@ -1024,6 +1041,7 @@ pub struct CompanyDescription {
 
 /// Country and exchange information
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Country {
     pub country: String,
     pub exchange: String,
@@ -1032,6 +1050,7 @@ pub struct Country {
 
 /// Stock price change information
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct StockDynamics {
     pub high: FloatOrString,
     pub low: FloatOrString,
@@ -1045,6 +1064,7 @@ pub struct StockDynamics {
 
 /// Industry detail information
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct IndustryDetails {
     pub etf: String,
     pub group: String,
@@ -1168,6 +1188,7 @@ pub struct IndustryDetails {
 
 /// Historic dividend data
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Dividend {
     pub ex_date: String,
     pub record_date: String,

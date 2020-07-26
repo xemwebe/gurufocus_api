@@ -4,6 +4,7 @@ pub use crate::strnum::FloatOrString;
 
 /// Structure holding all key ratios for a single stock.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct KeyRatios {
     #[serde(rename = "Valuation Ratio")]
     pub valuation_ratio: ValuationRatio,
@@ -29,6 +30,7 @@ pub struct KeyRatios {
 
 /// Structure holding valuation ratios for a single stock.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct ValuationRatio {
     #[serde(rename = "Price-to-Net-Current-Asset-Value")]
     pub price_to_net_current_asset_value: FloatOrString,
@@ -271,6 +273,7 @@ pub struct ValuationRatio {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Profitability {
     #[serde(rename = "Net Margin %")]
     pub net_margin_pct: FloatOrString,
@@ -317,12 +320,14 @@ pub struct Profitability {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct IncomeStatement {
     #[serde(rename = "Selling, General, & Admin. Expense")]
     pub selling_general_and_admin_expense: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Growth {
     #[serde(rename = "10-Year Dividend Growth Rate (Per Share)")]
     pub _10_year_dividend_growth_rate_per_share: FloatOrString,
@@ -519,12 +524,14 @@ pub struct Growth {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Basic {
     #[serde(rename = "Price Updated Time")]
     pub price_updated_time: String,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Dividends {
     #[serde(rename = "Dividend-Payout-to-FFO")]
     pub dividend_payout_to_ffo: FloatOrString,
@@ -565,12 +572,14 @@ pub struct Dividends {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Valuation {
     #[serde(rename = "Earnings Power Value (EPV)")]
     pub epv: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Price {
     #[serde(rename = "50-Day SMA")]
     pub _50_day_sma: FloatOrString,
@@ -653,12 +662,14 @@ pub struct Price {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Quality {
     #[serde(rename = "Predictability Rank")]
     pub predictability_rank: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Fundamental {
     #[serde(rename = "Return-on-Tangible-Equity (10y Median)")]
     pub return_on_tangible_equity_10y_median: FloatOrString,
@@ -966,6 +977,7 @@ pub struct Fundamental {
 
 /// Container for analyst estimates for all periods
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct AnalystEstimates {
     pub annual: AnnualAnalystEstimate,
     pub quarter: QuarterlyAnalystEstimate,
@@ -973,6 +985,7 @@ pub struct AnalystEstimates {
 
 /// Container for analyst estimates for annual periods
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct AnnualAnalystEstimate {
     pub long_term_growth_rate_mean: FloatOrString,
     pub date: Vec<String>,
@@ -986,6 +999,7 @@ pub struct AnnualAnalystEstimate {
 
 /// Container for analyst estimates for quarterly periods
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct QuarterlyAnalystEstimate {
     pub long_term_growth_rate_mean: FloatOrString,
     pub date: Vec<String>,

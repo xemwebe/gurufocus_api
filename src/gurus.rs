@@ -5,6 +5,7 @@ pub use crate::strnum::FloatOrString;
 
 /// Structure holding basic data for a single Guru.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Guru {
     /// Unique identifier for a Guru.
     pub id: String,
@@ -26,6 +27,7 @@ pub struct Guru {
 
 /// Container for all basic Guru data.
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Gurus {
     /// Map holding the list of Gurus per country.
     pub all: HashMap<String, Vec<Guru>>,
@@ -36,6 +38,7 @@ pub struct Gurus {
 
 /// Container for the guru holdings
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruTrades {
     /// Array of gurus position in the stock
     holdings: Vec<GuruHoldings>,
@@ -45,6 +48,7 @@ pub struct GuruTrades {
 
 /// Container for the guru holdings
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruHoldings {
     pub change: FloatOrString,
     pub current_shares: FloatOrString,
@@ -57,6 +61,7 @@ pub struct GuruHoldings {
 
 /// Container for the guru holdings
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPicks2 {
     #[serde(rename = "Avg")]
     pub avg: FloatOrString,
@@ -72,12 +77,14 @@ pub struct GuruPicks2 {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPicks {
     /// Portfolio of guru picks
     port: Vec<GuruPick>,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPick {
     #[serde(rename = "GuruName")]
     pub guru_name: String,
@@ -105,12 +112,14 @@ pub struct GuruPick {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPortfolio {
     pub summary: GuruPortSummary,
     pub port: Vec<GuruPosition>,
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPortSummary {
     pub country: String,
     pub date: String,
@@ -122,6 +131,7 @@ pub struct GuruPortSummary {
 }
 
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct GuruPosition {
     #[serde(rename = "13f_date")]
     pub date_13f: String,

@@ -3,6 +3,7 @@ use serde::Deserialize;
 
 /// Container for a user portfolio
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Portfolio {
     pub portid: String,
     pub portname: String,
@@ -34,6 +35,7 @@ pub struct Portfolio {
 
 /// Container for a stock position held by the user
 #[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
 pub struct Position {
     pub id: String,
     pub company: String,

@@ -1,3 +1,15 @@
+/// Data containers for financial data
+/// The Gurufocus supports three different major templates for Banks, Insurance companies,
+/// and non-financial companies. For REITs, some additional fields are delivered.
+/// Balance sheet dater differs further with respect to either direct or indirect method.
+/// The struct ```FinancialTemplateParameters``` contains information of the type of template served.
+/// In general, if a certain field is only available in one or more templates, but not all, it is 
+/// an represented as an optional value (e.g. using the Option type).
+///
+/// A synopsis of all financial data structs could be found here:
+/// https://github.com/xemwebe/gurufocus_api/blob/master/FinancialDataSynopsis.ods
+/// 
+
 use serde::Deserialize;
 
 pub use crate::strnum::FloatOrString;
