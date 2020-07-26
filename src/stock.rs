@@ -256,6 +256,7 @@ pub struct CompanyData {
     pub industry_detail: IndustryDetails,
     pub currency_secr: String,
     pub similar_cap: Vec<String>,
+    pub similar_cap_local: String,
     pub high: FloatOrString,
     pub similar_yield: Vec<String>,
     pub ev_morn_norm: FloatOrString,
@@ -413,6 +414,7 @@ pub struct CompanyData {
     pub pchange_4w: FloatOrString,
     pub currency_est: String,
     pub next_dividend_payment_date: String,
+    pub next_dividend_payment_amount: String,
     #[serde(rename = "ttm_EBIT")]
     pub ttm_ebit: FloatOrString,
     pub similar_sales: Vec<String>,
@@ -456,6 +458,7 @@ pub struct CompanyData {
     pub p2iv_dcearning_low: FloatOrString,
     pub cap: FloatOrString,
     pub mktcap_chg_1y: FloatOrString,
+    pub ev_norm_cny: FloatOrString,
     pub past_earnings_date: String,
     pub interest_coverage_med: FloatOrString,
     pub interest_coverage_high: FloatOrString,
@@ -526,6 +529,7 @@ pub struct CompanyData {
     pub total_netincome_growth_1y: FloatOrString,
     pub cashflow_growth_5y: FloatOrString,
     pub similar_pe: Vec<String>,
+    pub similar_pe_local: String,
     pub mscore_detail: String,
     pub dayspayable_high: FloatOrString,
     pub p2grahamnumber_med: FloatOrString,
@@ -545,7 +549,10 @@ pub struct CompanyData {
     pub fiscal_year_end: FloatOrString,
     pub net_cash: FloatOrString,
     pub p2medpsvalue_high: FloatOrString,
+    pub rsi_5: FloatOrString,
+    pub rsi_9: FloatOrString,
     pub rsi_14: FloatOrString,
+    pub rsi_30: FloatOrString,
     pub iv_dcf_normalized_proj_growth: FloatOrString,
     pub sma_50: FloatOrString,
     pub total_rvn_growth_5y: FloatOrString,
@@ -562,7 +569,7 @@ pub struct CompanyData {
     pub total_netincome_growth_3y_med: FloatOrString,
     pub dayssalesoutstand: FloatOrString,
     pub valuee: FloatOrString,
-    pub good_details: FloatOrString,
+    pub good_details: HashMap<String, GoodDetails>,
     pub forward_sales: FloatOrString,
     pub daysinventory: FloatOrString,
     pub last_price_date: String,
@@ -665,6 +672,7 @@ pub struct CompanyData {
     #[serde(rename = "ROC_JOEL_med_5y")]
     pub roc_joel_med_5y: FloatOrString,
     pub related_comp: String,
+    pub related_comp_local: String,
     pub meta: String,
     pub grossmargin: FloatOrString,
     pub p2nnwc: FloatOrString,
@@ -739,6 +747,8 @@ pub struct CompanyData {
     pub pchange_5y: FloatOrString,
     #[serde(rename = "similar_ps")]
     pub similar_ps: Vec<String>,
+    pub similar_ps_local: String,
+    pub warning_keys: String,
     #[serde(rename = "equity2asset_low")]
     pub equity2asset_low: FloatOrString,
     #[serde(rename = "equity2liab_tangbile")]
@@ -763,10 +773,14 @@ pub struct CompanyData {
     pub primary_share_class: Option<String>,
     pub roe_med_5y: FloatOrString,
     pub volatility: FloatOrString,
+    pub num_good_insider: i32,
     pub num_good_signs: FloatOrString,
+    pub pricehishigh: FloatOrString,
+    pub pricehislow: FloatOrString,
     pub pblow: FloatOrString,
     pub primary_exch: String,
     pub mktcap_norm: FloatOrString,
+    pub mktcap_norm_cny: FloatOrString,
     pub current_ratio: FloatOrString,
     pub rank_financial_strength: FloatOrString,
     #[serde(rename = "PFD")]
@@ -776,6 +790,7 @@ pub struct CompanyData {
     pub p2ncav_med: FloatOrString,
     pub pchange_1w: FloatOrString,
     pub sales_growth: FloatOrString,
+    pub sales_norm_cny: FloatOrString,
     pub ebit_growth_1y: FloatOrString,
     pub industry_code: i64,
     pub zscore: FloatOrString,
@@ -812,6 +827,8 @@ pub struct CompanyData {
     pub next_dividend_date: String,
     pub lynchvalue: FloatOrString,
     pub ind_template: String,
+    pub num_warning_insider_medium: i32,
+    pub num_warning_insider_severe: i32,
     pub num_warning_signs_severe: FloatOrString,
     pub predictability_rank: FloatOrString,
     pub ebitda_predc_10y: FloatOrString,
@@ -1027,6 +1044,14 @@ pub struct WarningDetails {
     pub name: String,
 }
 
+/// Details to a specific warning
+#[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+pub struct GoodDetails {
+    pub details: String,
+    pub display: String,
+    pub name: String,
+}
 /// Address and related company information
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
