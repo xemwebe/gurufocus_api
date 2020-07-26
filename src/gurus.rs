@@ -109,6 +109,8 @@ pub struct GuruPick {
     pub trans_share: FloatOrString,
     #[serde(rename = "type")]
     pub transaction_type: String,
+    pub exchange: String,
+    pub industry: String,
 }
 
 #[derive(Deserialize, Debug)]
