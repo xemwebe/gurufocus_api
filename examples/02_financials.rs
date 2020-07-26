@@ -5,7 +5,10 @@ use std::env;
 async fn enterprice_value_development(ticker: &str, gf_connect: &gfapi::GuruFocusConnector) {
     let financials = gf_connect.get_financials(ticker).await.unwrap();
     let financials: gfapi::FinancialData = serde_json::from_value(financials).unwrap();
-    println!("Annual development of {}'s Enterprice value\nFY\tEV\n==================", ticker);
+    println!(
+        "Annual development of {}'s Enterprice value\nFY\tEV\n==================",
+        ticker
+    );
     let periods = &financials.financials.annuals.fiscal_year;
     let vq = &financials.financials.annuals.valuation_and_quality;
     for (i, p) in periods.iter().enumerate() {

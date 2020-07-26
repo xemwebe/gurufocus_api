@@ -1,13 +1,13 @@
+use std::convert::Into;
 use std::default;
 use std::fmt;
 use std::marker::PhantomData;
 use std::str::FromStr;
-use std::convert::Into;
 
 use serde::de::{self, Visitor};
 use serde::{Deserialize, Deserializer};
 
-#[derive(Debug,Clone,Copy)]
+#[derive(Debug, Clone, Copy)]
 pub struct FloatOrString(f64);
 
 impl<'de> Deserialize<'de> for FloatOrString {
@@ -181,5 +181,4 @@ mod tests {
         let num: f64 = str_num.into();
         assert_eq!(num, 2.3);
     }
-
 }

@@ -1,5 +1,7 @@
 Version 0.4.0
 * Support of async (upgrade to use version 0.10.x of crate reqwest)
+* Update of financial data and other contains with respectd to changed/added/deleted fields
+* If fields are provided that have no respective struct field, an error is returned
 
 Version 0.3.0
 * Container for insider updates added

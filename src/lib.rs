@@ -34,6 +34,10 @@
 //! "Negative Tangible Equity". In such cases, if the string can not be parsed to a number, the
 //! value is set to `NAN`.
 //!
+//! Since version 0.4, all requests using the ```async``` attribute, returning a Future instead of
+//! waiting for the response and returning the result. To get the actual results, ```.await``` or ```block_on```
+//! or something similar needs to be used. The examples demonstrate how the library could be used.
+//!
 //! Please note that the library is not yet stable and that the user interface is still subject to change.
 //! However, feedback regarding the usability and suggestions for improving the interface are welcome.
 
@@ -269,7 +273,6 @@ mod tests {
     }
 
     #[derive(Deserialize, Debug)]
-    
     #[serde(deny_unknown_fields)]
     struct SimpleStruct {
         value: i32,
@@ -283,7 +286,7 @@ mod tests {
             "text": "bla"
         }"#;
 
-        let s: serde_json::Result<SimpleStruct> = serde_json::from_str(data); 
+        let s: serde_json::Result<SimpleStruct> = serde_json::from_str(data);
         // Fails if json has extra fields
         assert!(s.is_err());
     }

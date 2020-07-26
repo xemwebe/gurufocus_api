@@ -2,7 +2,6 @@ use gurufocus_api as gfapi;
 use std::collections::HashMap;
 use std::env;
 
-
 #[tokio::main]
 async fn main() {
     let token = env::var("GURUFOCUS_TOKEN").unwrap();

@@ -37,7 +37,11 @@ instead of `q.price`, or, more generally, converted to `f64` by
 `q.price.into()`. In a few cases, the string contains not a number, but an error
 message, like "Negative Tangible Equity". In such cases, if the string can not
 be parsed to a number, the value is set to `NAN`.
- 
+
+Since version 0.4, all requests using the ```async``` attribute, returning a Future instead of 
+waiting for the response and returning the result. To get the actual results, ```.await``` or ```block_on```
+or something similar needs to be used. The examples demonstrate how the library could be used.
+
 Please note that the library is not yet stable and that the user interface is
 still subject to change. However, feedback regarding the usability and
 suggestions for improving the interface are welcome.

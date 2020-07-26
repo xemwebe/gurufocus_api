@@ -3,13 +3,12 @@
 /// and non-financial companies. For REITs, some additional fields are delivered.
 /// Balance sheet dater differs further with respect to either direct or indirect method.
 /// The struct ```FinancialTemplateParameters``` contains information of the type of template served.
-/// In general, if a certain field is only available in one or more templates, but not all, it is 
+/// In general, if a certain field is only available in one or more templates, but not all, it is
 /// an represented as an optional value (e.g. using the Option type).
 ///
 /// A synopsis of all financial data structs could be found here:
 /// https://github.com/xemwebe/gurufocus_api/blob/master/FinancialDataSynopsis.ods
-/// 
-
+///
 use serde::Deserialize;
 
 pub use crate::strnum::FloatOrString;
@@ -30,11 +29,11 @@ pub struct DataPeriods {
     pub quarterly: PeriodData,
 }
 
-/// Structure parameters for specific financial data template 
+/// Structure parameters for specific financial data template
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub struct FinancialTemplateParameters {
-    pub ind_template: String, 
+    pub ind_template: String,
     #[serde(rename = "REITs")]
     pub reits: String,
     #[serde(rename = "IsDirect")]
@@ -85,7 +84,7 @@ pub struct BalanceSheet {
     pub buildings_and_improvements: Option<Vec<FloatOrString>>,
     #[serde(rename = "Cash And Cash Equivalents")]
     #[serde(alias = "Balance Statement Cash and cash equivalents")]
-    pub cash_and_cash_equivalents: Option<Vec<FloatOrString>>,  
+    pub cash_and_cash_equivalents: Option<Vec<FloatOrString>>,
     // for non-financials
     #[serde(rename = "Cash, Cash Equivalents, Marketable Securities")]
     pub cash_cash_equivalents_marketable_securities: Option<Vec<FloatOrString>>,
@@ -126,7 +125,7 @@ pub struct BalanceSheet {
     pub goodwill: Vec<FloatOrString>,
     // for banks
     #[serde(rename = "Gross Loan")]
-    pub gross_loan: Option<Vec<FloatOrString>>,  
+    pub gross_loan: Option<Vec<FloatOrString>>,
     // for non-financials
     #[serde(rename = "Gross Property, Plant and Equipment")]
     pub gross_property_plant_and_equipment: Option<Vec<FloatOrString>>,
@@ -174,10 +173,10 @@ pub struct BalanceSheet {
     pub minority_interest: Vec<FloatOrString>,
     // for banks
     #[serde(rename = "Money Market Investments")]
-    pub money_market_investments: Option<Vec<FloatOrString>>,  
+    pub money_market_investments: Option<Vec<FloatOrString>>,
     // for financials
     #[serde(rename = "Net Loan")]
-    pub net_loan: Option<Vec<FloatOrString>>,  
+    pub net_loan: Option<Vec<FloatOrString>>,
     // for non-banks
     #[serde(rename = "NonCurrent Deferred Liabilities")]
     pub noncurrent_deferred_liabilities: Option<Vec<FloatOrString>>,
@@ -185,10 +184,10 @@ pub struct BalanceSheet {
     pub notes_receivable: Vec<FloatOrString>,
     // for banks
     #[serde(rename = "Other Assets for Banks")]
-    pub other_assets_for_banks: Option<Vec<FloatOrString>>,  
+    pub other_assets_for_banks: Option<Vec<FloatOrString>>,
     // for bank insurance
     #[serde(rename = "Other Assets for Insurance Companies")]
-    pub other_assets_for_insurance_companies: Option<Vec<FloatOrString>>,  
+    pub other_assets_for_insurance_companies: Option<Vec<FloatOrString>>,
     // for non-financials
     #[serde(rename = "Other Current Assets")]
     pub other_current_assets: Option<Vec<FloatOrString>>,
@@ -205,10 +204,10 @@ pub struct BalanceSheet {
     pub other_gross_ppe: Option<Vec<FloatOrString>>,
     // for banks
     #[serde(rename = "Other Liabilities for Banks")]
-    pub other_liabilities_for_banks: Option<Vec<FloatOrString>>,  
+    pub other_liabilities_for_banks: Option<Vec<FloatOrString>>,
     // for insurancies
     #[serde(rename = "Other Liabilities for Insurance Companies")]
-    pub other_liabilities_for_insurance_companies: Option<Vec<FloatOrString>>,  
+    pub other_liabilities_for_insurance_companies: Option<Vec<FloatOrString>>,
     // for non-financials
     #[serde(rename = "Other Long Term Assets")]
     pub other_long_term_assets: Option<Vec<FloatOrString>>,
@@ -222,7 +221,7 @@ pub struct BalanceSheet {
     pub pension_and_retirement_benefit: Option<Vec<FloatOrString>>,
     // for insurancies
     #[serde(rename = "Policyholder Funds")]
-    pub policyholder_funds: Option<Vec<FloatOrString>>,  
+    pub policyholder_funds: Option<Vec<FloatOrString>>,
     #[serde(rename = "Preferred Stock")]
     pub preferred_stock: Vec<FloatOrString>,
     #[serde(rename = "Property, Plant and Equipment")]
@@ -231,7 +230,7 @@ pub struct BalanceSheet {
     pub retained_earnings: Vec<FloatOrString>,
     // for banks
     #[serde(rename = "Securities & Investments")]
-    pub securities_and_investments: Option<Vec<FloatOrString>>,  
+    pub securities_and_investments: Option<Vec<FloatOrString>>,
     // for non-financials
     #[serde(rename = "Short-Term Capital Lease Obligation")]
     pub short_term_capital_lease_obligation: Option<Vec<FloatOrString>>,
@@ -242,7 +241,7 @@ pub struct BalanceSheet {
     pub short_term_debt_and_capital_lease_obligation: Vec<FloatOrString>,
     // for insurancies
     #[serde(rename = "Short-term investments")]
-    pub short_term_investments: Option<Vec<FloatOrString>>,  
+    pub short_term_investments: Option<Vec<FloatOrString>>,
     #[serde(rename = "Total Assets")]
     pub total_assets: Vec<FloatOrString>,
     // for non-financials
@@ -253,7 +252,7 @@ pub struct BalanceSheet {
     pub total_current_liabilities: Option<Vec<FloatOrString>>,
     // for banks
     #[serde(rename = "Total Deposits")]
-    pub total_deposits: Option<Vec<FloatOrString>>,  
+    pub total_deposits: Option<Vec<FloatOrString>>,
     #[serde(rename = "Total Equity")]
     pub total_equity: Vec<FloatOrString>,
     // for non-financials
@@ -278,13 +277,13 @@ pub struct BalanceSheet {
     pub treasury_stock: Vec<FloatOrString>,
     // for banks
     #[serde(rename = "Unearned Income")]
-    pub unearned_income: Option<Vec<FloatOrString>>,  
+    pub unearned_income: Option<Vec<FloatOrString>>,
     // for insurances
     #[serde(rename = "Unearned Premiums")]
-    pub unearned_premiums: Option<Vec<FloatOrString>>,  
+    pub unearned_premiums: Option<Vec<FloatOrString>>,
     // for insurancies
     #[serde(rename = "Unpaid Loss & Loss Reserve")]
-    pub unpaid_loss_and_loss_revenue: Option<Vec<FloatOrString>>,  
+    pub unpaid_loss_and_loss_revenue: Option<Vec<FloatOrString>>,
 }
 
 /// Structure holding the per share data
@@ -641,19 +640,19 @@ pub struct ValuationRatios {
 pub struct CommonSizeRatios {
     #[serde(rename = "Asset Turnover")]
     pub asset_turnover: Vec<FloatOrString>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Cash Conversion Cycle")]
     pub cash_conversion_cycle: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "COGS-to-Revenue")]
     pub cogs_to_revenue: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Days Inventory")]
     pub days_inventory: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Days Payable")]
     pub days_payable: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Days Sales Outstanding")]
     pub days_sales_outstanding: Option<Vec<FloatOrString>>,
     #[serde(rename = "Debt-to-Asset")]
@@ -671,16 +670,16 @@ pub struct CommonSizeRatios {
     pub equity_to_asset: Vec<FloatOrString>,
     #[serde(rename = "FCF Margin %")]
     pub fcf_margin_pct: Vec<FloatOrString>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Gross Margin %")]
     pub gross_margin_pct: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Gross-Profit-to-Asset %")]
     pub gross_profit_to_asset_pct: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Inventory Turnover")]
     pub inventory_turnover: Option<Vec<FloatOrString>>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Inventory-to-Revenue")]
     pub inventory_to_revenue: Option<Vec<FloatOrString>>,
     // for banks
@@ -688,7 +687,7 @@ pub struct CommonSizeRatios {
     pub net_interest_margin_bank_pct: Option<Vec<FloatOrString>>,
     #[serde(rename = "Net Margin %")]
     pub net_margin_pct: Vec<FloatOrString>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "Operating Margin %")]
     pub operating_margin_pct: Option<Vec<FloatOrString>>,
     #[serde(rename = "Return-on-Tangible-Asset")]
@@ -697,7 +696,7 @@ pub struct CommonSizeRatios {
     pub return_on_tangible_equity: Vec<FloatOrString>,
     #[serde(rename = "ROA %")]
     pub roa_pct: Vec<FloatOrString>,
-    // for non-financials 
+    // for non-financials
     #[serde(rename = "ROC (Joel Greenblatt) %")]
     pub roc_pct: Option<Vec<FloatOrString>>,
     #[serde(rename = "ROE %")]
