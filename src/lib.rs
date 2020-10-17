@@ -41,12 +41,10 @@
 //! Please note that the library is not yet stable and that the user interface is still subject to change.
 //! However, feedback regarding the usability and suggestions for improving the interface are welcome.
 
-extern crate chrono;
-extern crate reqwest;
-extern crate serde_json;
-
-use reqwest::StatusCode;
-use serde_json::Value;
+use chrono;
+use reqwest::{self, StatusCode};
+use serde_json::{self, Value};
+use tokio_compat_02::FutureExt;
 
 /// Special types for dealing with Gurus.
 pub mod gurus;
@@ -210,7 +208,7 @@ impl GuruFocusConnector {
     async fn send_request(&self, args: &str) -> Result<Value, String> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
         println!("{}", url);
-        let resp = reqwest::get(url.as_str()).await;
+        let resp = reqwest::get(url.as_str()).compat().await;
         if resp.is_err() {
             return Err(String::from("Connection to server failed."));
         }
