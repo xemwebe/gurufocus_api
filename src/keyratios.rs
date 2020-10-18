@@ -270,6 +270,10 @@ pub struct ValuationRatio {
     pub ev_to_ebit_10y_high: FloatOrString,
     #[serde(rename = "FCF Yield %")]
     pub fcf_yield_pct: FloatOrString,
+    #[serde(rename = "GF Value")]
+    pub gf_value: FloatOrString,
+    #[serde(rename = "Price-to-GF-Value")]
+    pub price_to_gf_value: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
@@ -593,7 +597,7 @@ pub struct Price {
     pub _6_month_total_return_pct: FloatOrString,
     #[serde(rename = "3-Year Annualized Total Return %")]
     pub _3_year_annualized_total_return_pct: FloatOrString,
-    #[serde(rename = "Day's Change")]
+    #[serde(rename = "Day's Change %")]
     pub days_change: FloatOrString,
     #[serde(rename = "1-Month Relative to S&P Total Return %")]
     pub _1_month_relative_to_sp_total_return_pct: FloatOrString,

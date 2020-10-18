@@ -313,6 +313,8 @@ pub struct PerShareData {
     pub month_end_stock_price: Vec<FloatOrString>,
     #[serde(rename = "Operating Cash Flow per Share")]
     pub operating_cash_flow: Vec<FloatOrString>,
+    #[serde(rename = "Cash per Share")]
+    pub cash: Vec<FloatOrString>,
     #[serde(rename = "Owner Earnings per Share (TTM)")]
     pub owner_earnings: Vec<FloatOrString>,
     #[serde(rename = "Revenue per Share")]

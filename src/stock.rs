@@ -31,7 +31,7 @@ pub struct Quote {
     #[serde(rename = "Currency")]
     pub currency: String,
     /// Current day's price change
-    #[serde(rename = "Day\'s Change")]
+    #[serde(rename = "Day\'s Change %")]
     pub todays_change: FloatOrString,
     /// Current day's trading volume
     #[serde(rename = "Day\'s Volume")]
@@ -171,8 +171,6 @@ pub struct RatioSummary {
     pub pricegraham_number: RatioCmp,
     #[serde(rename = "Price/Net Cash")]
     pub pricenet_cash: RatioCmp,
-    #[serde(rename = "")]
-    pub unknown: RatioCmp,
     #[serde(rename = "Revenue Growth (%)")]
     pub revenue_growth_pct: RatioCmp,
     #[serde(rename = "Shiller P/E")]
@@ -189,6 +187,12 @@ pub struct RatioSummary {
     pub pricenet_current_asset_value: RatioCmp,
     #[serde(rename = "Dividend Yield")]
     pub dividend_yield: RatioCmp,
+    #[serde(rename = "Days Inventory")]
+    pub days_inventory: RatioCmp,
+    #[serde(rename = "Days Sales Outstanding")]
+    pub days_sales_outstanding: RatioCmp,
+    #[serde(rename = "POCF")]
+    pub pocf: RatioCmp,
 }
 
 /// Chart
@@ -230,7 +234,7 @@ pub struct CompanyData {
     pub ebitda_growth_3y: FloatOrString,
     pub price52whigh: FloatOrString,
     pub rank_value: FloatOrString,
-    pub optionable_stock: String,
+    pub optionable_stock: FloatOrString,
     pub cash_ebit: FloatOrString,
     pub cashflow_growth_3y: FloatOrString,
     #[serde(rename = "p2iv_dcEarning_med")]
@@ -938,6 +942,12 @@ pub struct CompanyData {
     pub similar_pb: Vec<String>,
     pub ev2ebitdahigh: FloatOrString,
     pub ev2revmed: FloatOrString,
+    pub gf_value: FloatOrString,
+    pub gf_value_est: FloatOrString,
+    pub gf_valuation: FloatOrString,
+    pub p2gf_value: FloatOrString,
+    pub p2gf_value_est: FloatOrString,
+    pub p2ffo: FloatOrString,
 }
 
 /// Estimate summary

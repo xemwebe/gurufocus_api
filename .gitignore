@@ -1,4 +1,7 @@
 /target
 **/*.rs.bk
 Cargo.lock
+
+# VS Code specific
 .vscode/settings.json
+.vscode/launch.json
