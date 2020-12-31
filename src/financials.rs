@@ -703,6 +703,9 @@ pub struct CommonSizeRatios {
     pub roc_pct: Option<Vec<FloatOrString>>,
     #[serde(rename = "ROE %")]
     pub roe_pct: Vec<FloatOrString>,
+    // for non-financials
+    #[serde(rename = "ROCE %")]
+    pub roce_pct: Option<Vec<FloatOrString>>,
     #[serde(rename = "ROIC %")]
     pub roic_pct: Vec<FloatOrString>,
     #[serde(rename = "ROE % Adjusted to Book Value")]

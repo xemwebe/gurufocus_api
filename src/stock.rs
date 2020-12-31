@@ -97,8 +97,8 @@ pub struct GuruTransaction {
 #[serde(deny_unknown_fields)]
 pub struct InsiderTransaction {
     pub buy: FloatOrString,
-    pub sell: FloatOrString,
-    pub price: FloatOrString,
+    pub sell: Option<FloatOrString>,
+    pub price: Option<FloatOrString>,
 }
 
 /// Ratio summary
@@ -573,7 +573,7 @@ pub struct CompanyData {
     pub total_netincome_growth_3y_med: FloatOrString,
     pub dayssalesoutstand: FloatOrString,
     pub valuee: FloatOrString,
-    pub good_details: HashMap<String, GoodDetails>,
+    pub good_details: Option<HashMap<String, GoodDetails>>,
     pub forward_sales: FloatOrString,
     pub daysinventory: FloatOrString,
     pub last_price_date: String,
@@ -948,6 +948,7 @@ pub struct CompanyData {
     pub p2gf_value: FloatOrString,
     pub p2gf_value_est: FloatOrString,
     pub p2ffo: FloatOrString,
+    pub insider_data: i64,
 }
 
 /// Estimate summary
@@ -1102,6 +1103,7 @@ pub struct StockDynamics {
 #[serde(deny_unknown_fields)]
 pub struct IndustryDetails {
     pub etf: String,
+    pub etf_stockid: String,
     pub group: String,
     pub groupcode: i64,
     pub industry: String,

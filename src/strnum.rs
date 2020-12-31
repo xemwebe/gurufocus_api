@@ -70,6 +70,7 @@ impl<'de> Deserialize<'de> for FloatOrString {
             {
                 Ok(From::from(std::f64::NAN))
             }
+
         }
 
         deserializer.deserialize_any(StringOrNum(PhantomData))
@@ -145,6 +146,11 @@ mod tests {
         z: FloatOrString,
     }
 
+    #[derive(Deserialize, Debug)]
+    struct DoubleNumOpt {
+        pub x: Option<FloatOrString>,
+    }
+
     #[test]
     fn convert_str_num() {
         let str_num = "2".to_string();
@@ -157,6 +163,14 @@ mod tests {
         assert_eq!(d_num.x.0, 2.1);
         assert_eq!(d_num.y.0, 3.0);
         assert_eq!(d_num.z.0, 3.4);
+    }
+
+    #[test]
+    fn convert_null_str_num() {
+        let json: serde_json::Value =
+            serde_json::from_str("{\"x\":null, \"y\":1, \"z\":null}").unwrap();
+        let d_num: DoubleNumOpt = serde_json::from_value(json).unwrap();
+        assert!(d_num.x.is_none());
     }
 
     #[test]

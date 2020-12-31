@@ -31,6 +31,10 @@ pub struct Portfolio {
     pub detail: Vec<Position>,
     pub deleted_time: Option<String>,
     pub is_article: Option<String>,
+    pub gain: FloatOrString,
+    #[serde(rename = "type")]
+    pub portfolio_type: FloatOrString,
+    pub value: FloatOrString,
 }
 
 /// Container for a stock position held by the user

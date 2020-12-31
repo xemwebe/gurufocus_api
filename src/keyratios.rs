@@ -565,14 +565,14 @@ pub struct Dividends {
     pub dividend_start_year: FloatOrString,
     #[serde(rename = "Yield-on-Cost % (10y Median)")]
     pub yield_on_cost_pct_10y_median: FloatOrString,
-    #[serde(rename = "Forward 12M Dividend")]
+    #[serde(rename = "Dividends per Share (Forward 12-Month)")]
     pub forward_12m_dividend: FloatOrString,
+    #[serde(rename = "Dividends per Share (TTM)")]
+    pub trailing_12_month_dividend: FloatOrString,
     #[serde(rename = "Yield-on-Cost % (10y Low)")]
     pub yield_on_cost_pct_10y_low: FloatOrString,
     #[serde(rename = "Dividend Yield % (10y Median)")]
     pub dividend_yield_pct_10y_median: FloatOrString,
-    #[serde(rename = "Trailing 12-Month Dividend")]
-    pub trailing_12_month_dividend: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
@@ -697,8 +697,6 @@ pub struct Fundamental {
     pub roa_pct: FloatOrString,
     #[serde(rename = "Trailing 12-Month Pretax Income")]
     pub trailing_12_month_pretax_income: FloatOrString,
-    #[serde(rename = "3-Year Average Share Buyback Ratio (10y Median)")]
-    pub _3_year_average_share_buyback_ratio_10y_median: FloatOrString,
     #[serde(rename = "Altman Z-Score (10y Low)")]
     pub altman_z_score_10y_low: FloatOrString,
     #[serde(rename = "Warning Signs (Medium)")]
@@ -723,8 +721,6 @@ pub struct Fundamental {
     pub headquarter_country: FloatOrString,
     #[serde(rename = "ROE %")]
     pub roe_pct: FloatOrString,
-    #[serde(rename = "3-Year Average Share Buyback Ratio (10y High)")]
-    pub _3_year_average_share_buyback_ratio_10y_high: FloatOrString,
     #[serde(rename = "Piotroski F-Score (10y Median)")]
     pub piotroski_f_score_10y_median: FloatOrString,
     #[serde(rename = "ROA % (10y High)")]
@@ -767,12 +763,16 @@ pub struct Fundamental {
     pub current_ratio: FloatOrString,
     #[serde(rename = "Cash-to-Debt (10y High)")]
     pub cash_to_debt_10y_high: FloatOrString,
-    #[serde(rename = "10-Year Share Buyback Rate")]
+    #[serde(rename = "1-Year Share Buyback Ratio")]
+    pub _1_year_share_buyback_rate: FloatOrString,
+    #[serde(rename = "3-Year Share Buyback Rate")]
+    pub _3_year_share_buyback_rate: FloatOrString,
+    #[serde(rename = "5-Year Share Buyback Ratio")]
+    pub _5_year_share_buyback_rate: FloatOrString,
+    #[serde(rename = "10-Year Share Buyback Ratio")]
     pub _10_year_share_buyback_rate: FloatOrString,
     #[serde(rename = "Latest Quarter End")]
     pub latest_quarter_end: FloatOrString,
-    #[serde(rename = "1-Year Share Buyback Rate")]
-    pub _1_year_share_buyback_rate: FloatOrString,
     #[serde(rename = "ROC (Joel Greenblatt) % (10y Low)")]
     pub roc_joel_greenblatt_pct_10y_low: FloatOrString,
     #[serde(rename = "ROIC %")]
@@ -833,8 +833,6 @@ pub struct Fundamental {
     pub days_sales_outstanding: FloatOrString,
     #[serde(rename = "Sloan Ratio %")]
     pub sloan_ratio_pct: FloatOrString,
-    #[serde(rename = "5-Year Share Buyback Rate")]
-    pub _5_year_share_buyback_rate: FloatOrString,
     #[serde(rename = "Days Inventory (10y Median)")]
     pub days_inventory_10y_median: FloatOrString,
     #[serde(rename = "ROC (ROIC) (5y Median)")]
@@ -921,8 +919,12 @@ pub struct Fundamental {
     pub related_company: FloatOrString,
     #[serde(rename = "ROC (Joel Greenblatt) %")]
     pub roc_joel_greenblatt_pct: FloatOrString,
-    #[serde(rename = "3-Year Average Share Buyback Ratio (10y Low)")]
+    #[serde(rename = "3-Year Share Buyback Ratio (10y Low)")]
     pub _3_year_average_share_buyback_ratio_10y_low: FloatOrString,
+    #[serde(rename = "3-Year Share Buyback Ratio (10y Median)")]
+    pub _3_year_average_share_buyback_ratio_10y_median: FloatOrString,
+    #[serde(rename = "3-Year Share Buyback Ratio (10y High)")]
+    pub _3_year_average_share_buyback_ratio_10y_high: FloatOrString,
     #[serde(rename = "Effective Interest Rate on Debt %")]
     pub effective_interest_rate_on_debt_pct: FloatOrString,
     #[serde(rename = "Next Dividend Amount")]
@@ -955,8 +957,6 @@ pub struct Fundamental {
     pub roc_joel_greenblatt_pct_10y_median: FloatOrString,
     #[serde(rename = "Interest Coverage")]
     pub interest_coverage: FloatOrString,
-    #[serde(rename = "3-Year Share Buyback Rate")]
-    pub _3_year_share_buyback_rate: FloatOrString,
     #[serde(rename = "Return-on-Tangible-Asset (10y Median)")]
     pub return_on_tangible_asset_10y_median: FloatOrString,
     #[serde(rename = "Debt-to-EBITDA")]
