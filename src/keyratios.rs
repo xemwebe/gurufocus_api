@@ -274,6 +274,18 @@ pub struct ValuationRatio {
     pub gf_value: FloatOrString,
     #[serde(rename = "Price-to-GF-Value")]
     pub price_to_gf_value: FloatOrString,
+    #[serde(rename = "EV-to-FCF")]
+    pub ev_to_fcf: FloatOrString,
+    #[serde(rename = "EV-to-FCF (10y High)")]
+    pub ev_to_fcf_10y_high: FloatOrString,
+    #[serde(rename = "EV-to-FCF (10y Median)")]
+    pub ev_to_fcf_10y_median: FloatOrString,
+    #[serde(rename = "EV-to-FCF (10y Low)")]
+    pub ev_to_fcf_10y_low: FloatOrString,
+    #[serde(rename = "Estimated GF Value for Next Year")]
+    pub estimated_gf_value_for_next_year: FloatOrString,
+    #[serde(rename = "Price-to-Estimated-GF-Value-for-Next-Year")]
+    pub price_to_estimated_gf_value_for_next_year: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
@@ -525,6 +537,8 @@ pub struct Growth {
     pub _3_year_ebitda_growth_rate_10y_high: FloatOrString,
     #[serde(rename = "3-Year Asset Growth Rate (10y High)")]
     pub _3_year_asset_growth_rate_10y_high: FloatOrString,
+    #[serde(rename = "Total Revenue Growth Rate (Future 3Y To 5Y Est)")]
+    pub total_revenue_growth_rate_fut_3y_to_5y_est: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
@@ -573,6 +587,8 @@ pub struct Dividends {
     pub yield_on_cost_pct_10y_low: FloatOrString,
     #[serde(rename = "Dividend Yield % (10y Median)")]
     pub dividend_yield_pct_10y_median: FloatOrString,
+    #[serde(rename = "Increase Dividend Start Year")]
+    pub increase_dividend_start_year: FloatOrString,
 }
 
 #[derive(Deserialize, Debug)]
@@ -693,6 +709,8 @@ pub struct Fundamental {
     pub probability_of_financial_distress_pct: FloatOrString,
     #[serde(rename = "Estimated Sales of Next FY (M)")]
     pub estimated_sales_of_next_fy_m: FloatOrString,
+    #[serde(rename = "Estimated EPS of Next FY")]
+    pub estimated_eps_of_next_fy: FloatOrString,
     #[serde(rename = "ROA %")]
     pub roa_pct: FloatOrString,
     #[serde(rename = "Trailing 12-Month Pretax Income")]
@@ -805,6 +823,8 @@ pub struct Fundamental {
     pub cash_to_debt_10y_low: FloatOrString,
     #[serde(rename = "Quick Ratio (10y High)")]
     pub quick_ratio_10y_high: FloatOrString,
+    #[serde(rename = "Cash Ratio (10y High)")]
+    pub cash_ratio_10y_high: FloatOrString,
     #[serde(rename = "Next Ex-Dividend Date")]
     pub next_ex_dividend_date: FloatOrString,
     #[serde(rename = "ROA % (5y Median)")]
@@ -825,6 +845,8 @@ pub struct Fundamental {
     pub insider_shares_owned: FloatOrString,
     #[serde(rename = "Quick Ratio (10y Median)")]
     pub quick_ratio_10y_median: FloatOrString,
+    #[serde(rename = "Cash Ratio (10y Median)")]
+    pub cash_ratio_10y_median: FloatOrString,
     #[serde(rename = "Scaled Net Operating Assets")]
     pub scaled_net_operating_assets: FloatOrString,
     #[serde(rename = "Altman Z-Score (10y Median)")]
@@ -867,6 +889,8 @@ pub struct Fundamental {
     pub return_on_tangible_equity_10y_high: FloatOrString,
     #[serde(rename = "Quick Ratio (10y Low)")]
     pub quick_ratio_10y_low: FloatOrString,
+    #[serde(rename = "Cash Ratio (10y Low)")]
+    pub cash_ratio_10y_low: FloatOrString,
     #[serde(rename = "Days Payable (10y Median)")]
     pub days_payable_10y_median: FloatOrString,
     #[serde(rename = "Net Cash per Share")]
@@ -945,6 +969,8 @@ pub struct Fundamental {
     pub altman_z_score: FloatOrString,
     #[serde(rename = "Quick Ratio")]
     pub quick_ratio: FloatOrString,
+    #[serde(rename = "Cash Ratio")]
+    pub cash_ratio: FloatOrString,
     #[serde(rename = "Currency for Estimated Value")]
     pub currency_for_estimated_value: FloatOrString,
     #[serde(rename = "Current Ratio (10y Median)")]
@@ -977,6 +1003,16 @@ pub struct Fundamental {
     pub naics: FloatOrString,
     #[serde(rename = "ROIC % (10y High)")]
     pub roic_pct_10y_high: FloatOrString,
+    #[serde(rename = "Annual Financials Start Date")]
+    pub annual_financials_start_date: FloatOrString,
+    #[serde(rename = "IPO Offer Price")]
+    pub ipo_offer_price: FloatOrString,
+    #[serde(rename = "IPO Offer Price Range")]
+    pub ipo_offer_price_range: FloatOrString,
+    #[serde(rename = "Latest Earnings Release Date")]
+    pub latest_earnings_release_date: String,
+    #[serde(rename = "Liabilities-to-Assets")]
+    pub liabilities_to_asets: FloatOrString,
 }
 
 /// Container for analyst estimates for all periods
@@ -1014,4 +1050,28 @@ pub struct QuarterlyAnalystEstimate {
     pub ebitda_estimate: Vec<FloatOrString>,
     pub dividend_estimate: Vec<FloatOrString>,
     pub pettm_estimate: Vec<FloatOrString>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use super::super::*;
+    use std::env;
+
+    #[tokio::test]
+    async fn test_key_ratios() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {      
+            let gf_connect = GuruFocusConnector::new(token);
+        
+            // Get key ratios of Berkshire Hathaway
+            let stock = "NYSE:BRK.A";
+            let key_ratios_json = gf_connect.get_key_ratios(stock).await;
+            assert!(key_ratios_json.is_ok());
+        
+            let key_ratios = serde_json::from_value::<KeyRatios>(key_ratios_json.unwrap());
+            assert!(key_ratios.is_ok());
+            }
+        }
+    }
 }

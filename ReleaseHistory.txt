@@ -1,3 +1,8 @@
+Version 0.5.0
+* Added unit tests for all data structs
+* Update of data fields as of 7.12.2021
+* Introduction of GuruFocusError instead of plain string
+
 Version 0.4.2
 * Update of data fields due to API changes
 * Migration to version 1.0 of tokio dependency

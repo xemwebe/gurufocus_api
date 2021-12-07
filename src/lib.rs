@@ -41,10 +41,9 @@
 //! Please note that the library is not yet stable and that the user interface is still subject to change.
 //! However, feedback regarding the usability and suggestions for improving the interface are welcome.
 
-use chrono;
-use reqwest::{self, StatusCode};
 use serde_json::{self, Value};
 use tokio_compat_02::FutureExt;
+use thiserror::Error;
 
 /// Special types for dealing with Gurus.
 pub mod gurus;
@@ -76,6 +75,12 @@ pub mod strnum;
 /// Module for special hex num derserializer
 pub mod hexnum;
 
+#[derive(Error, Debug)]
+pub enum GuruFocusError {
+    #[error("Request failure")]
+    RequestFailure(#[from] reqwest::Error),
+}
+
 /// Container for connection parameters to gurufocus server.
 pub struct GuruFocusConnector {
     url: &'static str,
@@ -94,54 +99,54 @@ impl GuruFocusConnector {
     }
 
     /// Returns the full history of financial data for stock symbol given as argument
-    pub async fn get_financials(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_financials(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/financials", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns the current key statistic figures for stock symbol given as argument
-    pub async fn get_key_ratios(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_key_ratios(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/keyratios", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns the current quote data of a comma separated list of symbols given as argument
-    pub async fn get_quotes(&self, stocks: &[&str]) -> Result<Value, String> {
-        let args = format!("stock/{}/quote", compact_list(&stocks));
+    pub async fn get_quotes(&self, stocks: &[&str]) -> Result<Value, GuruFocusError> {
+        let args = format!("stock/{}/quote", compact_list(stocks));
         self.send_request(args.as_str()).await
     }
 
     /// Returns the history of (adjusted) quoted prices for symbol given as argument
-    pub async fn get_price_hist(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_price_hist(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/price", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns the history of (unadjusted) quoted prices for symbol given as argument
-    pub async fn get_unadj_price_hist(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_unadj_price_hist(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/unadjusted_price", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns companies current price, valuation rations and ranks for symbol given as argument
-    pub async fn get_stock_summary(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_stock_summary(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/summary", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns real-time guru trades and holding data for symbol given as argument
-    pub async fn get_guru_trades(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_guru_trades(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/gurus", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns real-time insider trades for symbol given as argument
-    pub async fn get_insider_trades(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_insider_trades(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/insider", stock);
         self.send_request(args.as_str()).await
     }
     /// Returns lists of all and personalized gurus
-    pub async fn get_gurus(&self) -> Result<Value, String> {
+    pub async fn get_gurus(&self) -> Result<Value, GuruFocusError> {
         self.send_request("gurulist").await
     }
 
@@ -150,108 +155,75 @@ impl GuruFocusConnector {
         &self,
         gurus: &[&str],
         start_date: chrono::NaiveDate,
-    ) -> Result<Value, String> {
+    ) -> Result<Value, GuruFocusError> {
         let args = format!(
             "guru/{}/picks/{}",
-            compact_list(&gurus),
+            compact_list(gurus),
             start_date.format("%F")
         );
         self.send_request(args.as_str()).await
     }
 
     /// Returns list of aggregated guru portfolios given a slice of guru ids
-    pub async fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, String> {
-        let args = format!("guru/{}/aggregated", compact_list(&gurus));
+    pub async fn get_guru_portfolios(&self, gurus: &[&str]) -> Result<Value, GuruFocusError> {
+        let args = format!("guru/{}/aggregated", compact_list(gurus));
         self.send_request(args.as_str()).await
     }
 
     /// Returns list of supported exchanges
-    pub async fn get_exchanges(&self) -> Result<Value, String> {
+    pub async fn get_exchanges(&self) -> Result<Value, GuruFocusError> {
         self.send_request("exchange_list").await
     }
 
     /// Returns list of all stocks of a particular exchange
-    pub async fn get_listed_stocks(&self, exchange: &str) -> Result<Value, String> {
+    pub async fn get_listed_stocks(&self, exchange: &str) -> Result<Value, GuruFocusError> {
         let args = format!("exchange_stocks/{}", exchange);
         self.send_request(args.as_str()).await
     }
 
     /// Returns list of latest insider trades ordered by insider transctions time
-    pub async fn get_insider_updates(&self) -> Result<Value, String> {
+    pub async fn get_insider_updates(&self) -> Result<Value, GuruFocusError> {
         self.send_request("insider_updates").await
     }
 
     /// Returns 30 years dividend history data of a stock
-    pub async fn get_dividend_history(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_dividend_history(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/dividend", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns analyst estimate data of a stock
-    pub async fn get_analyst_estimate(&self, stock: &str) -> Result<Value, String> {
+    pub async fn get_analyst_estimate(&self, stock: &str) -> Result<Value, GuruFocusError> {
         let args = format!("stock/{}/analyst_estimate ", stock);
         self.send_request(args.as_str()).await
     }
 
     /// Returns list of personal portfolios
-    pub async fn get_personal_portfolio(&self) -> Result<Value, String> {
+    pub async fn get_personal_portfolio(&self) -> Result<Value, GuruFocusError> {
         self.send_request("portfolio/my_portfolios").await
     }
 
     /// Returns list of all stocks with updated fundamental data within a week of the given date
-    pub async fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, String> {
+    pub async fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, GuruFocusError> {
         let args = format!("funda_updated/{}", date);
         self.send_request(args.as_str()).await
     }
 
     /// Send request to gurufocus server and transform response to JSON value
-    async fn send_request(&self, args: &str) -> Result<Value, String> {
+    async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
-        println!("{}", url);
-        let resp = reqwest::get(url.as_str()).compat().await;
-        if resp.is_err() {
-            return Err(String::from("Connection to server failed."));
-        }
-        let resp = resp.unwrap();
-        match resp.status() {
-            StatusCode::OK => match resp.json().await {
-                Ok(json) => Ok(json),
-                err => Err(format!("Parsing json failed: {:?}", err)),
-            },
-            StatusCode::FORBIDDEN => match resp.json().await {
-                Ok(json) => Err(format!("Access forbidden, {}.", get_error(json))),
-                _ => Err(format!("Access forbidden.")),
-            },
-            StatusCode::NOT_FOUND => match resp.json().await {
-                Ok(json) => Err(format!("Not found, {}.", get_error(json))),
-                _ => Err(format!("Access forbidden.")),
-            },
-            err => match resp.json().await {
-                Ok(json) => Err(format!("Unspecified error, {}.", get_error(json))),
-                _ => Err(format!("Received bad response from server: {}", err)),
-            },
-        }
-    }
-}
-
-/// Extract error message from JSON returned by the GuruFocus server
-fn get_error(err: serde_json::Value) -> String {
-    match err {
-        Value::Object(map) => match &map["error"] {
-            Value::String(msg) => msg.to_string(),
-            val => format!("error was '{}'.", val),
-        },
-        val => format!("response was '{}'", val),
+        let resp = reqwest::get(url.as_str()).compat().await?;
+        Ok(resp.json().await?)
     }
 }
 
 /// Compact list as input to url
 fn compact_list(a: &[&str]) -> String {
-    if a.len() == 0 {
+    if a.is_empty() {
         return String::new();
     }
     let mut it = a.iter();
-    let mut res = format!("{}", it.next().unwrap());
+    let mut res = it.next().unwrap().to_string();
     for n in it {
         res.push_str(&format!(",{}", n));
     }

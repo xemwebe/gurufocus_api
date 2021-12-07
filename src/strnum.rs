@@ -1,4 +1,3 @@
-use std::convert::Into;
 use std::default;
 use std::fmt;
 use std::marker::PhantomData;
@@ -83,7 +82,7 @@ impl FromStr for FloatOrString {
     type Err = <f64 as FromStr>::Err;
 
     fn from_str(s: &str) -> Result<FloatOrString, Self::Err> {
-        if s == "" {
+        if s.is_empty() {
             Ok(FloatOrString { 0: 0.0 })
         } else {
             // remove commas as thousands separator
@@ -97,9 +96,9 @@ impl FromStr for FloatOrString {
     }
 }
 
-impl Into<f64> for FloatOrString {
-    fn into(self) -> f64 {
-        return self.0;
+impl From<FloatOrString> for f64 {
+    fn from(fos: FloatOrString) -> f64 {
+        fos.0
     }
 }
 

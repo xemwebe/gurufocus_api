@@ -380,6 +380,12 @@ pub struct CashFlowStatement {
     // direct method
     #[serde(rename = "Other Cash Receipts from Operating Activities")]
     pub other_cash_receipts_from_operating_activities: Option<Vec<FloatOrString>>,
+    // all
+    #[serde(rename = "Issuance of Debt")]
+    pub issuance_of_debt: Option<Vec<FloatOrString>>,
+    // all
+    #[serde(rename = "Payments of Debt")]
+    pub payments_of_debt: Option<Vec<FloatOrString>>,
     // direct method
     #[serde(rename = "Payments on Behalf of Employees")]
     pub payments_on_behalf_of_employees: Option<Vec<FloatOrString>>,
@@ -659,6 +665,8 @@ pub struct CommonSizeRatios {
     pub days_sales_outstanding: Option<Vec<FloatOrString>>,
     #[serde(rename = "Debt-to-Asset")]
     pub debt_to_asset: Vec<FloatOrString>,
+    #[serde(rename = "Liabilities-to-Assets")]
+    pub liabilities_to_assets: Vec<FloatOrString>,
     #[serde(rename = "Debt-to-Equity")]
     pub debt_to_equity: Vec<FloatOrString>,
     #[serde(rename = "Dividend Payout Ratio")]
@@ -712,6 +720,8 @@ pub struct CommonSizeRatios {
     pub roe_pct_adjusted_to_book_value: Vec<FloatOrString>,
     #[serde(rename = "WACC %")]
     pub wacc_pct: Vec<FloatOrString>,
+    #[serde(rename = "Capex-to-Revenue")]
+    pub capex_to_revenue: Vec<FloatOrString>,
 }
 
 /// Container for holding valuation and quality figures
@@ -728,7 +738,7 @@ pub struct ValuationAndQuality {
     pub beneish_m_score: Vec<FloatOrString>,
     #[serde(rename = "Beta")]
     pub beta: Vec<FloatOrString>,
-    #[serde(rename = "Buyback Yield")]
+    #[serde(rename = "Buyback Yield %")]
     pub buyback_yield: Vec<FloatOrString>,
     // non-financials
     #[serde(rename = "Current Ratio")]
@@ -778,8 +788,12 @@ pub struct ValuationAndQuality {
     // non-financials
     #[serde(rename = "Quick Ratio")]
     pub quick_ratio: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Cash Ratio")]
+    pub cash_ratio: Option<Vec<FloatOrString>>,
     #[serde(rename = "Restated Filing Date")]
-    pub restated_filing_date: Vec<FloatOrString>,
+    pub restated_filing_date: Vec<String>,
+    #[serde(rename = "Earnings Release Date")]
+    pub earnings_release_date: Vec<String>,
     #[serde(rename = "Scaled Net Operating Assets")]
     pub scaled_net_operating_assets: Vec<FloatOrString>,
     #[serde(rename = "Shares Buyback Ratio %")]
@@ -797,4 +811,63 @@ pub struct ValuationAndQuality {
     pub yoy_eps_growth: Vec<FloatOrString>,
     #[serde(rename = "YoY Rev. per Sh. Growth")]
     pub yoy_rev_per_sh_growth: Vec<FloatOrString>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::super::*;
+    use super::*;
+    use std::env;
+
+    #[tokio::test]
+    async fn test_financials_non_financial() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let fin_json = gf_connect.get_financials("AMZN").await;
+                assert!(fin_json.is_ok());
+                let financials = serde_json::from_value::<FinancialData>(fin_json.unwrap());
+                assert!(financials.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_financials_bank() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let fin_json = gf_connect.get_financials("NYSE:JPM").await;
+                assert!(fin_json.is_ok());
+                let financials = serde_json::from_value::<FinancialData>(fin_json.unwrap());
+                assert!(financials.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_financials_insurance() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let fin_json = gf_connect.get_financials("AIG").await;
+                assert!(fin_json.is_ok());
+                let financials = serde_json::from_value::<FinancialData>(fin_json.unwrap());
+                assert!(financials.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_financials_reit() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let fin_json = gf_connect.get_financials("GOOD").await;
+                assert!(fin_json.is_ok());
+                let financials = serde_json::from_value::<FinancialData>(fin_json.unwrap());
+                assert!(financials.is_ok());
+            }
+        }
+    }
 }
