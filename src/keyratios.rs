@@ -1054,23 +1054,23 @@ pub struct QuarterlyAnalystEstimate {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::super::*;
+    use super::*;
     use std::env;
 
     #[tokio::test]
     async fn test_key_ratios() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
-            if !token.is_empty() {      
-            let gf_connect = GuruFocusConnector::new(token);
-        
-            // Get key ratios of Berkshire Hathaway
-            let stock = "NYSE:BRK.A";
-            let key_ratios_json = gf_connect.get_key_ratios(stock).await;
-            assert!(key_ratios_json.is_ok());
-        
-            let key_ratios = serde_json::from_value::<KeyRatios>(key_ratios_json.unwrap());
-            assert!(key_ratios.is_ok());
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+
+                // Get key ratios of Berkshire Hathaway
+                let stock = "NYSE:BRK.A";
+                let key_ratios_json = gf_connect.get_key_ratios(stock).await;
+                assert!(key_ratios_json.is_ok());
+
+                let key_ratios = serde_json::from_value::<KeyRatios>(key_ratios_json.unwrap());
+                assert!(key_ratios.is_ok());
             }
         }
     }

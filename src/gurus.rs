@@ -161,3 +161,119 @@ pub struct GuruPosition {
     #[serde(rename = "yield")]
     pub transaction_yield: FloatOrString,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::super::*;
+    use super::*;
+    use std::env;
+    use chrono::{Datelike, NaiveDate, Utc};
+
+    #[tokio::test]
+    async fn test_guru_trades() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let stock = "WMT";
+                let trades = gf_connect.get_guru_trades(stock).await;
+                assert!(trades.is_ok());
+                let trades = serde_json::from_value::<HashMap<String, GuruTrades>>(trades.unwrap());
+                assert!(trades.is_ok());
+            }
+        }
+    }
+
+
+    fn get_days_from_month(year: i32, month: u32) -> u32 {
+        NaiveDate::from_ymd(
+            match month {
+                12 => year + 1,
+                _ => year,
+            },
+            match month {
+                12 => 1,
+                _ => month + 1,
+            },
+            1,
+        )
+        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
+        .num_days() as u32
+    }
+    
+    fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
+        let mut day = date.day();
+        let mut month = date.month();
+        let mut year = date.year();
+        if month <= period + 1 {
+            year -= 1;
+            month += 12 - period;
+        } else {
+            month -= period;
+        }
+    
+        if day > 28 {
+            let last_date_of_month = get_days_from_month(year, month);
+            day = std::cmp::max(day, last_date_of_month);
+        }
+        NaiveDate::from_ymd(year, month, day)
+    }
+    
+    #[tokio::test]
+    async fn test_guru_picks() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                // Buffett, Soros and Klarman
+                let gurus = ["7", "16", "28"];
+                let now = Utc::now().naive_local().date();
+                let three_months_ago = month_before(now, 3);
+                let trades = gf_connect.get_guru_picks(&gurus, three_months_ago).await;
+                assert!(trades.is_ok());      
+                let trades = serde_json::from_value::<HashMap<String, GuruPicks>>(trades.unwrap());
+                assert!(trades.is_ok());
+            }
+        }
+    }   
+
+    #[tokio::test]
+    async fn test_insider_trades() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let stock = "NAS:NVDA";
+                let trades = gf_connect.get_insider_trades(stock).await;
+                assert!(trades.is_ok());
+                let trades = serde_json::from_value::<HashMap<String, Vec<InsiderTrade>>>(trades.unwrap());
+                assert!(trades.is_ok());
+            }
+        }
+    }   
+
+    #[tokio::test]
+    async fn test_gurulist() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let guru_data = gf_connect.get_gurus().await;
+                assert!(guru_data.is_ok());
+                let gurus = serde_json::from_value::<Gurus>(guru_data.unwrap());
+                assert!(gurus.is_ok());
+            }
+        }
+    }   
+
+    #[tokio::test]
+    async fn test_guru_portfolios() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                // Bill Ackman and David Einhorn
+                let gurus = ["47", "39"];
+                let portfolios = gf_connect.get_guru_portfolios(&gurus).await;
+                assert!(portfolios.is_ok());
+                let portfolios = serde_json::from_value::<HashMap<String, GuruPortfolio>>(portfolios.unwrap());
+                assert!(portfolios.is_ok());
+            }
+        }
+    }   
+}

@@ -1,4 +1,6 @@
 Version 0.5.0
+* Some of the larger and frequently changing structs have been replaced by HashMaps of JSON Value
+  This allows to at least partially deserialize to structs, without the need to frequently change the interface.
 * Added unit tests for all data structs
 * Update of data fields as of 7.12.2021
 * Introduction of GuruFocusError instead of plain string

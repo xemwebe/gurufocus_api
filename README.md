@@ -42,6 +42,10 @@ Since version 0.4, all requests using the ```async``` attribute, returning a Fut
 waiting for the response and returning the result. To get the actual results, ```.await``` or ```block_on```
 or something similar needs to be used. The examples demonstrate how the library could be used.
 
+To run unit tests that retrieve data via the GuruFocus API, an environment variable
+with name ````GURUFOCUS_TOKEN``` containing the API token needs to be set. Otherwise,
+these unit tests will silently be skipped.
+
 Please note that the library is not yet stable and that the user interface is
 still subject to change. However, feedback regarding the usability and
 suggestions for improving the interface are welcome.
