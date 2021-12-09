@@ -1028,6 +1028,7 @@ pub struct AnalystEstimates {
 #[serde(deny_unknown_fields)]
 pub struct AnnualAnalystEstimate {
     pub long_term_growth_rate_mean: FloatOrString,
+    pub long_term_revenue_growth_rate_mean: FloatOrString,
     pub date: Vec<String>,
     pub revenue_estimate: Vec<FloatOrString>,
     pub eps_nri_estimate: Vec<FloatOrString>,
@@ -1074,4 +1075,24 @@ mod tests {
             }
         }
     }
+
+    #[tokio::test]
+    async fn test_analyst_estimates() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+
+                let stock = "NAS:CSCO";
+                let estimates_json = gf_connect.get_analyst_estimate(stock).await;
+                assert!(estimates_json.is_ok());
+
+                let estimates = serde_json::from_value::<AnalystEstimates>(estimates_json.unwrap());
+                println!("{:?}", estimates);
+                assert!(estimates.is_ok());
+            }
+        }
+    }
+
 }
+
+

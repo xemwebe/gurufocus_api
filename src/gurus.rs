@@ -226,24 +226,12 @@ mod tests {
                 // Buffett, Soros and Klarman
                 let gurus = ["7", "16", "28"];
                 let now = Utc::now().naive_local().date();
-                let three_months_ago = month_before(now, 3);
-                let trades = gf_connect.get_guru_picks(&gurus, three_months_ago).await;
+                let six_months_ago = month_before(now, 6);
+                let trades = gf_connect.get_guru_picks(&gurus, six_months_ago).await;
+                println!("{:?}", trades);
                 assert!(trades.is_ok());      
                 let trades = serde_json::from_value::<HashMap<String, GuruPicks>>(trades.unwrap());
-                assert!(trades.is_ok());
-            }
-        }
-    }   
-
-    #[tokio::test]
-    async fn test_insider_trades() {
-        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
-            if !token.is_empty() {
-                let gf_connect = GuruFocusConnector::new(token);
-                let stock = "NAS:NVDA";
-                let trades = gf_connect.get_insider_trades(stock).await;
-                assert!(trades.is_ok());
-                let trades = serde_json::from_value::<HashMap<String, Vec<InsiderTrade>>>(trades.unwrap());
+                println!("{:?}", trades);
                 assert!(trades.is_ok());
             }
         }

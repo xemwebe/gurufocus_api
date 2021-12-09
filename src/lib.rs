@@ -233,6 +233,9 @@ fn compact_list(a: &[&str]) -> String {
 
 #[cfg(test)]
 mod tests {
+    use std::env;
+    use std::collections::HashMap;
+
     use super::*;
     use serde::Deserialize;
 
@@ -261,4 +264,19 @@ mod tests {
         // Fails if json has extra fields
         assert!(s.is_err());
     }
+
+
+    #[tokio::test]
+    async fn test_exchanges() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let exchanges = gf_connect.get_exchanges().await;
+                assert!(exchanges.is_ok());
+                let exchange_map = serde_json::from_value::<HashMap<String, Vec<String>>>(exchanges.unwrap());
+                assert!(exchange_map.is_ok());
+            }
+        }
+    }
+
 }

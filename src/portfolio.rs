@@ -8,7 +8,6 @@ pub struct Portfolio {
     pub portid: String,
     pub portname: String,
     pub num_stocks: i32,
-    pub description: String,
     pub uid: String,
     pub id: String,
     pub intro: String,
@@ -62,4 +61,27 @@ pub struct Position {
     pub in_price: FloatOrString,
     pub ps: FloatOrString,
     pub pb: FloatOrString,
+}
+
+
+#[cfg(test)]
+mod test {
+    use std::env;
+    use super::*;
+    use super::super::*;
+
+    #[tokio::test]
+    async fn test_portfolio() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let portfolios = gf_connect.get_personal_portfolio().await;
+                assert!(portfolios.is_ok());
+                let portfolios = serde_json::from_value::<Vec<Portfolio>>(portfolios.unwrap());
+                println!("Personal portfolios overview\n{:#?}", portfolios);
+                assert!(portfolios.is_ok());
+            }
+        }
+    }
+
 }

@@ -34,3 +34,41 @@ pub struct InsiderUpdate {
     #[serde(rename = "type")]
     pub trade_type: String,
 }
+
+
+#[cfg(test)]
+mod test {
+    use std::env;
+    use std::collections::HashMap;
+    use super::*;
+    use super::super::*;
+
+    #[tokio::test]
+    async fn test_insider_trades() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let stock = "NAS:NVDA";
+                let trades = gf_connect.get_insider_trades(stock).await;
+                assert!(trades.is_ok());
+                let trades = serde_json::from_value::<HashMap<String, Vec<InsiderTrade>>>(trades.unwrap());
+                assert!(trades.is_ok());
+            }
+        }
+    }   
+
+    #[tokio::test]
+    async fn test_insider_updates() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let updates = gf_connect.get_insider_updates().await;
+                assert!(updates.is_ok());
+                let updates = serde_json::from_value::<Vec<InsiderUpdate>>(updates.unwrap());
+                assert!(updates.is_ok());
+            }
+        }
+    }   
+
+
+}

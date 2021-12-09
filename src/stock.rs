@@ -304,7 +304,8 @@ mod tests {
     use super::super::*;
     use super::*;
     use std::env;
-
+    use chrono::{Datelike, NaiveDate, Utc};
+    
     #[tokio::test]
     async fn test_quotes() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -362,6 +363,87 @@ mod tests {
                 let stock_summary = serde_json::from_value::<StockSummary>(stock_summary_json.unwrap());
                 println!("{:?}", stock_summary);
                 assert!(stock_summary.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_stock_list() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                // Get all stocks listed at the Oslo stock exchange (OSL) in Norway
+                let exchange = "OSL";
+                let stocks = gf_connect.get_listed_stocks(exchange).await;
+                assert!(stocks.is_ok());
+                let stocks = serde_json::from_value::<Vec<Stock>>(stocks.unwrap());
+                assert!(stocks.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_dividend_history() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let stock = "NAS:MSFT";
+                let dividends = gf_connect.get_dividend_history(stock).await;
+                assert!(dividends.is_ok());
+                let dividends = serde_json::from_value::<Vec<Dividend>>(dividends.unwrap());
+                assert!(dividends.is_ok());
+            }
+        }
+    }
+
+    fn get_days_from_month(year: i32, month: u32) -> u32 {
+        NaiveDate::from_ymd(
+            match month {
+                12 => year + 1,
+                _ => year,
+            },
+            match month {
+                12 => 1,
+                _ => month + 1,
+            },
+            1,
+        )
+        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
+        .num_days() as u32
+    }
+    
+    fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
+        let mut day = date.day();
+        let mut month = date.month();
+        let mut year = date.year();
+        if month <= period {
+            year -= 1;
+            month += 12 - period;
+        } else {
+            month -= period;
+        }
+    
+        if day > 28 {
+            let last_date_of_month = get_days_from_month(year, month);
+            day = std::cmp::max(day, last_date_of_month);
+        }
+        NaiveDate::from_ymd(year, month, day)
+    }
+    
+
+    #[tokio::test]
+    async fn test_fundamental_updates() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+
+                let now = Utc::now().naive_local().date();
+                let one_months_ago = month_before(now, 6);
+                let stocks_json = gf_connect.get_updated_stocks(one_months_ago).await;
+                assert!(stocks_json.is_ok());
+                println!("{:?}", stocks_json);
+                let stocks = serde_json::from_value::<Vec<String>>(stocks_json.unwrap());
+                assert!(stocks.is_ok());
             }
         }
     }
