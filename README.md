@@ -39,12 +39,22 @@ message, like "Negative Tangible Equity". In such cases, if the string can not
 be parsed to a number, the value is set to `NAN`.
 
 Since version 0.4, all requests using the ```async``` attribute, returning a Future instead of 
-waiting for the response and returning the result. To get the actual results, ```.await``` or ```block_on```
-or something similar needs to be used. The examples demonstrate how the library could be used.
+waiting for the response and returning the result. To get the actual results, ```.await``` or 
+```block_on``` or something similar needs to be used. The examples demonstrate how the library 
+could be used.
 
-To run unit tests that retrieve data via the GuruFocus API, an environment variable
-with name ````GURUFOCUS_TOKEN``` containing the API token needs to be set. Otherwise,
-these unit tests will silently be skipped.
+To run unit tests that retrieve data via the GuruFocus API, the ```GURUFOCUS_TOKEN``` must be set
+(see above). Otherwise, these unit tests will silently be skipped.
+
+Stock information is only partially parsed into structs, some parts are parsed as a HashMap 
+of JSON values, e.g. company details. This has two reasons:
+
+1. GuruFocus changes frequently the interface, adding new entries or (less frequently) removes 
+or renames entries. By using a HashMap, the interface becomes more stable and new entries are immediately available
+2. Some of the structs become very long. Therefore, it seems to be the better approach to just
+search the HashMap than using hardcoded struct members (which sometimes may differ slightly from the spelling in the API).
+
+Eventually, more of the long structs will switched a HashMap representation.
 
 Please note that the library is not yet stable and that the user interface is
 still subject to change. However, feedback regarding the usability and
