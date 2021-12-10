@@ -155,11 +155,13 @@ impl GuruFocusConnector {
         &self,
         gurus: &[&str],
         start_date: chrono::NaiveDate,
+        page: i32,
     ) -> Result<Value, GuruFocusError> {
         let args = format!(
-            "guru/{}/picks/{}",
+            "guru/{}/picks/{}/{}",
             compact_list(gurus),
-            start_date.format("%F")
+            start_date.format("%F"),
+            page
         );
         self.send_request(args.as_str()).await
     }

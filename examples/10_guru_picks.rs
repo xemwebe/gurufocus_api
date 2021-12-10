@@ -48,8 +48,9 @@ async fn main() {
     let gurus = ["7", "16", "28"];
     let now = Utc::now().naive_local().date();
     let three_months_ago = month_before(now, 3);
+    let page = 1;
     let trades = gf_connect
-        .get_guru_picks(&gurus, three_months_ago)
+        .get_guru_picks(&gurus, three_months_ago, page)
         .await
         .unwrap();
 
