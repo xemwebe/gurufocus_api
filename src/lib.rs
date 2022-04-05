@@ -42,8 +42,8 @@
 //! However, feedback regarding the usability and suggestions for improving the interface are welcome.
 
 use serde_json::{self, Value};
-use tokio_compat_02::FutureExt;
 use thiserror::Error;
+use tokio_compat_02::FutureExt;
 
 /// Special types for dealing with Gurus.
 pub mod gurus;
@@ -206,7 +206,10 @@ impl GuruFocusConnector {
     }
 
     /// Returns list of all stocks with updated fundamental data within a week of the given date
-    pub async fn get_updated_stocks(&self, date: chrono::NaiveDate) -> Result<Value, GuruFocusError> {
+    pub async fn get_updated_stocks(
+        &self,
+        date: chrono::NaiveDate,
+    ) -> Result<Value, GuruFocusError> {
         let args = format!("funda_updated/{}", date);
         self.send_request(args.as_str()).await
     }
@@ -215,7 +218,6 @@ impl GuruFocusConnector {
     async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
         let resp = reqwest::get(url.as_str()).compat().await?;
-        println!("{:?}", url);
         Ok(resp.json().await?)
     }
 }
@@ -235,8 +237,8 @@ fn compact_list(a: &[&str]) -> String {
 
 #[cfg(test)]
 mod tests {
-    use std::env;
     use std::collections::HashMap;
+    use std::env;
 
     use super::*;
     use serde::Deserialize;
@@ -256,7 +258,7 @@ mod tests {
 
     #[test]
     fn deserialize_extra_fields() {
-        // correct data 
+        // correct data
         let data_correct = r#"
         {
             "value": 42
@@ -276,7 +278,6 @@ mod tests {
         assert!(s.is_err());
     }
 
-
     #[tokio::test]
     async fn test_exchanges() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -284,10 +285,10 @@ mod tests {
                 let gf_connect = GuruFocusConnector::new(token);
                 let exchanges = gf_connect.get_exchanges().await;
                 assert!(exchanges.is_ok());
-                let exchange_map = serde_json::from_value::<HashMap<String, Vec<String>>>(exchanges.unwrap());
+                let exchange_map =
+                    serde_json::from_value::<HashMap<String, Vec<String>>>(exchanges.unwrap());
                 assert!(exchange_map.is_ok());
             }
         }
     }
-
 }

@@ -166,8 +166,8 @@ pub struct GuruPosition {
 mod tests {
     use super::super::*;
     use super::*;
-    use std::env;
     use chrono::{Datelike, NaiveDate, Utc};
+    use std::env;
 
     #[tokio::test]
     async fn test_guru_trades() {
@@ -182,7 +182,6 @@ mod tests {
             }
         }
     }
-
 
     fn get_days_from_month(year: i32, month: u32) -> u32 {
         NaiveDate::from_ymd(
@@ -199,7 +198,7 @@ mod tests {
         .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
         .num_days() as u32
     }
-    
+
     fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
         let mut day = date.day();
         let mut month = date.month();
@@ -210,14 +209,14 @@ mod tests {
         } else {
             month -= period;
         }
-    
+
         if day > 28 {
             let last_date_of_month = get_days_from_month(year, month);
             day = std::cmp::max(day, last_date_of_month);
         }
         NaiveDate::from_ymd(year, month, day)
     }
-    
+
     #[tokio::test]
     async fn test_guru_picks() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -228,12 +227,13 @@ mod tests {
                 let now = Utc::now().naive_local().date();
                 let three_months_ago = month_before(now, 3);
                 let page = 1;
-                let trades = gf_connect.get_guru_picks(&gurus, three_months_ago, page).await;
-                println!("{:?}", trades);
-                assert!(trades.is_ok());      
+                let trades = gf_connect
+                    .get_guru_picks(&gurus, three_months_ago, page)
+                    .await;
+                assert!(trades.is_ok());
             }
         }
-    }   
+    }
 
     #[tokio::test]
     async fn test_gurulist() {
@@ -244,7 +244,7 @@ mod tests {
                 assert!(guru_data.is_ok());
             }
         }
-    }   
+    }
 
     #[tokio::test]
     async fn test_guru_portfolios() {
@@ -255,9 +255,10 @@ mod tests {
                 let gurus = ["47", "39"];
                 let portfolios = gf_connect.get_guru_portfolios(&gurus).await;
                 assert!(portfolios.is_ok());
-                let portfolios = serde_json::from_value::<HashMap<String, GuruPortfolio>>(portfolios.unwrap());
+                let portfolios =
+                    serde_json::from_value::<HashMap<String, GuruPortfolio>>(portfolios.unwrap());
                 assert!(portfolios.is_ok());
             }
         }
-    }   
+    }
 }

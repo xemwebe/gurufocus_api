@@ -35,13 +35,12 @@ pub struct InsiderUpdate {
     pub trade_type: String,
 }
 
-
 #[cfg(test)]
 mod test {
-    use std::env;
-    use std::collections::HashMap;
-    use super::*;
     use super::super::*;
+    use super::*;
+    use std::collections::HashMap;
+    use std::env;
 
     #[tokio::test]
     async fn test_insider_trades() {
@@ -51,11 +50,12 @@ mod test {
                 let stock = "NAS:NVDA";
                 let trades = gf_connect.get_insider_trades(stock).await;
                 assert!(trades.is_ok());
-                let trades = serde_json::from_value::<HashMap<String, Vec<InsiderTrade>>>(trades.unwrap());
+                let trades =
+                    serde_json::from_value::<HashMap<String, Vec<InsiderTrade>>>(trades.unwrap());
                 assert!(trades.is_ok());
             }
         }
-    }   
+    }
 
     #[tokio::test]
     async fn test_insider_updates() {
@@ -68,7 +68,5 @@ mod test {
                 assert!(updates.is_ok());
             }
         }
-    }   
-
-
+    }
 }

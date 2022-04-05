@@ -306,9 +306,9 @@ pub struct Dividend {
 mod tests {
     use super::super::*;
     use super::*;
-    use std::env;
     use chrono::{Datelike, NaiveDate, Utc};
-    
+    use std::env;
+
     #[tokio::test]
     async fn test_quotes() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -319,7 +319,7 @@ mod tests {
                 assert!(prices.is_ok());
                 let prices = serde_json::from_value::<Vec<Quote>>(prices.unwrap());
                 assert!(prices.is_ok());
-                assert!(prices.unwrap().len()>0);
+                assert!(prices.unwrap().len() > 0);
             }
         }
     }
@@ -349,7 +349,7 @@ mod tests {
                 assert!(prices.is_ok());
                 let prices = serde_json::from_value::<Vec<(String, f64)>>(prices.unwrap());
                 assert!(prices.is_ok());
-                assert!(prices.unwrap().len()>0);
+                assert!(prices.unwrap().len() > 0);
             }
         }
     }
@@ -362,8 +362,8 @@ mod tests {
                 let stock = "NYSE:BAC";
                 let stock_summary_json = gf_connect.get_stock_summary(stock).await;
                 assert!(stock_summary_json.is_ok());
-                let stock_summary = serde_json::from_value::<StockSummary>(stock_summary_json.unwrap());
-                println!("{:?}", stock_summary);
+                let stock_summary =
+                    serde_json::from_value::<StockSummary>(stock_summary_json.unwrap());
                 assert!(stock_summary.is_ok());
             }
         }
@@ -413,7 +413,7 @@ mod tests {
         .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
         .num_days() as u32
     }
-    
+
     fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
         let mut day = date.day();
         let mut month = date.month();
@@ -424,14 +424,13 @@ mod tests {
         } else {
             month -= period;
         }
-    
+
         if day > 28 {
             let last_date_of_month = get_days_from_month(year, month);
             day = std::cmp::max(day, last_date_of_month);
         }
         NaiveDate::from_ymd(year, month, day)
     }
-    
 
     #[tokio::test]
     async fn test_fundamental_updates() {
@@ -443,11 +442,9 @@ mod tests {
                 let one_months_ago = month_before(now, 6);
                 let stocks_json = gf_connect.get_updated_stocks(one_months_ago).await;
                 assert!(stocks_json.is_ok());
-                println!("{:?}", stocks_json);
                 let stocks = serde_json::from_value::<Vec<String>>(stocks_json.unwrap());
                 assert!(stocks.is_ok());
             }
         }
     }
-
 }

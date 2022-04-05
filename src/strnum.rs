@@ -69,7 +69,6 @@ impl<'de> Deserialize<'de> for FloatOrString {
             {
                 Ok(From::from(std::f64::NAN))
             }
-
         }
 
         deserializer.deserialize_any(StringOrNum(PhantomData))

@@ -131,12 +131,8 @@ mod tests {
                 assert!(estimates_json.is_ok());
 
                 let estimates = serde_json::from_value::<AnalystEstimates>(estimates_json.unwrap());
-                println!("{:?}", estimates);
                 assert!(estimates.is_ok());
             }
         }
     }
-
 }
-
-

@@ -63,12 +63,11 @@ pub struct Position {
     pub pb: FloatOrString,
 }
 
-
 #[cfg(test)]
 mod test {
-    use std::env;
-    use super::*;
     use super::super::*;
+    use super::*;
+    use std::env;
 
     #[tokio::test]
     async fn test_portfolio() {
@@ -78,10 +77,8 @@ mod test {
                 let portfolios = gf_connect.get_personal_portfolio().await;
                 assert!(portfolios.is_ok());
                 let portfolios = serde_json::from_value::<Vec<Portfolio>>(portfolios.unwrap());
-                println!("Personal portfolios overview\n{:#?}", portfolios);
                 assert!(portfolios.is_ok());
             }
         }
     }
-
 }
