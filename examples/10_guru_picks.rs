@@ -2,7 +2,6 @@ extern crate chrono;
 
 use chrono::{Datelike, NaiveDate, Utc};
 use gurufocus_api as gfapi;
-use std::collections::HashMap;
 use std::env;
 
 fn get_days_from_month(year: i32, month: u32) -> u32 {
@@ -25,7 +24,7 @@ fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
     let mut day = date.day();
     let mut month = date.month();
     let mut year = date.year();
-    if month <= period + 1 {
+    if month <= period {
         year -= 1;
         month += 12 - period;
     } else {
@@ -54,7 +53,6 @@ async fn main() {
         .await
         .unwrap();
 
-    let trades: HashMap<String, gfapi::GuruPicks> = serde_json::from_value(trades).unwrap();
     println!(
         "List of trades by a set of gurus (Warren Buffett, George Soros, and Seth Klarman) since {}\n{:#?}", three_months_ago, trades);
 }

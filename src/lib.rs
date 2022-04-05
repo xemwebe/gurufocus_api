@@ -251,18 +251,27 @@ mod tests {
     #[derive(Deserialize, Debug)]
     #[serde(deny_unknown_fields)]
     struct SimpleStruct {
-        value: i32,
+        pub value: i32,
     }
 
     #[test]
     fn deserialize_extra_fields() {
-        let data = r#"
+        // correct data 
+        let data_correct = r#"
+        {
+            "value": 42
+        }"#;
+
+        let s: SimpleStruct = serde_json::from_str(data_correct).unwrap();
+        assert_eq!(s.value, 42);
+
+        let data_wrong = r#"
         {
             "value": 42,
             "text": "bla"
         }"#;
 
-        let s: serde_json::Result<SimpleStruct> = serde_json::from_str(data);
+        let s: serde_json::Result<SimpleStruct> = serde_json::from_str(data_wrong);
         // Fails if json has extra fields
         assert!(s.is_err());
     }

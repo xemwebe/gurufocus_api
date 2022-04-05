@@ -41,9 +41,9 @@ pub struct Gurus {
 #[serde(deny_unknown_fields)]
 pub struct GuruTrades {
     /// Array of gurus position in the stock
-    holdings: Vec<GuruHoldings>,
+    pub holdings: Vec<GuruHoldings>,
     /// Array of recent guru picks in the stock
-    picks: Vec<GuruPicks2>,
+    pub picks: Vec<GuruPicks2>,
 }
 
 /// Container for the guru holdings
@@ -76,12 +76,12 @@ pub struct GuruPicks2 {
     pub price_min: FloatOrString,
 }
 
-#[derive(Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub struct GuruPicks {
-    /// Portfolio of guru picks
-    port: Vec<GuruPick>,
-}
+// #[derive(Deserialize, Debug)]
+// #[serde(deny_unknown_fields)]
+// pub struct GuruPicks {
+//     /// Portfolio of guru picks
+//     pub picks: Vec<GuruPick>,
+// }
 
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
@@ -204,7 +204,7 @@ mod tests {
         let mut day = date.day();
         let mut month = date.month();
         let mut year = date.year();
-        if month <= period + 1 {
+        if month <= period {
             year -= 1;
             month += 12 - period;
         } else {
@@ -231,9 +231,6 @@ mod tests {
                 let trades = gf_connect.get_guru_picks(&gurus, three_months_ago, page).await;
                 println!("{:?}", trades);
                 assert!(trades.is_ok());      
-                let trades = serde_json::from_value::<HashMap<String, GuruPicks>>(trades.unwrap());
-                println!("{:?}", trades);
-                assert!(trades.is_ok());
             }
         }
     }   
@@ -245,8 +242,6 @@ mod tests {
                 let gf_connect = GuruFocusConnector::new(token);
                 let guru_data = gf_connect.get_gurus().await;
                 assert!(guru_data.is_ok());
-                let gurus = serde_json::from_value::<Gurus>(guru_data.unwrap());
-                assert!(gurus.is_ok());
             }
         }
     }   

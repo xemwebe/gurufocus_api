@@ -24,7 +24,8 @@ Please note that running any of the examples increases your API access counter b
 The GuruFocus API provides all data in JSON format, and the basic API functions currently 
 will just return these JSON structures as `serde_json::Value` types without any further
 processing. The `serde_json::Value` types can be deserialized 
-into more meaningful data structures, as is demonstrated in the `gurulist` example. 
+into more meaningful data structures, which is used for those JSON structs, which are
+relatively stable over time (see below).
 
 
 The GuruFocus API returns numbers sometimes as numbers, sometimes as strings.
