@@ -1,6 +1,6 @@
 [package]
 name = "gurufocus_api"
-version = "0.6.1"
+version = "0.7.0"
 authors = ["Mark Beinker <mwb@quantlink.de>"]
 edition = "2018"
 description = "A rust adapter to the GuruFocus API, a provider of financial data."
@@ -13,8 +13,7 @@ categories = ["api-bindings"]
 [dependencies]
 reqwest = { version = "0.11", features = ["json"] }
 serde_json = "1.0"
-chrono = "0.4"
+chrono = { git = "https://github.com/chronotope/chrono.git" }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1.17", features=["rt-multi-thread", "macros"]}
-tokio-compat-02 = "0.2.0"
 thiserror = "1.0"

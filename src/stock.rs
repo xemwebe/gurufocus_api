@@ -124,6 +124,14 @@ pub struct Chart {
     pub projected_fcf: FloatOrString,
     #[serde(rename = "Tangible Book")]
     pub tangible_book: FloatOrString,
+    #[serde(rename = "DCF (Earnings Based)")]
+    pub dcf_earnings_based: FloatOrString,
+    #[serde(rename = "DCF (FCF Based)")]
+    pub dcf_fcf_based: FloatOrString,
+    #[serde(rename = "GF Value")]
+    pub gf_balue: FloatOrString,
+    #[serde(rename = "Earnings Power Value")]
+    pub earnings_power_value: FloatOrString,
 }
 
 /// Estimate summary
@@ -154,32 +162,25 @@ pub struct Estimate {
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub struct GeneralData {
-    #[serde(rename = "industry")]
     pub industry: String,
-    #[serde(rename = "company")]
     pub company: String,
-    #[serde(rename = "desc")]
     pub desc: String,
-    #[serde(rename = "rank_financial_strength")]
     pub rank_financial_strength: FloatOrString,
-    #[serde(rename = "sector")]
     pub sector: String,
-    #[serde(rename = "currency")]
     pub currency: String,
-    #[serde(rename = "price")]
     pub price: FloatOrString,
-    #[serde(rename = "short_desc")]
     pub short_desc: String,
-    #[serde(rename = "rank_profitability")]
     pub rank_profitability: FloatOrString,
-    #[serde(rename = "rating")]
     pub rating: FloatOrString,
-    #[serde(rename = "country")]
     pub country: String,
-    #[serde(rename = "group")]
     pub group: String,
-    #[serde(rename = "timestamp")]
     pub timestamp: String,
+    pub gf_score: FloatOrString,
+    pub rank_gf_value: FloatOrString,
+    pub rank_growth: FloatOrString,
+    pub rank_momentum: FloatOrString,
+    pub risk_assessment: String,
+    pub gf_valuation: String,
 }
 
 /// Ratio comparison
@@ -399,7 +400,7 @@ mod tests {
     }
 
     fn get_days_from_month(year: i32, month: u32) -> u32 {
-        NaiveDate::from_ymd(
+        NaiveDate::from_ymd_opt(
             match month {
                 12 => year + 1,
                 _ => year,
@@ -409,8 +410,8 @@ mod tests {
                 _ => month + 1,
             },
             1,
-        )
-        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
+        ).unwrap()
+        .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
         .num_days() as u32
     }
 
@@ -429,7 +430,7 @@ mod tests {
             let last_date_of_month = get_days_from_month(year, month);
             day = std::cmp::max(day, last_date_of_month);
         }
-        NaiveDate::from_ymd(year, month, day)
+        NaiveDate::from_ymd_opt(year, month, day).unwrap()
     }
 
     #[tokio::test]

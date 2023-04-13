@@ -41,7 +41,7 @@ pub struct Gurus {
 #[serde(deny_unknown_fields)]
 pub struct GuruTrades {
     /// Array of gurus position in the stock
-    pub holdings: Vec<GuruHoldings>,
+    //pub holdings: Vec<GuruHoldings>,
     /// Array of recent guru picks in the stock
     pub picks: Vec<GuruPicks2>,
 }
@@ -184,7 +184,7 @@ mod tests {
     }
 
     fn get_days_from_month(year: i32, month: u32) -> u32 {
-        NaiveDate::from_ymd(
+        NaiveDate::from_ymd_opt(
             match month {
                 12 => year + 1,
                 _ => year,
@@ -194,8 +194,8 @@ mod tests {
                 _ => month + 1,
             },
             1,
-        )
-        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
+        ).unwrap()
+        .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
         .num_days() as u32
     }
 
@@ -214,7 +214,7 @@ mod tests {
             let last_date_of_month = get_days_from_month(year, month);
             day = std::cmp::max(day, last_date_of_month);
         }
-        NaiveDate::from_ymd(year, month, day)
+        NaiveDate::from_ymd_opt(year, month, day).unwrap()
     }
 
     #[tokio::test]

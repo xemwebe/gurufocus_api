@@ -43,7 +43,6 @@
 
 use serde_json::{self, Value};
 use thiserror::Error;
-use tokio_compat_02::FutureExt;
 
 /// Special types for dealing with Gurus.
 pub mod gurus;
@@ -217,7 +216,7 @@ impl GuruFocusConnector {
     /// Send request to gurufocus server and transform response to JSON value
     async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
-        let resp = reqwest::get(url.as_str()).compat().await?;
+        let resp = reqwest::get(url.as_str()).await?;
         Ok(resp.json().await?)
     }
 }

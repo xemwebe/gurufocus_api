@@ -1,3 +1,12 @@
+Version 0.7.0
+* Interface update to recent changes
+* Update of chrono to get rid of vulnarable dependencies; 
+  unfortunately, these means to use the latest github master branch
+* The API for `guru/{symbol}/trades` is currently broken; a ticket has been submitted to gurufocus.
+
+Version 0.6.1
+* Interface update to recent changes
+
 Version 0.5.0
 * Some of the larger and frequently changing structs have been replaced by HashMaps of JSON Value
   This allows to at least partially deserialize to structs, without the need to frequently change the interface.
