@@ -1,6 +1,5 @@
 use gurufocus_api as gfapi;
 use std::env;
-use serde_json::Value;
 
 #[tokio::main]
 async fn main() {

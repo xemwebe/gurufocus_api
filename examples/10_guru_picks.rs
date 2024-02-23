@@ -15,7 +15,8 @@ fn get_days_from_month(year: i32, month: u32) -> u32 {
             _ => month + 1,
         },
         1,
-    ).unwrap()
+    )
+    .unwrap()
     .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
     .num_days() as u32
 }

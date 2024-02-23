@@ -219,12 +219,18 @@ impl GuruFocusConnector {
     }
 
     // Returns list of latest politician transactions
-    pub async fn get_politician_transactions(&self, page: u32, asset_type: Option<crate::gurus::AssetType>) -> Result<Value, GuruFocusError> {
-        let args = format!("politicians/transactions?page={page}&asset_type={}",
+    pub async fn get_politician_transactions(
+        &self,
+        page: u32,
+        asset_type: Option<crate::gurus::AssetType>,
+    ) -> Result<Value, GuruFocusError> {
+        let args = format!(
+            "politicians/transactions?page={page}&asset_type={}",
             match asset_type {
                 None => "All".to_string(),
                 Some(at) => format!("{at:?}"),
-            });
+            }
+        );
         self.send_request(args.as_str()).await
     }
 

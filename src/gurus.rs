@@ -183,8 +183,7 @@ pub struct Politician {
 /// Politicians transactions
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
-pub struct PoliticianTransaction
-{
+pub struct PoliticianTransaction {
     pub symbol: String,
     pub company: String,
     pub exchange: String,
@@ -209,12 +208,12 @@ pub struct PoliticianTransaction
 /// Asset type traded by politicians
 #[derive(Deserialize, Debug)]
 pub enum AssetType {
-    #[serde(rename="Common Stock")]
+    #[serde(rename = "Common Stock")]
     CommonStock,
     Option,
-    #[serde(rename="ETF")]
+    #[serde(rename = "ETF")]
     Etf,
-    #[serde(rename="Preferred Stock")]
+    #[serde(rename = "Preferred Stock")]
     PreferredStock,
     Bond,
     Units,
@@ -226,9 +225,9 @@ pub enum AssetType {
 #[derive(Deserialize, Debug)]
 pub struct PoliticianTransactionList {
     pub count: usize,
-    #[serde(rename="currentPage")]
+    #[serde(rename = "currentPage")]
     pub current_page: u32,
-    #[serde(rename="lastPage")]
+    #[serde(rename = "lastPage")]
     pub last_page: u32,
     pub total: u32,
     pub data: Vec<PoliticianTransaction>,
@@ -238,10 +237,10 @@ pub struct PoliticianTransactionList {
 mod tests {
     use super::super::*;
     use super::*;
+    use crate::serde_json::Error;
     use chrono::{Datelike, NaiveDate, Utc};
     use std::env;
-    use crate::serde_json::Error;
-    
+
     #[tokio::test]
     async fn test_guru_trades() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -267,7 +266,8 @@ mod tests {
                 _ => month + 1,
             },
             1,
-        ).unwrap()
+        )
+        .unwrap()
         .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
         .num_days() as u32
     }
@@ -353,7 +353,8 @@ mod tests {
                 let gf_connect = GuruFocusConnector::new(token);
                 let politician_transactions = gf_connect.get_politician_transactions(1, None).await;
                 assert!(politician_transactions.is_ok());
-                let politician_transactions: Result<PoliticianTransactionList, Error> = serde_json::from_value(politician_transactions.unwrap());
+                let politician_transactions: Result<PoliticianTransactionList, Error> =
+                    serde_json::from_value(politician_transactions.unwrap());
                 assert!(politician_transactions.is_ok());
             }
         }

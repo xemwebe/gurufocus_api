@@ -427,7 +427,8 @@ mod tests {
                 _ => month + 1,
             },
             1,
-        ).unwrap()
+        )
+        .unwrap()
         .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
         .num_days() as u32
     }

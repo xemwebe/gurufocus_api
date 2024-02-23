@@ -67,15 +67,13 @@ impl FromStr for HexNum {
     type Err = <String as FromStr>::Err;
 
     fn from_str(s: &str) -> Result<HexNum, Self::Err> {
-        Ok(HexNum { 0: s.to_string() })
+        Ok(HexNum(s.to_string()))
     }
 }
 
 impl From<u64> for HexNum {
     fn from(val: u64) -> HexNum {
-        HexNum {
-            0: format!("{}", val),
-        }
+        HexNum(format!("{}", val))
     }
 }
 
@@ -89,7 +87,7 @@ impl fmt::Display for HexNum {
 /// Implement default instantiation
 impl default::Default for HexNum {
     fn default() -> HexNum {
-        HexNum { 0: "0".to_string() }
+        HexNum("0".to_string())
     }
 }
 

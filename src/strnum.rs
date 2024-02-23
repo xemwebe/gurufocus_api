@@ -82,14 +82,14 @@ impl FromStr for FloatOrString {
 
     fn from_str(s: &str) -> Result<FloatOrString, Self::Err> {
         if s.is_empty() {
-            Ok(FloatOrString { 0: 0.0 })
+            Ok(FloatOrString(0.0))
         } else {
             // remove commas as thousands separator
-            let s = s.replace(",", "");
+            let s = s.replace(',', "");
             match s.parse::<f64>() {
-                Ok(num) => Ok(FloatOrString { 0: num }),
+                Ok(num) => Ok(FloatOrString(num)),
                 // If string can not be parsed, set value to NaN
-                _ => Ok(FloatOrString { 0: std::f64::NAN }),
+                _ => Ok(FloatOrString(std::f64::NAN)),
             }
         }
     }
@@ -103,19 +103,19 @@ impl From<FloatOrString> for f64 {
 
 impl From<u64> for FloatOrString {
     fn from(val: u64) -> FloatOrString {
-        FloatOrString { 0: val as f64 }
+        FloatOrString(val as f64)
     }
 }
 
 impl From<i64> for FloatOrString {
     fn from(val: i64) -> FloatOrString {
-        FloatOrString { 0: val as f64 }
+        FloatOrString(val as f64)
     }
 }
 
 impl From<f64> for FloatOrString {
     fn from(val: f64) -> FloatOrString {
-        FloatOrString { 0: val }
+        FloatOrString(val)
     }
 }
 
@@ -129,7 +129,7 @@ impl fmt::Display for FloatOrString {
 /// Implement default instantiation
 impl default::Default for FloatOrString {
     fn default() -> FloatOrString {
-        FloatOrString { 0: std::f64::NAN }
+        FloatOrString(std::f64::NAN)
     }
 }
 
