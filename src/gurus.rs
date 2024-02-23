@@ -162,13 +162,86 @@ pub struct GuruPosition {
     pub transaction_yield: FloatOrString,
 }
 
+/// Politicians
+#[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+pub struct Politician {
+    /// Unique identifier of politician
+    pub id: u32,
+    /// Full name of politician
+    pub full_name: String,
+    /// Politicians current position
+    pub position: String,
+    /// The political party the politician is a member of
+    pub party: String,
+    /// Politicians election district
+    pub district: Option<String>,
+    /// Politicians state
+    pub state: String,
+}
+
+/// Politicians transactions
+#[derive(Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+pub struct PoliticianTransaction
+{
+    pub symbol: String,
+    pub company: String,
+    pub exchange: String,
+    pub industry: usize,
+    pub class: AssetType,
+    pub stockid: String,
+    pub option_type: Option<String>,
+    pub strike_price: Option<FloatOrString>,
+    pub trans_type: String,
+    pub amount: String,
+    pub disclosure_date: String,
+    pub transaction_date: String,
+    pub expiration_date: Option<String>,
+    pub id: u32,
+    pub full_name: String,
+    pub official_full: Option<String>,
+    pub position: String,
+    pub state: String,
+    pub party: String,
+}
+
+/// Asset type traded by politicians
+#[derive(Deserialize, Debug)]
+pub enum AssetType {
+    #[serde(rename="Common Stock")]
+    CommonStock,
+    Option,
+    #[serde(rename="ETF")]
+    Etf,
+    #[serde(rename="Preferred Stock")]
+    PreferredStock,
+    Bond,
+    Units,
+    Warrant,
+    Other,
+}
+
+/// List of politician transactions
+#[derive(Deserialize, Debug)]
+pub struct PoliticianTransactionList {
+    pub count: usize,
+    #[serde(rename="currentPage")]
+    pub current_page: u32,
+    #[serde(rename="lastPage")]
+    pub last_page: u32,
+    pub total: u32,
+    pub data: Vec<PoliticianTransaction>,
+}
+
 #[cfg(test)]
 mod tests {
     use super::super::*;
     use super::*;
     use chrono::{Datelike, NaiveDate, Utc};
     use std::env;
-
+    use crate::serde_json::Error;
+    
     #[tokio::test]
     async fn test_guru_trades() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
@@ -258,6 +331,30 @@ mod tests {
                 let portfolios =
                     serde_json::from_value::<HashMap<String, GuruPortfolio>>(portfolios.unwrap());
                 assert!(portfolios.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_politicianlist() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let politicians = gf_connect.get_politicians().await;
+                assert!(politicians.is_ok());
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_politiciantransactions() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let politician_transactions = gf_connect.get_politician_transactions(1, None).await;
+                assert!(politician_transactions.is_ok());
+                let politician_transactions: Result<PoliticianTransactionList, Error> = serde_json::from_value(politician_transactions.unwrap());
+                assert!(politician_transactions.is_ok());
             }
         }
     }

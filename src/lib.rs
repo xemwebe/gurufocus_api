@@ -46,7 +46,6 @@ use thiserror::Error;
 
 /// Special types for dealing with Gurus.
 pub mod gurus;
-pub use gurus::*;
 
 /// Special types for dealing with stocks.
 pub mod stock;
@@ -144,6 +143,7 @@ impl GuruFocusConnector {
         let args = format!("stock/{}/insider", stock);
         self.send_request(args.as_str()).await
     }
+
     /// Returns lists of all and personalized gurus
     pub async fn get_gurus(&self) -> Result<Value, GuruFocusError> {
         self.send_request("gurulist").await
@@ -213,9 +213,25 @@ impl GuruFocusConnector {
         self.send_request(args.as_str()).await
     }
 
+    /// Returns lists of politicians
+    pub async fn get_politicians(&self) -> Result<Value, GuruFocusError> {
+        self.send_request("politicians").await
+    }
+
+    // Returns list of latest politician transactions
+    pub async fn get_politician_transactions(&self, page: u32, asset_type: Option<crate::gurus::AssetType>) -> Result<Value, GuruFocusError> {
+        let args = format!("politicians/transactions?page={page}&asset_type={}",
+            match asset_type {
+                None => "All".to_string(),
+                Some(at) => format!("{at:?}"),
+            });
+        self.send_request(args.as_str()).await
+    }
+
     /// Send request to gurufocus server and transform response to JSON value
     async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
+        println!("url: {url}");
         let resp = reqwest::get(url.as_str()).await?;
         Ok(resp.json().await?)
     }
