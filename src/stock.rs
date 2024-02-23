@@ -162,10 +162,10 @@ pub struct Estimate {
 #[derive(Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub struct GeneralData {
-    pub industry: String,
     pub company: String,
     pub desc: String,
     pub rank_financial_strength: FloatOrString,
+    pub supersector: String,
     pub sector: String,
     pub currency: String,
     pub price: FloatOrString,
@@ -174,6 +174,7 @@ pub struct GeneralData {
     pub rating: FloatOrString,
     pub country: String,
     pub group: String,
+    pub subindustry: String,
     pub timestamp: String,
     pub gf_score: FloatOrString,
     pub rank_gf_value: FloatOrString,
@@ -181,6 +182,22 @@ pub struct GeneralData {
     pub rank_momentum: FloatOrString,
     pub risk_assessment: String,
     pub gf_valuation: String,
+    pub valuation_box_status: String,
+    pub percentage_of_13f_buys: FloatOrString,
+    pub percentage_of_13f_sells: FloatOrString,
+    pub percentage_of_13f_holds: FloatOrString,
+    pub percentage_of_mutual_fund_buys: FloatOrString,
+    pub percentage_of_mutual_fund_sells: FloatOrString,
+    pub percentage_of_mutual_fund_holds: FloatOrString,
+    pub percentage_of_etf_buys: FloatOrString,
+    pub percentage_of_etf_sells: FloatOrString,
+    pub percentage_of_etf_holds: FloatOrString,
+    pub percentage_of_premium_guru_buys: FloatOrString,
+    pub percentage_of_premium_guru_sells: FloatOrString,
+    pub percentage_of_premium_guru_holds: FloatOrString,
+    pub percentage_of_premiumplus_guru_buys: FloatOrString,
+    pub percentage_of_premiumplus_guru_sells: FloatOrString,
+    pub percentage_of_premiumplus_guru_holds: FloatOrString,
 }
 
 /// Ratio comparison

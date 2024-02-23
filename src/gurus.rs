@@ -41,7 +41,7 @@ pub struct Gurus {
 #[serde(deny_unknown_fields)]
 pub struct GuruTrades {
     /// Array of gurus position in the stock
-    //pub holdings: Vec<GuruHoldings>,
+    pub holdings: Vec<GuruHoldings>,
     /// Array of recent guru picks in the stock
     pub picks: Vec<GuruPicks2>,
 }
