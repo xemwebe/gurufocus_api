@@ -237,7 +237,6 @@ impl GuruFocusConnector {
     /// Send request to gurufocus server and transform response to JSON value
     async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
-        println!("url: {url}");
         let resp = reqwest::get(url.as_str()).await?;
         Ok(resp.json().await?)
     }
