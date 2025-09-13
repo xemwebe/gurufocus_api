@@ -33,6 +33,8 @@ pub struct InsiderUpdate {
     pub trans_share: FloatOrString,
     #[serde(rename = "type")]
     pub trade_type: String,
+    pub add_date: String,
+    pub file_date: String,
 }
 
 #[cfg(test)]

@@ -57,6 +57,7 @@ pub struct PeriodData {
     pub cashflow_statement: Value,
     pub valuation_ratios: Value,
     pub valuation_and_quality: Value,
+    pub gurufocus_rankings: Option<Value>,
 }
 
 #[cfg(test)]

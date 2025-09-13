@@ -32,6 +32,7 @@ pub struct Portfolio {
     pub deleted_time: Option<String>,
     pub is_article: Option<String>,
     pub gain: Option<FloatOrString>,
+    pub latest_opened: Option<String>,
     #[serde(rename = "type")]
     pub portfolio_type: FloatOrString,
     pub value: Option<FloatOrString>,

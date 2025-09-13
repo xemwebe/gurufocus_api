@@ -140,22 +140,49 @@ pub struct Chart {
 pub struct Estimate {
     #[serde(rename = "LongTermGrowthRateMean")]
     pub longtermgrowthratemean: FloatOrString,
-    #[serde(rename = "eps_nri")]
     pub eps_nri: Vec<FloatOrString>,
-    #[serde(rename = "count")]
     pub count: FloatOrString,
     #[serde(rename = "per share eps")]
     pub per_share_eps: Vec<FloatOrString>,
-    #[serde(rename = "percentage")]
     pub percentage: FloatOrString,
     #[serde(rename = "Dividends Per Share")]
     pub dividends_per_share: Vec<FloatOrString>,
     #[serde(rename = "Revenue")]
     pub revenue: Vec<FloatOrString>,
-    #[serde(rename = "quarter")]
-    pub quarter: Vec<FloatOrString>,
+    pub quarter: Vec<String>,
     #[serde(rename = "LongTermRevenueGrowthRateMean")]
     pub longtermrevenuegrowthratemean: FloatOrString,
+    #[serde(rename = "Book Value per Share")]
+    pub book_value_per_share: Option<Vec<FloatOrString>>,
+    #[serde(rename = "EBIT")]
+    pub ebit: Option<Vec<FloatOrString>>,
+    #[serde(rename = "EBITDA")]
+    pub ebitda: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Net Income")]
+    pub net_income: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Pretax Income")]
+    pub pretax_income: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Operating Cash Flow per Share")]
+    pub operating_cash_flow_per_share: Option<Vec<FloatOrString>>,
+    #[serde(rename = "ROA %")]
+    pub roa_percent: Option<Vec<FloatOrString>>,
+    #[serde(rename = "ROE %")]
+    pub roe_percent: Option<Vec<FloatOrString>>,
+    #[serde(rename = "Gross Margin %")]
+    pub gross_margin_percent: Option<Vec<FloatOrString>>,
+    pub future_revenue_estimate_growth: Option<FloatOrString>,
+    pub future_per_share_eps_estimate_growth: Option<FloatOrString>,
+    pub future_eps_nri_estimate_growth: Option<FloatOrString>,
+    pub future_dividend_estimate_growth: Option<FloatOrString>,
+    pub future_operating_cash_flow_per_share_estimate_growth: Option<FloatOrString>,
+    pub future_book_value_per_share_estimate_growth: Option<FloatOrString>,
+    pub future_net_income_estimate_growth: Option<FloatOrString>,
+    pub future_ebit_estimate_growth: Option<FloatOrString>,
+    pub future_ebitda_estimate_growth: Option<FloatOrString>,
+    pub future_pretax_income_estimate_growth: Option<FloatOrString>,
+    pub future_gross_margin_estimate_growth: Option<FloatOrString>,
+    pub future_roa_estimate_growth: Option<FloatOrString>,
+    pub future_roe_estimate_growth: Option<FloatOrString>,
 }
 
 /// General data for summary
@@ -324,8 +351,40 @@ pub struct Dividend {
 mod tests {
     use super::super::*;
     use super::*;
-    use chrono::{Datelike, NaiveDate, Utc};
-    use std::env;
+    use crate::gurus::GuruTrades;
+    use std::{convert::TryFrom, env};
+    use time::{Date, UtcDateTime};
+
+    fn get_months_before(date: Date, months: u8) -> Date {
+        let mut day = date.day();
+        let mut month = date.month() as u8;
+        let mut year = date.year();
+
+        while month + 1 < months {
+            month += 12;
+            year -= 1;
+        }
+
+        month -= months;
+        let month: time::Month = time::Month::try_from(month).unwrap();
+        day = day.min(month.length(year));
+
+        Date::from_calendar_date(year, month, day).unwrap()
+    }
+
+    #[tokio::test]
+    async fn test_guru_trades() {
+        if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
+            if !token.is_empty() {
+                let gf_connect = GuruFocusConnector::new(token);
+                let stock = "WMT";
+                let trades = gf_connect.get_guru_trades(stock).await;
+                assert!(trades.is_ok());
+                let trades = serde_json::from_value::<HashMap<String, GuruTrades>>(trades.unwrap());
+                assert!(trades.is_ok());
+            }
+        }
+    }
 
     #[tokio::test]
     async fn test_quotes() {
@@ -416,49 +475,14 @@ mod tests {
         }
     }
 
-    fn get_days_from_month(year: i32, month: u32) -> u32 {
-        NaiveDate::from_ymd_opt(
-            match month {
-                12 => year + 1,
-                _ => year,
-            },
-            match month {
-                12 => 1,
-                _ => month + 1,
-            },
-            1,
-        )
-        .unwrap()
-        .signed_duration_since(NaiveDate::from_ymd_opt(year, month, 1).unwrap())
-        .num_days() as u32
-    }
-
-    fn month_before(date: NaiveDate, period: u32) -> NaiveDate {
-        let mut day = date.day();
-        let mut month = date.month();
-        let mut year = date.year();
-        if month <= period {
-            year -= 1;
-            month += 12 - period;
-        } else {
-            month -= period;
-        }
-
-        if day > 28 {
-            let last_date_of_month = get_days_from_month(year, month);
-            day = std::cmp::max(day, last_date_of_month);
-        }
-        NaiveDate::from_ymd_opt(year, month, day).unwrap()
-    }
-
     #[tokio::test]
     async fn test_fundamental_updates() {
         if let Ok(token) = env::var("GURUFOCUS_TOKEN") {
             if !token.is_empty() {
                 let gf_connect = GuruFocusConnector::new(token);
 
-                let now = Utc::now().naive_local().date();
-                let one_months_ago = month_before(now, 6);
+                let now = UtcDateTime::now().date();
+                let one_months_ago = get_months_before(now, 6);
                 let stocks_json = gf_connect.get_updated_stocks(one_months_ago).await;
                 assert!(stocks_json.is_ok());
                 let stocks = serde_json::from_value::<Vec<String>>(stocks_json.unwrap());

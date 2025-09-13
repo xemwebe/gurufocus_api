@@ -153,15 +153,10 @@ impl GuruFocusConnector {
     pub async fn get_guru_picks(
         &self,
         gurus: &[&str],
-        start_date: chrono::NaiveDate,
+        start_date: time::Date,
         page: i32,
     ) -> Result<Value, GuruFocusError> {
-        let args = format!(
-            "guru/{}/picks/{}/{}",
-            compact_list(gurus),
-            start_date.format("%F"),
-            page
-        );
+        let args = format!("guru/{}/picks/{}/{}", compact_list(gurus), start_date, page);
         self.send_request(args.as_str()).await
     }
 
@@ -205,10 +200,7 @@ impl GuruFocusConnector {
     }
 
     /// Returns list of all stocks with updated fundamental data within a week of the given date
-    pub async fn get_updated_stocks(
-        &self,
-        date: chrono::NaiveDate,
-    ) -> Result<Value, GuruFocusError> {
+    pub async fn get_updated_stocks(&self, date: time::Date) -> Result<Value, GuruFocusError> {
         let args = format!("funda_updated/{}", date);
         self.send_request(args.as_str()).await
     }
@@ -237,6 +229,7 @@ impl GuruFocusConnector {
     /// Send request to gurufocus server and transform response to JSON value
     async fn send_request(&self, args: &str) -> Result<Value, GuruFocusError> {
         let url: String = format!("{}{}/{}", self.url, self.user_token, args);
+        println!("curl -o data.json {url}");
         let resp = reqwest::get(url.as_str()).await?;
         Ok(resp.json().await?)
     }

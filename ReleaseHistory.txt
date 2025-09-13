@@ -1,6 +1,9 @@
+Version 0.8.0
+* Migrate from crate chrono to crate time
+
 Version 0.7.0
 * Interface update to recent changes
-* Update of chrono to get rid of vulnarable dependencies; 
+* Update of chrono to get rid of vulnarable dependencies;
   unfortunately, these means to use the latest github master branch
 * The API for `guru/{symbol}/trades` is currently broken; a ticket has been submitted to gurufocus.
 
@@ -27,7 +30,7 @@ Version 0.3.0
 * Container for insider updates added
 * Container for analyst estimates added
 * Container for personal portfolios added
-* All the examples can use specially crafted containers with proper member names instead of 
+* All the examples can use specially crafted containers with proper member names instead of
   iterating through serde_json::Value types. This justifies the increase of the minor
   version number instead of only a patch version numbers.
   For future version, it is planed to replace type `String` by some date type where appropriate.
@@ -46,7 +49,7 @@ Version 0.2.3
 Version 0.2.2
 * New container for stock summary added
 * New type HexNum added. This was required to represent colors which are hex numbers delivered
-  as of type Number is the hex representation does contain digits only (e.g. 204060), 
+  as of type Number is the hex representation does contain digits only (e.g. 204060),
   otherwise as string (e.g. "2a4b6f")
 
 Version 0.2.1
@@ -54,9 +57,8 @@ Version 0.2.1
 * Reformatting of some files
 
 Version 0.2.0 (since major update since 0.1.5)
-* One example for each API function, ordered by the section number as they appear in the GuruFocus 
+* One example for each API function, ordered by the section number as they appear in the GuruFocus
   documentation https://www.gurufocus.com/api.php. However, proper deserializing into proper structs
   is a TODO.
 * Errors will show more information on the cause of the error as given by GuruFocus
 * Dates use now chrono::NaiveDate, since the GuroFocus API does not provide any time zone information
-
