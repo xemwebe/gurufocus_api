@@ -1,3 +1,7 @@
+Version 0.9.0
+* Migration from dependency chrono to time
+* Update API changes to state as of 13.9.2025
+
 Version 0.8.0
 * Migrate from crate chrono to crate time
 
